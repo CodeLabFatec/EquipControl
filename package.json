@@ -1,0 +1,22 @@
+{
+    "name": "api5sem",
+    "version": "1.0.0",
+    "description": "<br id=\"topo\">",
+    "private": true,
+    "workspaces": [
+      "server",
+      "client"
+    ],
+    "scripts": {
+      "start": "echo \"Error: no script defined\" && exit 1",
+      "start:client": "npm run android -w client",
+      "start:server": "npm run dev -w server"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/CodeLabFatec/API-5.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
