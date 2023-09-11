@@ -4,19 +4,23 @@
     "description": "<br id=\"topo\">",
     "private": true,
     "workspaces": [
-      "server",
-      "client"
+        "server",
+        "client"
     ],
     "scripts": {
-      "start": "echo \"Error: no script defined\" && exit 1",
-      "start:client": "npm run android -w client",
-      "start:server": "npm run dev -w server"
+        "start": "echo \"Error: no script defined\" && exit 1",
+        "start:client": "npm run android -w client",
+        "start:server": "npm run dev -w server"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/CodeLabFatec/API-5.git"
+        "type": "git",
+        "url": "git+https://github.com/CodeLabFatec/API-5.git"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC"
-  }
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^8.49.0",
+        "eslint-config-standard-with-typescript": "^39.0.0"
+    }
+}
