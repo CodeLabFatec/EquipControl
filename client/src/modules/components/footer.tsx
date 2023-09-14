@@ -1,7 +1,11 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 
-function Footer(): JSX.Element {
+interface Props {
+  navigation: any;
+}
+
+function Footer({navigation}): JSX.Element {
   return (
     <View style={styles.footerContainer}>
       <Pressable
@@ -20,11 +24,16 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     display: 'flex',
-    backgroundColor: 'red',
     justifyContent: 'center',
+    borderTopWidth: 2,
+    borderTopColor: 'grey',
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
   },
   equipamentosButton: {
-    backgroundColor: 'green',
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: 'grey',
     width: 100,
     marginHorizontal: 5,
     marginVertical: 5,

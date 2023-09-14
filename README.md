@@ -79,12 +79,13 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 
 Foram usadas as seguintes ferramentas, linguagens e tecnologias para a execução do projeto:
 
-- [Node](https://nodejs.org/): Runtime
-- [React](https://pt-br.reactjs.org/): Framework
-- [Typescript](https://www.typescriptlang.org/): Linguagem de programação
-- [GitHub](https://github.com/): Versionamento e Armazenamento de código
-- [Jira](https://www.atlassian.com/): Gerenciamento do projeto
-- [Slack](https://slack.com/): Comunicação com o cliente
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white)
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
 
 <br />
 

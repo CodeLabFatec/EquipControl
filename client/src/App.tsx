@@ -1,31 +1,32 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
-
+import * as React from 'react';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Home from './modules/pages/home';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Header from './modules/components/header';
-import Footer from './modules/components/footer';
+
+const Stack = createNativeStackNavigator();
+
+const MyTheme = {
+  ...DefaultTheme,
+  dark: true,
+  colors: {
+    ...DefaultTheme.colors,
+    background: Colors.darker,
+  },
+};
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView style={Colors.darker}>
-      <StatusBar barStyle={'light-content'} backgroundColor={Colors.darker} />
-      <Header />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={Colors.darker}></ScrollView>
-      <View>
-        <Footer />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer theme={MyTheme}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="home"
+          component={Home}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
