@@ -14,6 +14,20 @@ class EquipmentController {
 
     return result;
   };
+
+  public test = async () => {
+    try {
+      const result = await api.get('/');
+
+      console.log(result);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  };
 }
 
-export default EquipmentController;
+const equipmentController = new EquipmentController();
+
+export default equipmentController;

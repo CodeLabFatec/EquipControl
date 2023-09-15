@@ -1,4 +1,4 @@
 import {api, endpoints} from './api';
-import EquipmentController from './equipmentController';
+import equipmentController from './equipmentController';
 
-export {api, endpoints, EquipmentController};
+export {api, endpoints, equipmentController};

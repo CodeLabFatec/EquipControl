@@ -4,8 +4,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './modules/pages/home';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-const Stack = createNativeStackNavigator();
-
 const MyTheme = {
   ...DefaultTheme,
   dark: true,
@@ -15,7 +13,9 @@ const MyTheme = {
   },
 };
 
-function App(): JSX.Element {
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>

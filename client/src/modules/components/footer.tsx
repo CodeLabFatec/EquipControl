@@ -5,7 +5,7 @@ interface Props {
   navigation: any;
 }
 
-function Footer({navigation}): JSX.Element {
+function Footer({navigation}) {
   return (
     <View style={styles.footerContainer}>
       <Pressable

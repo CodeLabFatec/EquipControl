@@ -1,7 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
-import 'dotenv/config';
 
-const {SERVER_URL} = process.env;
+const SERVER_URL = 'http://192.168.5.206:3001';
 
 const api: AxiosInstance = axios.create({
   baseURL: SERVER_URL,
