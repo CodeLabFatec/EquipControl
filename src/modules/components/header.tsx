@@ -11,10 +11,10 @@ function Header() {
         style={styles.headerLogo}
       />
       <View>
-        <Text style={styles.headerTextsBigger}>Empresa</Text>
+        <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
-      <View>
+      {/* <View>
         <Image
           source={{
             uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
@@ -22,7 +22,7 @@ function Header() {
           style={styles.headerUser}
         />
         <Text style={styles.textUser}>Usuário</Text>
-      </View>
+      </View> */}
     </View>
   );
 }
