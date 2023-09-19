@@ -14,7 +14,7 @@ function Header() {
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
-      {/* <View>
+      {/* <View style={styles.userBox}>
         <Image
           source={{
             uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
@@ -34,14 +34,15 @@ const styles = StyleSheet.create({
     height: 65,
     borderBottomWidth: 2,
     borderBottomColor: 'grey',
-    borderBottomEndRadius: 20,
-    borderBottomStartRadius: 20,
+    borderStyle: 'dotted',
   },
   headerTextsBigger: {
     fontSize: 30,
+    color: 'white'
   },
   headerTextsMedium: {
     fontSize: 20,
+    color: 'white'
   },
   headerLogo: {
     width: 60,
@@ -50,10 +51,15 @@ const styles = StyleSheet.create({
   headerUser: {
     width: 45,
     height: 45,
-    marginLeft: 65,
+    alignSelf: 'flex-end',
   },
   textUser: {
-    marginLeft: 70,
+    alignSelf: 'flex-end',
+    color:'white'
+  },
+  userBox: {
+    position: 'absolute', 
+    right: 0,
   },
 });
 

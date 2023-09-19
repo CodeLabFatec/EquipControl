@@ -1,21 +1,14 @@
 import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  FlatList,
-  View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import EquipmentComponent from '../components/equipment';
-import {Equipment} from '../../helpers/models';
-import {equipmentController} from '../../api';
 import SearchEquipment from '../components/search-equipment';
+import { equipmentController } from '../../api';
+import { Equipment } from '../../helpers/models';
 
-function Home({navigation}) {
+function EquipmentRegister({navigation}) {
   const [equipments] = useState<Equipment[]>(equipmentController.list());
   const [filter, setFilter] = useState('');
 
@@ -25,21 +18,11 @@ function Home({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'light-content'} backgroundColor={Colors.darker} />
       <Header />
-      <View>
-        <SearchEquipment
-          value={filter}
-          onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
-        />
-        <FlatList
-          data={filteredEquipments}
-          renderItem={EquipmentComponent}
-          numColumns={2}
-          contentContainerStyle={styles.equipmentList}
-          keyExtractor={item => item._id ?? ''}
-        />
-      </View>
+      <SearchEquipment
+        value={filter}
+        onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
+      />
       <View style={styles.footer}>
         <Footer navigation={navigation} />
       </View>
@@ -58,11 +41,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
   },
-  equipmentList: {
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 175,
-  },
 });
 
-export default Home;
+export default EquipmentRegister;

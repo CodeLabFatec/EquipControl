@@ -3,6 +3,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './modules/pages/home';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import EquipmentRegister from './modules/pages/equipmentRegister';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -21,7 +22,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="home"
-          component={Home}
+          component={EquipmentRegister}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

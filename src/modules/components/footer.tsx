@@ -13,7 +13,7 @@ function Footer({navigation}) {
         onPress={() => {
           console.log('Clicaste');
         }}>
-        <Text style={styles.equipamentosButtonText}>Equipamentos</Text>
+        <Text style={styles.equipamentosButtonText}>Lista de equipamentos</Text>
       </Pressable>
     </View>
   );
@@ -21,7 +21,7 @@ function Footer({navigation}) {
 
 const styles = StyleSheet.create({
   footerContainer: {
-    height: 40,
+    height: 55,
     flexDirection: 'row',
     display: 'flex',
     justifyContent: 'center',
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   equipamentosButtonText: {
     textAlign: 'center',
     paddingTop: 5,
+    color: 'white'
   },
 });
 

@@ -10,11 +10,12 @@ import {
 import {Equipment, Files} from '../../helpers/models';
 
 const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
+
   return (
     <View style={styles.equipment}>
-      <Carousel files={item.files ?? []} />
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.serial}>Nº Série: {item.serial}</Text>
+      <Carousel files={item.files ?? []} />
     </View>
   );
 };
@@ -86,8 +87,12 @@ const styles = StyleSheet.create({
   equipment: {
     width: '48%',
     height: 200,
-    paddingLeft: 5,
     zIndex: 1,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 2,
+    marginLeft: 4,
+    marginTop: 4,
   },
   carouselItem: {
     alignItems: 'center',
@@ -103,9 +108,11 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   name: {
+    backgroundColor: 'blue',
     fontSize: 18,
+    color: 'white',
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 5,
   },
   serial: {
     fontSize: 16,
