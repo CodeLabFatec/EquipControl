@@ -1,18 +1,13 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import navigate from '../../RootNavigation';
 
-interface Props {
-  navigation: any;
-}
-
-function Footer({navigation}) {
+function Footer() {
   return (
     <View style={styles.footerContainer}>
       <Pressable
         style={styles.equipamentosButton}
-        onPress={() => {
-          console.log('Clicaste');
-        }}>
+        onPress={() => navigate('Home')}>
         <Text style={styles.equipamentosButtonText}>Lista de equipamentos</Text>
       </Pressable>
     </View>
@@ -41,7 +36,7 @@ const styles = StyleSheet.create({
   equipamentosButtonText: {
     textAlign: 'center',
     paddingTop: 5,
-    color: 'white'
+    color: 'white',
   },
 });
 

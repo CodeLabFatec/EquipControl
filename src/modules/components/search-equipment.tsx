@@ -1,33 +1,32 @@
 import React from 'react';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {View, TextInput, Image, StyleSheet} from 'react-native';
+import {View, TextInput, Image, StyleSheet, Pressable} from 'react-native';
+import navigate from '../../RootNavigation';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const SearchEquipment = ({value, onChangeText}) => {
+interface Props {
+  value: string;
+  onChangeText: (text: React.SetStateAction<string>) => void;
+}
+
+const SearchEquipment = ({value, onChangeText}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/64/64673.png',
-          }}
-          style={styles.icon}
-        />
+        <Icon style={styles.icon} name="search" />
         <TextInput
           style={styles.input}
           placeholder={'Pesquisar...'}
-          placeholderTextColor="#CCC" 
+          placeholderTextColor="#CCC"
           value={value}
           onChangeText={onChangeText}
         />
       </View>
-      <View style={styles.addIconContainer}>
-        <Image
-          source={{
-            uri: 'https://cdn-icons-png.flaticon.com/512/1004/1004759.png',
-          }}
-          style={styles.addIcon}
-        />
-      </View>
+
+      <Pressable
+        style={styles.addIconContainer}
+        onPress={() => navigate('RegisterEquipment')}>
+        <Icon style={styles.addIcon} name="plus-circle" />
+      </Pressable>
     </View>
   );
 };
@@ -39,9 +38,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   icon: {
-    width: 20,
-    height: 20,
+    fontSize: 20,
     marginRight: 10,
+    color: '#fff',
   },
   input: {
     flex: 1,
@@ -69,11 +68,11 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   addIcon: {
-    width: 38,
-    height: 38,
+    fontSize: 38,
     position: 'absolute',
     right: 5,
     bottom: 5,
+    color: '#fff',
   },
 });
 
