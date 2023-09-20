@@ -16,7 +16,7 @@ const SearchEquipment = ({value, onChangeText}: Props) => {
         <TextInput
           style={styles.input}
           placeholder={'Pesquisar...'}
-          placeholderTextColor="#CCC"
+          placeholderTextColor="#E2D7C1"
           value={value}
           onChangeText={onChangeText}
         />
@@ -36,22 +36,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 5,
+    paddingTop: 5,
   },
   icon: {
     fontSize: 20,
     marginRight: 10,
-    color: '#fff',
+    color: '#E2D7C1',
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color: 'gray',
+    color: '#7395AE',
     padding: 5,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: 'gray',
+    borderColor: '#E2D7C1',
     width: '85%',
     borderWidth: 1,
     borderRadius: 20,
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 5,
     bottom: 5,
-    color: '#fff',
+    color: '#77A490',
   },
 });
 

@@ -15,7 +15,7 @@ const MyTheme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
-    background: Colors.darker,
+    background: '#111111',
   },
 };
 
@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'light-content'} backgroundColor={Colors.darker} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'#111111'} />
       <NavigationContainer theme={MyTheme} ref={navigationRef}>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
@@ -57,11 +57,11 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.darker,
+    backgroundColor: '#111111',
   },
   footer: {
     width: '100%',
-    backgroundColor: Colors.darker,
+    backgroundColor:  '#111111',
     position: 'absolute',
     bottom: 0,
   },

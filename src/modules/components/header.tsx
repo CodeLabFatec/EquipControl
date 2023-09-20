@@ -4,12 +4,12 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 function Header() {
   return (
     <View style={styles.headerContainer}>
-      <Image
+      {/* <Image
         source={{
           uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
         }}
         style={styles.headerLogo}
-      />
+      /> */}
       <View>
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
@@ -33,16 +33,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 65,
     borderBottomWidth: 2,
-    borderBottomColor: 'grey',
-    borderStyle: 'dotted',
+    borderBottomColor: '#E2D7C1',
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
   },
   headerTextsBigger: {
     fontSize: 30,
-    color: 'white'
+    color: '#EEEEEE'
   },
   headerTextsMedium: {
     fontSize: 20,
-    color: 'white'
+    color: '#A7A6A6'
   },
   headerLogo: {
     width: 60,

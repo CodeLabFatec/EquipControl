@@ -15,7 +15,7 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
       {item.files && item.files.length > 0 ? (
         <Carousel files={item.files ?? []} />
       ) : (
-        <View>
+        <View style={styles.fileIconContainer}>
           <Icon style={styles.fileIcon} name="file-image" />
         </View>
       )}
@@ -28,29 +28,33 @@ const styles = StyleSheet.create({
     width: '48%',
     height: 200,
     zIndex: 1,
-    borderColor: 'gray',
+    borderColor: '#363636',
     borderWidth: 1,
     borderRadius: 2,
     marginLeft: 4,
     marginTop: 4,
-    backgroundColor: '#61605f',
+    backgroundColor: '#363636',
   },
   name: {
     fontSize: 18,
-    color: 'white',
+    color: '#E2D7C1',
     fontWeight: 'bold',
     marginTop: 5,
   },
   serial: {
     fontSize: 16,
-    color: 'gray',
+    color: '#BFAD95',
   },
   emptyFile: {},
   fileIcon: {
     textAlign: 'center',
     fontSize: 25,
-    color: '#fff',
+    color: '#cccccc',
   },
+  fileIconContainer: {
+    marginHorizontal: 'auto',
+    paddingVertical: 65,
+  }
 });
 
 export default EquipmentComponent;
