@@ -33,6 +33,7 @@ class EquipmentController {
     for (let i = 0; i < 20; i++) {
       const equipment: Equipment = {
         domain: 'Poste',
+        state: true,
         files: i % 2 == 0 ? [] : [file1, file2],
         latitude: 1,
         longitude: 1,

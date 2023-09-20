@@ -6,6 +6,7 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  Alert
 } from 'react-native';
 import { Equipment } from '../../helpers/models';
 import Carousel from '../components/carousel';
@@ -13,7 +14,27 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function EquipmentInfo({ navigation, route }) {
   const equipment: Equipment = route.params;
-  const [value, onChangeText] = React.useState('');
+  const [equipamento, setEquipamento] = React.useState(equipment);
+
+  const handleActivateButton = () => 
+    Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
+      {
+        text: 'Não',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'Sim', onPress: () => setEquipamento({...equipamento,state:true}) },
+    ]);
+
+    const handleDisableButton = () => 
+    Alert.alert('Desativar', 'Deseja desativar este equipamento?', [
+      {
+        text: 'Não',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'Sim', onPress: () => setEquipamento({...equipamento,state:false}) },
+    ]);
 
   if (!equipment) {
     navigation.navigate('Home');
@@ -25,14 +46,14 @@ function EquipmentInfo({ navigation, route }) {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.activeButton}
-          // onPress={() => handleActivate()}
-          >
+          onPress={handleActivateButton}
+        >
           <Text style={styles.activeText}>Ativar</Text>
         </Pressable>
         <Pressable
           style={styles.disableButton}
-          // onPress={() => navigate('Home'F)}
-          >
+        onPress={handleDisableButton}
+        >
           <Text style={styles.disableText}>Desativar</Text>
         </Pressable>
       </View>
@@ -61,16 +82,16 @@ function EquipmentInfo({ navigation, route }) {
             placeholder="Nome do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => setEquipamento({...equipamento,name:text})}
+            value={equipamento.name}
             style={styles.tipeEquipmentInput}
           />
           <TextInput
             placeholder="ID"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => setEquipamento({...equipamento,_id:text})}
+            value={equipamento._id}
             style={styles.idEquipmentInput}
           />
         </View>
@@ -79,26 +100,28 @@ function EquipmentInfo({ navigation, route }) {
             placeholder="Serial"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => setEquipamento({...equipamento,serial:text})}
+            value={equipamento.serial}
             style={styles.serialEquipmentInput}
           />
         </View>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Latitude"
+            keyboardType='numeric'
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => setEquipamento({...equipamento,latitude:Number(text)})}
+            value={equipamento.latitude + ''}
             style={styles.latitudeEquipmentInput}
-          />
+            />
           <TextInput
             placeholder="Longitude"
+            keyboardType='numeric'
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => setEquipamento({...equipamento,longitude:Number(text)})}
+            value={equipamento.longitude + ''}
             style={styles.longitudeEquipmentInput}
           />
         </View>
@@ -109,8 +132,8 @@ function EquipmentInfo({ navigation, route }) {
             placeholderTextColor={'#E2D7C1'}
             multiline={true}
             numberOfLines={10}
-            // onChangeText={text => this.setState({text})}
-            // value={this.state.text}
+            onChangeText={text => setEquipamento({...equipamento,notes:text})}
+            value={equipamento.notes}
             style={styles.observationEquipmentInput}
           />
         </View>
@@ -118,8 +141,8 @@ function EquipmentInfo({ navigation, route }) {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.confirmButton}
-          // onPress={() => navigate('Home')}
-          >
+          onPress={() => console.log(equipamento)}
+        >
           <Text style={styles.confirmText}>Confirmar</Text>
         </Pressable>
       </View>
@@ -140,7 +163,7 @@ const styles = StyleSheet.create({
   },
   equipment: {
     width: '80%',
-    height: 200,
+    height: 220,
     zIndex: 1,
     borderColor: '#E2D7C1',
     borderWidth: 1,

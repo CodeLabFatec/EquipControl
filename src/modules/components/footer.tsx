@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     borderTopWidth: 2,
-    borderTopColor: '#E2D7C1',
+    borderTopColor: '#77A490',
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
   },
   equipamentosButton: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: '#E2D7C1',
+    borderColor: '#77A490',
     width: 100,
     marginHorizontal: 5,
     marginVertical: 5,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   equipamentosButtonText: {
     textAlign: 'center',
     paddingTop: 5,
-    color: '#77A490',
+    color: '#EEEEEE',
   },
 });
 

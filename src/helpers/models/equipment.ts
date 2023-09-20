@@ -11,4 +11,5 @@ export interface Equipment {
   files: Files[] | undefined;
   created_at?: Date;
   updated_at?: Date;
+  state: boolean;
 }
