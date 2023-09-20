@@ -1,54 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, FlatList, View} from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import EquipmentComponent from '../components/equipment-item';
+import {Equipment} from '../../helpers/models';
 import {equipmentController} from '../../api';
+import SearchEquipment from '../components/search-equipment';
 
-function Home({navigation}) {
-  const [data, setData] = useState();
+function Home({navigation, route}) {
+  const [equipments] = useState<Equipment[]>(equipmentController.list());
+  const [filter, setFilter] = useState('');
 
-  const loadData = async () => {
-    const response = await equipmentController.test();
-
-    console.log(response);
-    if (response && response.data) setData(response.data);
-  };
-
-  useEffect(() => {
-    loadData();
-  });
+  const filteredEquipments = equipments.filter(equipment =>
+    equipment.name?.includes(filter),
+  );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={'light-content'} backgroundColor={Colors.darker} />
-      <Header />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text>Teste - {data}</Text>
-      </ScrollView>
-      <View>
-        <Footer navigation={navigation} />
-      </View>
-    </SafeAreaView>
+    <View>
+      <SearchEquipment
+        value={filter}
+        onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
+      />
+      <FlatList
+        data={filteredEquipments}
+        renderItem={EquipmentComponent}
+        numColumns={2}
+        contentContainerStyle={styles.equipmentList}
+        keyExtractor={item => item._id ?? ''}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.darker,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
+  equipmentList: {
+    paddingHorizontal: 10,
+    paddingTop: 15,
+    paddingBottom: 175,
   },
 });
 

@@ -1,19 +1,14 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import navigate from '../../RootNavigation';
 
-interface Props {
-  navigation: any;
-}
-
-function Footer({navigation}) {
+function Footer() {
   return (
     <View style={styles.footerContainer}>
       <Pressable
         style={styles.equipamentosButton}
-        onPress={() => {
-          console.log('Clicaste');
-        }}>
-        <Text style={styles.equipamentosButtonText}>Equipamentos</Text>
+        onPress={() => navigate('Home')}>
+        <Text style={styles.equipamentosButtonText}>Lista de equipamentos</Text>
       </Pressable>
     </View>
   );
@@ -21,19 +16,19 @@ function Footer({navigation}) {
 
 const styles = StyleSheet.create({
   footerContainer: {
-    height: 40,
+    height: 55,
     flexDirection: 'row',
     display: 'flex',
     justifyContent: 'center',
     borderTopWidth: 2,
-    borderTopColor: 'grey',
+    borderTopColor: '#E2D7C1',
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
   },
   equipamentosButton: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: 'grey',
+    borderColor: '#E2D7C1',
     width: 100,
     marginHorizontal: 5,
     marginVertical: 5,
@@ -41,6 +36,7 @@ const styles = StyleSheet.create({
   equipamentosButtonText: {
     textAlign: 'center',
     paddingTop: 5,
+    color: '#77A490',
   },
 });
 
