@@ -7,11 +7,11 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import {Equipment} from '../../helpers/models';
+import { Equipment } from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-function EquipmentInfo({navigation, route}) {
+function EquipmentInfo({ navigation, route }) {
   const equipment: Equipment = route.params;
   const [value, onChangeText] = React.useState('');
 
@@ -22,6 +22,20 @@ function EquipmentInfo({navigation, route}) {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.buttonsContainer}>
+        <Pressable
+          style={styles.activeButton}
+          // onPress={() => handleActivate()}
+          >
+          <Text style={styles.activeText}>Ativar</Text>
+        </Pressable>
+        <Pressable
+          style={styles.disableButton}
+          // onPress={() => navigate('Home'F)}
+          >
+          <Text style={styles.disableText}>Desativar</Text>
+        </Pressable>
+      </View>
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
           {equipment.files && equipment.files.length > 0 ? (
@@ -101,6 +115,14 @@ function EquipmentInfo({navigation, route}) {
           />
         </View>
       </View>
+      <View style={styles.buttonsContainer}>
+        <Pressable
+          style={styles.confirmButton}
+          // onPress={() => navigate('Home')}
+          >
+          <Text style={styles.confirmText}>Confirmar</Text>
+        </Pressable>
+      </View>
     </ScrollView>
   );
 }
@@ -145,7 +167,7 @@ const styles = StyleSheet.create({
   },
   removeIcon: {
     fontSize: 38,
-    color: '#f56218',
+    color: 'gray',
     marginTop: 5,
   },
   formContainer: {
@@ -222,6 +244,53 @@ const styles = StyleSheet.create({
     padding: 6,
     width: '46%',
   },
+  buttonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: 60,
+    marginTop: 5,
+  },
+  activeButton: {
+    backgroundColor: '#77A490',
+    width: '46%',
+    height: 50,
+    marginTop: 5,
+    borderRadius: 10,
+    justifyContent: 'center'
+  },
+  disableButton: {
+    backgroundColor: 'gray',
+    width: '46%',
+    height: 50,
+    marginTop: 5,
+    borderRadius: 10,
+    marginLeft: '4%',
+    justifyContent: 'center'
+  },
+  activeText: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#EEEEEE',
+  },
+  disableText: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#EEEEEE',
+  },
+  confirmButton: {
+    backgroundColor: '#77A490',
+    width: '96%',
+    height: 50,
+    marginTop: 5,
+    borderRadius: 10,
+    justifyContent: 'center'
+  },
+  confirmText: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#EEEEEE',
+  }
 });
 
 export default EquipmentInfo;
