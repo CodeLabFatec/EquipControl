@@ -124,7 +124,7 @@ function EquipmentInfo({navigation, route}) {
             onChangeText={text =>
               setEquipamento({...equipamento, domain: text})
             }
-            value={equipamento._id}
+            value={equipamento.domain}
             style={styles.serialEquipmentInput}
           />
         </View>

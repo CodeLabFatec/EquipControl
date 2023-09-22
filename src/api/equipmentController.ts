@@ -6,7 +6,7 @@ class EquipmentController {
   private array: Equipment[] = [];
 
   public getEquipment = async (): Promise<Equipment[] | undefined> => {
-    return [];
+    return (await api.get(endpoints.GET_EQUIPMENT)).data.equipments;
   };
 
   public postEquipment = async (data: Equipment) => {
@@ -15,38 +15,10 @@ class EquipmentController {
     return result;
   };
 
-  public update = (equipment: Equipment) => {
-    const eqArray = this.array.find(r => r._id === equipment._id);
+  public updateStatus = async (status: boolean) => {
+    const result = await api.post(endpoints.POST_EQUIPMENT, status);
 
-    if (eqArray) {
-      const index = this.array.indexOf(eqArray);
-      this.array[index] = equipment;
-      console.log(`equipamento ${index} atualizado`);
-    }
-  };
-
-  public list = () => {
-    console.log('buscando lista');
-    if (this.array.length == 0) {
-      for (let i = 0; i < 20; i++) {
-        const equipment: Equipment = {
-          domain: 'Poste',
-          state: true,
-          files: i % 2 == 0 ? [] : [file1, file2],
-          latitude: 1,
-          longitude: 1,
-          name: `Poste #${i}`,
-          notes: 'Poste de Teste',
-          serial: `${i * 9}-${i * 3}`,
-          _id: i + '',
-        };
-
-        this.array.push(equipment);
-      }
-      console.log('nova lista');
-    }
-
-    return this.array;
+    return result;
   };
 }
 

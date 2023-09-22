@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 
-const SERVER_URL = 'http://192.168.5.206:3001';
+const SERVER_URL = 'http://192.168.131.44:3000';
 
 const api: AxiosInstance = axios.create({
   baseURL: SERVER_URL,
@@ -10,8 +10,14 @@ const api: AxiosInstance = axios.create({
 });
 
 const endpoints = {
+  //GET
+  GET_EQUIPMENT: '/equipment/get',
+
+  //POST
   POST_EQUIPMENT: '/equipment',
-  GET_EQUIPMENT: '/equipment',
+
+  //PATCH
+  PATCH_EQUIPMENT_STATUS: 'equipment/updateStatus',
 };
 
 export {api, endpoints};

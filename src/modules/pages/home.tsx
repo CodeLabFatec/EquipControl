@@ -17,9 +17,9 @@ function Home({navigation, route}) {
 
   useEffect(() => {
     load();
-  });
+  }, []);
 
-  const filteredEquipments = equipments.filter(equipment =>
+  const filteredEquipments = equipments?.filter(equipment =>
     equipment.name?.includes(filter),
   );
 
