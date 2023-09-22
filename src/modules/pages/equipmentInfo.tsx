@@ -6,35 +6,67 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  Alert
+  Alert,
 } from 'react-native';
-import { Equipment } from '../../helpers/models';
+import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {equipmentController} from '../../api';
 
-function EquipmentInfo({ navigation, route }) {
+function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
   const [equipamento, setEquipamento] = React.useState(equipment);
 
-  const handleActivateButton = () => 
+  const handleActivateButton = () =>
     Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
       {
         text: 'Não',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'Sim', onPress: () => setEquipamento({...equipamento,state:true}) },
+      {
+        text: 'Sim',
+        onPress: () => {
+          setEquipamento({...equipamento, state: true});
+          equipmentController.update(equipamento);
+        },
+      },
     ]);
 
-    const handleDisableButton = () => 
+  const handleDisableButton = () =>
     Alert.alert('Desativar', 'Deseja desativar este equipamento?', [
       {
         text: 'Não',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'Sim', onPress: () => setEquipamento({...equipamento,state:false}) },
+      {
+        text: 'Sim',
+        onPress: () => {
+          setEquipamento({...equipamento, state: false});
+          equipmentController.update(equipamento);
+        },
+      },
     ]);
+
+  const handleUpdateEquipamento = () => {
+    Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: () => {
+          equipmentController.update(equipamento);
+          Alert.alert('Sucesso', 'Sucesso ao atualizar este equipamento.', [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ]);
+        },
+      },
+    ]);
+  };
 
   if (!equipment) {
     navigation.navigate('Home');
@@ -44,16 +76,10 @@ function EquipmentInfo({ navigation, route }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <Pressable
-          style={styles.activeButton}
-          onPress={handleActivateButton}
-        >
+        <Pressable style={styles.activeButton} onPress={handleActivateButton}>
           <Text style={styles.activeText}>Ativar</Text>
         </Pressable>
-        <Pressable
-          style={styles.disableButton}
-        onPress={handleDisableButton}
-        >
+        <Pressable style={styles.disableButton} onPress={handleDisableButton}>
           <Text style={styles.disableText}>Desativar</Text>
         </Pressable>
       </View>
@@ -77,62 +103,78 @@ function EquipmentInfo({ navigation, route }) {
         </View>
       </View>
       <View style={styles.formContainer}>
+        <Text style={styles.inputLabel}>Nome:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Nome do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento,name:text})}
+            onChangeText={text => setEquipamento({...equipamento, name: text})}
             value={equipamento.name}
-            style={styles.tipeEquipmentInput}
-          />
-          <TextInput
-            placeholder="ID"
-            placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento,_id:text})}
-            value={equipamento._id}
-            style={styles.idEquipmentInput}
+            style={styles.serialEquipmentInput}
           />
         </View>
+        <Text style={styles.inputLabel}>Domínio:</Text>
+        <View style={styles.textContainer}>
+          <TextInput
+            placeholder="Domínio do equipamento"
+            placeholderTextColor={'#E2D7C1'}
+            maxLength={40}
+            aria-disabled
+            onChangeText={text =>
+              setEquipamento({...equipamento, domain: text})
+            }
+            value={equipamento._id}
+            style={styles.serialEquipmentInput}
+          />
+        </View>
+        <Text style={styles.inputLabel}>Serial:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Serial"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento,serial:text})}
+            onChangeText={text =>
+              setEquipamento({...equipamento, serial: text})
+            }
             value={equipamento.serial}
             style={styles.serialEquipmentInput}
           />
         </View>
+        <Text style={styles.inputLabel}>Latitude e Longitude:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Latitude"
-            keyboardType='numeric'
+            keyboardType="numeric"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento,latitude:Number(text)})}
+            onChangeText={text =>
+              setEquipamento({...equipamento, latitude: Number(text)})
+            }
             value={equipamento.latitude + ''}
             style={styles.latitudeEquipmentInput}
-            />
+          />
           <TextInput
             placeholder="Longitude"
-            keyboardType='numeric'
+            keyboardType="numeric"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento,longitude:Number(text)})}
+            onChangeText={text =>
+              setEquipamento({...equipamento, longitude: Number(text)})
+            }
             value={equipamento.longitude + ''}
             style={styles.longitudeEquipmentInput}
           />
         </View>
+        <Text style={styles.inputLabel}>Observações:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Observação"
             scrollEnabled={true}
             placeholderTextColor={'#E2D7C1'}
             multiline={true}
-            numberOfLines={10}
-            onChangeText={text => setEquipamento({...equipamento,notes:text})}
+            numberOfLines={7}
+            onChangeText={text => setEquipamento({...equipamento, notes: text})}
             value={equipamento.notes}
             style={styles.observationEquipmentInput}
           />
@@ -141,8 +183,7 @@ function EquipmentInfo({ navigation, route }) {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.confirmButton}
-          onPress={() => console.log(equipamento)}
-        >
+          onPress={handleUpdateEquipamento}>
           <Text style={styles.confirmText}>Confirmar</Text>
         </Pressable>
       </View>
@@ -176,6 +217,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingRight: 15,
   },
+  inputLabel: {
+    paddingLeft: 7,
+  },
   equipmentName: {
     color: '#fff',
   },
@@ -202,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     paddingVertical: 5,
-    marginTop: 5
+    marginTop: 5,
   },
   tipeEquipmentInput: {
     backgroundColor: '#363636',
@@ -280,7 +324,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 5,
     borderRadius: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   disableButton: {
     backgroundColor: 'gray',
@@ -289,7 +333,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 10,
     marginLeft: '4%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   activeText: {
     fontSize: 25,
@@ -307,13 +351,13 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 5,
     borderRadius: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   confirmText: {
     fontSize: 25,
     textAlign: 'center',
     color: '#EEEEEE',
-  }
+  },
 });
 
 export default EquipmentInfo;

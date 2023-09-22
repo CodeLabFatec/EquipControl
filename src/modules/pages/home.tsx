@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 
 import EquipmentComponent from '../components/equipment-item';
@@ -7,8 +7,12 @@ import {equipmentController} from '../../api';
 import SearchEquipment from '../components/search-equipment';
 
 function Home({navigation, route}) {
-  const [equipments] = useState<Equipment[]>(equipmentController.list());
+  const [equipments, setEquipments] = useState<Equipment[]>([]);
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    setEquipments(equipmentController.list());
+  });
 
   const filteredEquipments = equipments.filter(equipment =>
     equipment.name?.includes(filter),
