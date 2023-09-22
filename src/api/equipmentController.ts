@@ -5,11 +5,8 @@ import {file1, file2} from './files';
 class EquipmentController {
   private array: Equipment[] = [];
 
-  public getEquipment = async (): Promise<Equipment | undefined> => {
-    const result = await api.get(endpoints.GET_EQUIPMENT + '');
-    if (!result) return undefined;
-
-    return result as unknown as Equipment;
+  public getEquipment = async (): Promise<Equipment[] | undefined> => {
+    return [];
   };
 
   public postEquipment = async (data: Equipment) => {

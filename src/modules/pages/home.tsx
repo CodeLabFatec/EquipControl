@@ -10,8 +10,13 @@ function Home({navigation, route}) {
   const [equipments, setEquipments] = useState<Equipment[]>([]);
   const [filter, setFilter] = useState('');
 
+  async function load() {
+    const data = await equipmentController.getEquipment();
+    if (data) setEquipments(data);
+  }
+
   useEffect(() => {
-    setEquipments(equipmentController.list());
+    load();
   });
 
   const filteredEquipments = equipments.filter(equipment =>
