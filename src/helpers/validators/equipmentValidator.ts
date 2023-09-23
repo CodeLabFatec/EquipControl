@@ -21,6 +21,7 @@ const defaultEquipment: Equipment = {
   name: undefined,
   notes: undefined,
   serial: undefined,
+  state: true
 };
 
 export {validateEquipment, defaultEquipment};
