@@ -7,20 +7,21 @@ function validateEquipment(equipment: Equipment): boolean {
     return false;
   if (!equipment.serial || equipment.serial === '' || equipment.serial === ' ')
     return false;
-  if (!equipment.longitude || equipment.longitude === 0) return false;
-  if (!equipment.latitude || equipment.latitude === 0) return false;
+  if (!equipment.longitude || equipment.longitude === '0') return false;
+  if (!equipment.latitude || equipment.latitude === '0') return false;
 
   return true;
 }
 
 const defaultEquipment: Equipment = {
-  domain: undefined,
+  domain: '',
   files: undefined,
-  latitude: undefined,
-  longitude: undefined,
-  name: undefined,
+  latitude: '',
+  longitude: '',
+  name: '',
   notes: undefined,
-  serial: undefined,
+  serial: '',
+  _id: '',
 };
 
 export {validateEquipment, defaultEquipment};
