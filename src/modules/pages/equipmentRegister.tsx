@@ -16,7 +16,7 @@ import Carousel from '../components/carousel';
 import {
   defaultEquipment,
   equipmentValidator,
-} from '../../helpers/validators/EquipmentValidator';
+} from '../../helpers/validators/equipmentValidator';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentRegister({navigation}) {
