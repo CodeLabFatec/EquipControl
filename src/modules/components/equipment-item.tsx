@@ -6,16 +6,23 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from './carousel';
 
 const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
-
   return (
     <View style={styles.equipment}>
-      <Pressable style={styles.name} onPress={() => navigate('InfoEquipment', item)}>
+      <Pressable
+        style={styles.name}
+        onPress={() => navigate('InfoEquipment', item)}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.serial}>Nº Série: {item.serial}</Text>
-        <Text style={[styles.status, item.isActive ? styles.activeStatus : styles.inactiveStatus]}>{item.isActive}</Text>
+        <Text
+          style={[
+            styles.status,
+            item.isActive ? styles.activeStatus : styles.inactiveStatus,
+          ]}>
+          {item.isActive}
+        </Text>
       </Pressable>
       {item.files && item.files.length > 0 ? (
-        <Carousel files={item.files ?? []} />
+        <Carousel width={165} files={item.files ?? []} />
       ) : (
         <View style={styles.fileIconContainer}>
           <Icon style={styles.fileIcon} name="file-image" />
@@ -62,7 +69,7 @@ const styles = StyleSheet.create({
     right: 4,
     width: 16,
     borderRadius: 100,
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
   },
   activeStatus: {
     backgroundColor: '#90EE90', // Estilo para quando item.isActive for true

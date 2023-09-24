@@ -12,7 +12,8 @@ class EquipmentController {
 
   public post = async (data: Equipment) => {
     try {
-      const result = (await api.post(endpoints.POST_EQUIPMENT, data)).data;
+      const {_id, createdAt, updatedAt, ...eq} = data;
+      const result = (await api.post(endpoints.POST_EQUIPMENT, eq)).data;
 
       return result;
     } catch (e) {

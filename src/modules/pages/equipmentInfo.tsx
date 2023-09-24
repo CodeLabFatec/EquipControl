@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,20 @@ import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {equipmentController} from '../../api';
-import {validateEquipment} from '../../helpers/validators';
-import {TextInputMask} from 'react-native-masked-text';
+import {equipmentValidator} from '../../helpers/validators';
+import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
+
+  if (!equipment) {
+    navigation.navigate('Home');
+    return;
+  }
+
   const [equipamento, setEquipamento] = React.useState(equipment);
   const [loading, setLoading] = React.useState(false);
-  const [disableActiveButton, setDisableActiveButton] = React.useState(
-    equipamento.isActive,
-  );
-  const [disableButton, setDisableButton] = React.useState(
-    !equipamento.isActive,
-  );
+  const [indexImage, setIndexImage] = useState(0);
   const [isNameValid, setIsNameValid] = React.useState(true);
   const [isDominioValid, setIsDominioValid] = React.useState(true);
   const [isSerialValid, setIsSerialValid] = React.useState(true);
@@ -44,7 +45,6 @@ function EquipmentInfo({navigation, route}) {
           text: 'Sim',
           onPress: async () => {
             setLoading(true);
-            setDisableButton(true);
             const result: any = await equipmentController.updateStatus(
               equipamento._id,
               true,
@@ -83,7 +83,6 @@ function EquipmentInfo({navigation, route}) {
           text: 'Sim',
           onPress: async () => {
             setLoading(true);
-            setDisableActiveButton(true);
             const result: any = await equipmentController.updateStatus(
               equipamento._id,
               false,
@@ -113,70 +112,92 @@ function EquipmentInfo({navigation, route}) {
   };
 
   const handleUpdateEquipamento = () => {
-    const validaSubmit = validateEquipment(equipamento);
+    const validaSubmit = equipmentValidator.validateEquipment(equipamento);
 
     if (validaSubmit) {
-      if (validaSubmit == 'name') {
-        return setIsNameValid(false);
+      if (validaSubmit.includes('name')) {
+        setIsNameValid(false);
       }
-      if (validaSubmit == 'domain') {
-        return setIsDominioValid(false);
+      if (validaSubmit.includes('domain')) {
+        setIsDominioValid(false);
       }
-      if (validaSubmit == 'serial') {
+      if (validaSubmit.includes('serial')) {
         setIsSerialValid(false);
-        return;
       }
-      if (validaSubmit == 'longitude') {
+      if (validaSubmit.includes('longitude')) {
         setIsLongitudeValid(false);
-        return;
       }
-      if (validaSubmit == 'latitude') {
+      if (validaSubmit.includes('latitude')) {
         setIsLatitudeValid(false);
-        return;
       }
 
       return;
     }
 
-    if (isLatitudeValid && isLongitudeValid) {
-      Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
-        {
-          text: 'Não',
-          style: 'cancel',
-        },
-        {
-          text: 'Sim',
-          onPress: async () => {
-            setLoading(true);
-            const result: any = await equipmentController.update(
-              equipamento._id,
-              equipamento,
-            );
-            setLoading(false);
+    if (
+      !isDominioValid ||
+      !isLatitudeValid ||
+      !isLatitudeValid ||
+      !isLongitudeValid ||
+      !isNameValid ||
+      !isSerialValid
+    )
+      return;
 
-            Alert.alert(
-              result.message ? 'Erro' : 'Sucesso',
-              result.message
-                ? result.message
-                : 'Sucesso ao atualizar este equipamento.',
-              [
-                {
-                  text: 'Ok',
-                  style: 'default',
-                  onPress: () => navigation.navigate('Home'),
+    Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: async () => {
+          setLoading(true);
+          const result: any = await equipmentController.update(
+            equipamento._id,
+            equipamento,
+          );
+          setLoading(false);
+
+          Alert.alert(
+            result.message ? 'Erro' : 'Sucesso',
+            result.message
+              ? result.message
+              : 'Sucesso ao atualizar este equipamento.',
+            [
+              {
+                text: 'Ok',
+                style: 'default',
+                onPress: () => {
+                  if (!result.message) navigation.navigate('Home');
                 },
-              ],
-            );
-          },
+              },
+            ],
+          );
         },
-      ]);
+      },
+    ]);
+  };
+
+  const openImagePicker = async () => {
+    try {
+      const hasPermissionReadImages = await requestReadImages();
+
+      if (hasPermissionReadImages) {
+        await updateEquipamentoImages(equipamento, setEquipamento);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  if (!equipment) {
-    navigation.navigate('Home');
-    return;
-  }
+  const removeImage = () => {
+    const imagensAtualizadas = equipamento.files;
+    if (imagensAtualizadas) {
+      imagensAtualizadas.splice(indexImage, 1);
+      setEquipamento({...equipamento, files: imagensAtualizadas});
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -195,7 +216,7 @@ function EquipmentInfo({navigation, route}) {
               },
             ]}
             disabled={loading}
-            aria-disabled={disableActiveButton}
+            aria-disabled={equipamento.isActive}
             onPress={handleDisableButton}>
             <Text style={styles.disableText}>Desativar</Text>
           </Pressable>
@@ -208,7 +229,7 @@ function EquipmentInfo({navigation, route}) {
               },
             ]}
             disabled={loading}
-            aria-disabled={disableButton}
+            aria-disabled={!equipamento.isActive}
             onPress={handleActivateButton}>
             <Text style={styles.activeText}>Ativar</Text>
           </Pressable>
@@ -217,18 +238,23 @@ function EquipmentInfo({navigation, route}) {
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
           {equipment.files && equipment.files.length > 0 ? (
-            <Carousel files={equipment.files ?? []} />
+            <Carousel
+              width={290}
+              files={equipment.files ?? []}
+              index={indexImage}
+              setIndex={setIndexImage}
+            />
           ) : (
-            <View>
+            <View style={styles.fileIconContainer}>
               <Icon style={styles.fileIcon} name="file-image" />
             </View>
           )}
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable>
+          <Pressable onPress={openImagePicker}>
             <Icon style={styles.addIcon} name="plus-circle" />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={removeImage}>
             <Icon style={styles.removeIcon} name="minus-circle" />
           </Pressable>
         </View>
@@ -250,7 +276,7 @@ function EquipmentInfo({navigation, route}) {
               styles.inputField,
             ]}
             onBlur={() => {
-              if (equipamento.name.trim() === '') {
+              if (!equipmentValidator.validateEmptyString(equipamento.name)) {
                 setIsNameValid(false);
               }
             }}
@@ -262,7 +288,6 @@ function EquipmentInfo({navigation, route}) {
             placeholder="Domínio do equipamento"
             placeholderTextColor={'#808080'}
             maxLength={40}
-            aria-disabled
             onChangeText={text => {
               setIsDominioValid(true);
               setEquipamento({...equipamento, domain: text});
@@ -273,7 +298,7 @@ function EquipmentInfo({navigation, route}) {
               styles.inputField,
             ]}
             onBlur={() => {
-              if (equipamento.domain.trim() === '') {
+              if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
                 setIsDominioValid(false);
               }
             }}
@@ -295,7 +320,7 @@ function EquipmentInfo({navigation, route}) {
               styles.inputField,
             ]}
             onBlur={() => {
-              if (equipamento.serial.trim() === '') {
+              if (!equipmentValidator.validateEmptyString(equipamento.serial)) {
                 setIsSerialValid(false);
               }
             }}
@@ -318,14 +343,8 @@ function EquipmentInfo({navigation, route}) {
               styles.latitudeEquipmentInput,
             ]}
             onBlur={() => {
-              const latitudeValue = parseFloat(equipamento.latitude);
-              if (
-                isNaN(latitudeValue) ||
-                latitudeValue < -90 ||
-                latitudeValue > 90
-              ) {
+              if (!equipmentValidator.validateLatitude(equipamento.latitude))
                 setIsLatitudeValid(false);
-              }
             }}
           />
           <TextInput
@@ -343,14 +362,8 @@ function EquipmentInfo({navigation, route}) {
               styles.longitudeEquipmentInput,
             ]}
             onBlur={() => {
-              const longitudeValue = parseFloat(equipamento.longitude);
-              if (
-                isNaN(longitudeValue) ||
-                longitudeValue < -180 ||
-                longitudeValue > 180
-              ) {
+              if (!equipmentValidator.validateLongitude(equipamento.longitude))
                 setIsLongitudeValid(false);
-              }
             }}
           />
         </View>
@@ -418,6 +431,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     color: '#fff',
+  },
+  fileIconContainer: {
+    marginHorizontal: 'auto',
+    paddingVertical: 95,
   },
   addIcon: {
     fontSize: 38,

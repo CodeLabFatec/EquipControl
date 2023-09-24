@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useRef, useCallback, useState} from 'react';
 
 import {Files} from '../../helpers/models';
 import {FlatList} from 'react-native';
@@ -6,23 +6,30 @@ import Slide from './carousel-slide';
 
 interface CarouselProps {
   files: Files[];
+  width: number;
+  index?: number;
+  setIndex?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function Carousel({files}: CarouselProps) {
-  const [index, setIndex] = useState(0);
-  const indexRef = useRef(index);
-  indexRef.current = index;
+function Carousel({files, width, index, setIndex}: CarouselProps) {
+  const [indexImage, setIndexImage] = useState(0);
+  const indexRef = useRef(index ?? indexImage);
+  indexRef.current = index ?? indexImage;
   const onScroll = useCallback(event => {
     const slideSize = event.nativeEvent.layoutMeasurement.width;
     const index = event.nativeEvent.contentOffset.x / slideSize;
-    const roundIndex = Math.round(index);
+    const roundIndex = Math.round(index ?? indexImage);
 
-    const distance = Math.abs(roundIndex - index);
+    const distance = Math.abs(roundIndex - (index ?? indexImage));
 
     const isNoMansLand = 0.4 < distance;
 
     if (roundIndex !== indexRef.current && !isNoMansLand) {
-      setIndex(roundIndex);
+      if (setIndex) {
+        setIndex(roundIndex);
+      } else {
+        setIndexImage(roundIndex);
+      }
     }
   }, []);
 
@@ -36,8 +43,8 @@ function Carousel({files}: CarouselProps) {
     getItemLayout: useCallback(
       (_, index) => ({
         index,
-        length: 300,
-        offset: index * 300,
+        length: width,
+        offset: index * width,
       }),
       [],
     ),
@@ -47,7 +54,9 @@ function Carousel({files}: CarouselProps) {
     <FlatList
       data={files}
       style={{flex: 1}}
-      renderItem={Slide}
+      renderItem={item => (
+        <Slide item={item.item} index={item.index} width={width} />
+      )}
       pagingEnabled
       horizontal
       showsHorizontalScrollIndicator={false}

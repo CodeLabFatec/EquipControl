@@ -1,16 +1,48 @@
 import {Equipment} from '../models';
 
-function validateEquipment(equipment: Equipment): string | null {
-  if (!equipment.name || equipment.name === '' || equipment.name === ' ')
-    return 'name' ;
-  if (!equipment.domain || equipment.domain === '' || equipment.domain === ' ')
-    return 'domain';
-  if (!equipment.serial || equipment.serial === '' || equipment.serial === ' ')
-    return 'serial';
-  if (!equipment.longitude || equipment.longitude === '0') return 'longitude';
-  if (!equipment.latitude || equipment.latitude === '0') return 'latitude';
+class EquipmentValidator {
+  public validateEquipment(equipment: Equipment): string | null {
+    let validation = null;
+    if (!this.validateEmptyString(equipment.name)) validation = 'name';
+    if (!this.validateEmptyString(equipment.domain))
+      validation = validation ? validation + 'domain' : 'domain';
+    if (!this.validateEmptyString(equipment.serial))
+      validation = validation ? validation + 'serial' : 'serial';
+    if (!this.validateLongitude(equipment.longitude))
+      validation = validation ? validation + 'longitude' : 'longitude';
+    if (!this.validateLatitude(equipment.latitude))
+      validation = validation ? validation + 'latitude' : 'latitude';
 
-  return null;
+    return validation;
+  }
+
+  public validateEmptyString(field: string): boolean {
+    return field != null && field.trim() !== '';
+  }
+
+  public validateLongitude(longitude: string): boolean {
+    const longitudeValue = parseFloat(longitude);
+    const checkSplit = longitude.split('.');
+
+    return !(
+      isNaN(longitudeValue) ||
+      longitudeValue < -180 ||
+      longitudeValue > 180 ||
+      (checkSplit && checkSplit.length > 2)
+    );
+  }
+
+  public validateLatitude(latitude: string): boolean {
+    const latitudeValue = parseFloat(latitude);
+    const checkSplit = latitude.split('.');
+
+    return !(
+      isNaN(latitudeValue) ||
+      latitudeValue < -90 ||
+      latitudeValue > 90 ||
+      (checkSplit && checkSplit.length > 2)
+    );
+  }
 }
 
 const defaultEquipment: Equipment = {
@@ -22,6 +54,9 @@ const defaultEquipment: Equipment = {
   notes: undefined,
   serial: '',
   _id: '',
+  isActive: true,
 };
 
-export {validateEquipment, defaultEquipment};
+const equipmentValidator = new EquipmentValidator();
+
+export {equipmentValidator, defaultEquipment};

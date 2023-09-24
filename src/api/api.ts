@@ -13,7 +13,7 @@ const endpoints = {
   GET_EQUIPMENT: '/equipment/get',
 
   //POST
-  POST_EQUIPMENT: '/equipment',
+  POST_EQUIPMENT: '/equipment/create',
 
   //PATCH
   PATCH_EQUIPMENT_STATUS: '/equipment/updateStatus/',
