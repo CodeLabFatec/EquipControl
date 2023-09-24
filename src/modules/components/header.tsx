@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 65,
     borderBottomWidth: 2,
-    borderBottomColor: '#E2D7C1',
+    borderBottomColor: '#77A490',
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
   },

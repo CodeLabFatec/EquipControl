@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, Image, StyleSheet, Pressable} from 'react-native';
+import {View, TextInput, StyleSheet, Pressable} from 'react-native';
 import navigate from '../../RootNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 

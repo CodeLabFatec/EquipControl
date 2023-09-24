@@ -1,6 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
-
-const SERVER_URL = 'http://192.168.5.206:3001';
+import {SERVER_URL} from './config';
 
 const api: AxiosInstance = axios.create({
   baseURL: SERVER_URL,
@@ -10,8 +9,15 @@ const api: AxiosInstance = axios.create({
 });
 
 const endpoints = {
-  POST_EQUIPMENT: '/equipment',
-  GET_EQUIPMENT: '/equipment',
+  //GET
+  GET_EQUIPMENT: '/equipment/get',
+
+  //POST
+  POST_EQUIPMENT: '/equipment/create',
+
+  //PATCH
+  PATCH_EQUIPMENT_STATUS: '/equipment/updateStatus/',
+  PATCH_EQUIPMENT_UPDATE: '/equipment/update/',
 };
 
 export {api, endpoints};
