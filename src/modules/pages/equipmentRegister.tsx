@@ -13,13 +13,21 @@ import {
 import {equipmentController} from '../../api';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
-import {defaultEquipment} from '../../helpers/validators/equipmentValidator';
+import {
+  defaultEquipment,
+  equipmentValidator,
+} from '../../helpers/validators/EquipmentValidator';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentRegister({navigation}) {
   const [equipamento, setEquipamento] = React.useState(defaultEquipment);
   const [indexImage, setIndexImage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isNameValid, setIsNameValid] = React.useState(true);
+  const [isDominioValid, setIsDominioValid] = React.useState(true);
+  const [isSerialValid, setIsSerialValid] = React.useState(true);
+  const [isLongitudeValid, setIsLongitudeValid] = React.useState(true);
+  const [isLatitudeValid, setIsLatitudeValid] = React.useState(true);
 
   const openImagePicker = async () => {
     try {
@@ -42,7 +50,36 @@ function EquipmentRegister({navigation}) {
   };
 
   const handleRegister = () => {
-    //validar
+    const validaSubmit = equipmentValidator.validateEquipment(equipamento);
+
+    if (validaSubmit) {
+      if (validaSubmit.includes('name')) {
+        setIsNameValid(false);
+      }
+      if (validaSubmit.includes('domain')) {
+        setIsDominioValid(false);
+      }
+      if (validaSubmit.includes('serial')) {
+        setIsSerialValid(false);
+      }
+      if (validaSubmit.includes('longitude')) {
+        setIsLongitudeValid(false);
+      }
+      if (validaSubmit.includes('latitude')) {
+        setIsLatitudeValid(false);
+      }
+      return;
+    }
+
+    if (
+      !isDominioValid ||
+      !isLatitudeValid ||
+      !isLatitudeValid ||
+      !isLongitudeValid ||
+      !isNameValid ||
+      !isSerialValid
+    )
+      return;
 
     Alert.alert('Cadastrar', 'Deseja realmente cadastrar este equipamento?', [
       {
@@ -122,9 +159,20 @@ function EquipmentRegister({navigation}) {
             placeholder="Nome do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento, name: text})}
+            onChangeText={text => {
+              setIsNameValid(true);
+              setEquipamento({...equipamento, name: text});
+            }}
             value={equipamento.name}
-            style={styles.dataEquipmentInput}
+            style={[
+              isNameValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.name)) {
+                setIsNameValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Domínio:</Text>
@@ -133,11 +181,20 @@ function EquipmentRegister({navigation}) {
             placeholder="Domínio do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, domain: text})
-            }
+            onChangeText={text => {
+              setIsDominioValid(true);
+              setEquipamento({...equipamento, domain: text});
+            }}
             value={equipamento.domain}
-            style={styles.dataEquipmentInput}
+            style={[
+              isDominioValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
+                setIsDominioValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Serial:</Text>
@@ -146,11 +203,20 @@ function EquipmentRegister({navigation}) {
             placeholder="Serial"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, serial: text})
-            }
+            onChangeText={text => {
+              setIsSerialValid(true);
+              setEquipamento({...equipamento, serial: text});
+            }}
             value={equipamento.serial}
-            style={styles.dataEquipmentInput}
+            style={[
+              isSerialValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.serial)) {
+                setIsSerialValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Latitude e Longitude:</Text>
@@ -159,23 +225,39 @@ function EquipmentRegister({navigation}) {
             placeholder="Latitude"
             keyboardType="number-pad"
             placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, latitude: text})
-            }
+            maxLength={10}
+            onChangeText={text => {
+              setIsLatitudeValid(true);
+              setEquipamento({...equipamento, latitude: text});
+            }}
             value={equipamento.latitude}
-            style={styles.latitudeEquipmentInput}
+            style={[
+              isLatitudeValid ? styles.isValid : styles.isRequired,
+              styles.latitudeEquipmentInput,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateLatitude(equipamento.latitude))
+                setIsLatitudeValid(false);
+            }}
           />
           <TextInput
             placeholder="Longitude"
             keyboardType="number-pad"
             placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, longitude: text})
-            }
+            maxLength={12}
+            onChangeText={text => {
+              setIsLongitudeValid(true);
+              setEquipamento({...equipamento, longitude: text});
+            }}
             value={equipamento.longitude}
-            style={styles.longitudeEquipmentInput}
+            style={[
+              isLongitudeValid ? styles.isValid : styles.isRequired,
+              styles.longitudeEquipmentInput,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateLongitude(equipamento.longitude))
+                setIsLongitudeValid(false);
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Observações:</Text>
@@ -272,6 +354,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
+  inputField: {
+    backgroundColor: '#363636',
+    fontSize: 16,
+    color: '#E2D7C1',
+    padding: 6,
+    width: '96%',
+  },
+
   dataEquipmentInput: {
     backgroundColor: '#363636',
     borderColor: '#E2D7C1',
@@ -297,21 +387,14 @@ const styles = StyleSheet.create({
 
   longitudeEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
     width: '46%',
     marginLeft: '4%',
   },
-
   latitudeEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
@@ -377,6 +460,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  isRequired: {
+    borderColor: 'red',
+    borderWidth: 0.5,
+    borderRadius: 5,
+  },
+  isValid: {
+    borderColor: '#E2D7C1',
+    borderWidth: 0.5,
+    borderRadius: 5,
   },
 });
 

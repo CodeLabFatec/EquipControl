@@ -14,6 +14,7 @@ import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {equipmentController} from '../../api';
+import {equipmentValidator} from '../../helpers/validators';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentInfo({navigation, route}) {
@@ -27,72 +28,122 @@ function EquipmentInfo({navigation, route}) {
   const [equipamento, setEquipamento] = React.useState(equipment);
   const [loading, setLoading] = React.useState(false);
   const [indexImage, setIndexImage] = useState(0);
+  const [isNameValid, setIsNameValid] = React.useState(true);
+  const [isDominioValid, setIsDominioValid] = React.useState(true);
+  const [isSerialValid, setIsSerialValid] = React.useState(true);
+  const [isLongitudeValid, setIsLongitudeValid] = React.useState(true);
+  const [isLatitudeValid, setIsLatitudeValid] = React.useState(true);
 
-  const handleActivateButton = () =>
-    Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
-      {
-        text: 'Não',
-        style: 'cancel',
-      },
-      {
-        text: 'Sim',
-        onPress: async () => {
-          setLoading(true);
-          const result: any = await equipmentController.updateStatus(
-            equipamento._id,
-            true,
-          );
-          setLoading(false);
-
-          Alert.alert(
-            result.message ? 'Erro' : 'Sucesso',
-            result.message
-              ? result.message
-              : 'Sucesso ao ativar este equipamento.',
-            [
-              {
-                text: 'Ok',
-                style: 'default',
-              },
-            ],
-          );
+  const handleActivateButton = () => {
+    if (!equipamento.isActive) {
+      Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
+        {
+          text: 'Não',
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: 'Sim',
+          onPress: async () => {
+            setLoading(true);
+            const result: any = await equipmentController.updateStatus(
+              equipamento._id,
+              true,
+            );
+            setLoading(false);
 
-  const handleDisableButton = () =>
-    Alert.alert('Desativar', 'Deseja desativar este equipamento?', [
-      {
-        text: 'Não',
-        style: 'cancel',
-      },
-      {
-        text: 'Sim',
-        onPress: async () => {
-          setLoading(true);
-          const result: any = await equipmentController.updateStatus(
-            equipamento._id,
-            false,
-          );
-          setLoading(false);
-
-          Alert.alert(
-            result.message ? 'Erro' : 'Sucesso',
-            result.message
-              ? result.message
-              : 'Sucesso ao desativar este equipamento.',
-            [
-              {
-                text: 'Ok',
-                style: 'default',
-              },
-            ],
-          );
+            if (!result.message) {
+              setEquipamento({...equipamento, isActive: true});
+            }
+            Alert.alert(
+              result.message ? 'Erro' : 'Sucesso',
+              result.message
+                ? result.message
+                : 'Sucesso ao ativar este equipamento.',
+              [
+                {
+                  text: 'Ok',
+                  style: 'default',
+                },
+              ],
+            );
+          },
         },
-      },
-    ]);
+      ]);
+    }
+  };
+
+  const handleDisableButton = () => {
+    if (equipamento.isActive) {
+      Alert.alert('Desativar', 'Deseja desativar este equipamento?', [
+        {
+          text: 'Não',
+          style: 'cancel',
+        },
+        {
+          text: 'Sim',
+          onPress: async () => {
+            setLoading(true);
+            const result: any = await equipmentController.updateStatus(
+              equipamento._id,
+              false,
+            );
+            setLoading(false);
+
+            if (!result.message) {
+              setEquipamento({...equipamento, isActive: false});
+            }
+
+            Alert.alert(
+              result.message ? 'Erro' : 'Sucesso',
+              result.message
+                ? result.message
+                : 'Sucesso ao desativar este equipamento.',
+              [
+                {
+                  text: 'Ok',
+                  style: 'default',
+                },
+              ],
+            );
+          },
+        },
+      ]);
+    }
+  };
 
   const handleUpdateEquipamento = () => {
+    const validaSubmit = equipmentValidator.validateEquipment(equipamento);
+
+    if (validaSubmit) {
+      if (validaSubmit.includes('name')) {
+        setIsNameValid(false);
+      }
+      if (validaSubmit.includes('domain')) {
+        setIsDominioValid(false);
+      }
+      if (validaSubmit.includes('serial')) {
+        setIsSerialValid(false);
+      }
+      if (validaSubmit.includes('longitude')) {
+        setIsLongitudeValid(false);
+      }
+      if (validaSubmit.includes('latitude')) {
+        setIsLatitudeValid(false);
+      }
+
+      return;
+    }
+
+    if (
+      !isDominioValid ||
+      !isLatitudeValid ||
+      !isLatitudeValid ||
+      !isLongitudeValid ||
+      !isNameValid ||
+      !isSerialValid
+    )
+      return;
+
     Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
       {
         text: 'Não',
@@ -156,18 +207,33 @@ function EquipmentInfo({navigation, route}) {
         </View>
       </Modal>
       <View style={styles.buttonsContainer}>
-        <Pressable
-          style={styles.activeButton}
-          disabled={loading}
-          onPress={handleActivateButton}>
-          <Text style={styles.activeText}>Ativar</Text>
-        </Pressable>
-        <Pressable
-          style={styles.disableButton}
-          disabled={loading}
-          onPress={handleDisableButton}>
-          <Text style={styles.disableText}>Desativar</Text>
-        </Pressable>
+        {equipamento.isActive ? (
+          <Pressable
+            style={[
+              styles.isActiveButton,
+              {
+                backgroundColor: equipamento.isActive ? 'gray' : '#77A490',
+              },
+            ]}
+            disabled={loading}
+            aria-disabled={equipamento.isActive}
+            onPress={handleDisableButton}>
+            <Text style={styles.disableText}>Desativar</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={[
+              styles.isActiveButton,
+              {
+                backgroundColor: equipamento.isActive ? 'gray' : '#77A490',
+              },
+            ]}
+            disabled={loading}
+            aria-disabled={!equipamento.isActive}
+            onPress={handleActivateButton}>
+            <Text style={styles.activeText}>Ativar</Text>
+          </Pressable>
+        )}
       </View>
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
@@ -198,63 +264,107 @@ function EquipmentInfo({navigation, route}) {
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Nome do equipamento"
-            placeholderTextColor={'#E2D7C1'}
+            placeholderTextColor={'#808080'}
             maxLength={40}
-            onChangeText={text => setEquipamento({...equipamento, name: text})}
+            onChangeText={text => {
+              setIsNameValid(true);
+              setEquipamento({...equipamento, name: text});
+            }}
             value={equipamento.name}
-            style={styles.serialEquipmentInput}
+            style={[
+              isNameValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.name)) {
+                setIsNameValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Domínio:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Domínio do equipamento"
-            placeholderTextColor={'#E2D7C1'}
+            placeholderTextColor={'#808080'}
             maxLength={40}
-            aria-disabled
-            onChangeText={text =>
-              setEquipamento({...equipamento, domain: text})
-            }
+            onChangeText={text => {
+              setIsDominioValid(true);
+              setEquipamento({...equipamento, domain: text});
+            }}
             value={equipamento.domain}
-            style={styles.serialEquipmentInput}
+            style={[
+              isDominioValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
+                setIsDominioValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Serial:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Serial"
-            placeholderTextColor={'#E2D7C1'}
+            placeholderTextColor={'#808080'}
             maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, serial: text})
-            }
+            onChangeText={text => {
+              setIsSerialValid(true);
+              setEquipamento({...equipamento, serial: text});
+            }}
             value={equipamento.serial}
-            style={styles.serialEquipmentInput}
+            style={[
+              isSerialValid ? styles.isValid : styles.isRequired,
+              styles.inputField,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateEmptyString(equipamento.serial)) {
+                setIsSerialValid(false);
+              }
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Latitude e Longitude:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Latitude"
-            keyboardType="number-pad"
-            placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, latitude: text})
-            }
+            keyboardType="numeric"
+            placeholderTextColor={'#808080'}
+            maxLength={10}
+            onChangeText={text => {
+              setIsLatitudeValid(true);
+              setEquipamento({...equipamento, latitude: text});
+            }}
             value={equipamento.latitude}
-            style={styles.latitudeEquipmentInput}
+            style={[
+              isLatitudeValid ? styles.isValid : styles.isRequired,
+              styles.latitudeEquipmentInput,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateLatitude(equipamento.latitude))
+                setIsLatitudeValid(false);
+            }}
           />
           <TextInput
             placeholder="Longitude"
             keyboardType="numeric"
-            placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text =>
-              setEquipamento({...equipamento, longitude: text})
-            }
+            placeholderTextColor={'#808080'}
+            maxLength={12}
+            onChangeText={text => {
+              setIsLongitudeValid(true);
+              setEquipamento({...equipamento, longitude: text});
+            }}
             value={equipamento.longitude}
-            style={styles.longitudeEquipmentInput}
+            style={[
+              isLongitudeValid ? styles.isValid : styles.isRequired,
+              styles.longitudeEquipmentInput,
+            ]}
+            onBlur={() => {
+              if (!equipmentValidator.validateLongitude(equipamento.longitude))
+                setIsLongitudeValid(false);
+            }}
           />
         </View>
         <Text style={styles.inputLabel}>Observações:</Text>
@@ -262,7 +372,7 @@ function EquipmentInfo({navigation, route}) {
           <TextInput
             placeholder="Observação"
             scrollEnabled={true}
-            placeholderTextColor={'#E2D7C1'}
+            placeholderTextColor={'#808080'}
             multiline={true}
             numberOfLines={7}
             onChangeText={text => setEquipamento({...equipamento, notes: text})}
@@ -292,6 +402,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     marginTop: 10,
+    marginBottom: 5,
     justifyContent: 'center',
   },
   equipment: {
@@ -310,6 +421,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   inputLabel: {
+    color: '#EEEEEE',
     paddingLeft: 7,
   },
   equipmentName: {
@@ -342,13 +454,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     paddingVertical: 5,
-    marginTop: 5,
+    marginBottom: 4,
   },
   tipeEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
@@ -356,20 +465,14 @@ const styles = StyleSheet.create({
   },
   idEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
     width: '32%',
     marginLeft: '4%',
   },
-  serialEquipmentInput: {
+  inputField: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
@@ -377,10 +480,10 @@ const styles = StyleSheet.create({
   },
   observationEquipmentInput: {
     backgroundColor: '#363636',
+    fontSize: 16,
     borderColor: '#E2D7C1',
     borderWidth: 0.5,
     borderRadius: 5,
-    fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
     width: '96%',
@@ -388,9 +491,6 @@ const styles = StyleSheet.create({
   },
   longitudeEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
@@ -399,9 +499,6 @@ const styles = StyleSheet.create({
   },
   latitudeEquipmentInput: {
     backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
     fontSize: 16,
     color: '#E2D7C1',
     padding: 6,
@@ -414,21 +511,11 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 5,
   },
-  activeButton: {
-    backgroundColor: '#77A490',
-    width: '46%',
+  isActiveButton: {
+    width: '96%',
     height: 50,
     marginTop: 5,
     borderRadius: 10,
-    justifyContent: 'center',
-  },
-  disableButton: {
-    backgroundColor: 'gray',
-    width: '46%',
-    height: 50,
-    marginTop: 5,
-    borderRadius: 10,
-    marginLeft: '4%',
     justifyContent: 'center',
   },
   activeText: {
@@ -459,6 +546,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  isRequired: {
+    borderColor: 'red',
+    borderWidth: 0.5,
+    borderRadius: 5,
+  },
+  isValid: {
+    borderColor: '#E2D7C1',
+    borderWidth: 0.5,
+    borderRadius: 5,
   },
 });
 

@@ -1,4 +1,4 @@
-import { validateEquipment } from './equipmentValidator';
-import { defaultEquipment } from './equipmentValidator';
+import {equipmentValidator} from './EquipmentValidator';
+import {defaultEquipment} from './EquipmentValidator';
 
-export {validateEquipment, defaultEquipment};
+export {equipmentValidator, defaultEquipment};
