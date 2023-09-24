@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,26 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {equipmentController} from '../../api';
+import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
+
+  if (!equipment) {
+    navigation.navigate('Home');
+    return;
+  }
+
   const [equipamento, setEquipamento] = React.useState(equipment);
+  const [loading, setLoading] = React.useState(false);
+  const [indexImage, setIndexImage] = useState(0);
 
   const handleActivateButton = () =>
     Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
@@ -25,9 +36,26 @@ function EquipmentInfo({navigation, route}) {
       },
       {
         text: 'Sim',
-        onPress: () => {
-          setEquipamento({...equipamento, state: true});
-          equipmentController.update(equipamento);
+        onPress: async () => {
+          setLoading(true);
+          const result: any = await equipmentController.updateStatus(
+            equipamento._id,
+            true,
+          );
+          setLoading(false);
+
+          Alert.alert(
+            result.message ? 'Erro' : 'Sucesso',
+            result.message
+              ? result.message
+              : 'Sucesso ao ativar este equipamento.',
+            [
+              {
+                text: 'Ok',
+                style: 'default',
+              },
+            ],
+          );
         },
       },
     ]);
@@ -40,9 +68,26 @@ function EquipmentInfo({navigation, route}) {
       },
       {
         text: 'Sim',
-        onPress: () => {
-          setEquipamento({...equipamento, state: false});
-          equipmentController.update(equipamento);
+        onPress: async () => {
+          setLoading(true);
+          const result: any = await equipmentController.updateStatus(
+            equipamento._id,
+            false,
+          );
+          setLoading(false);
+
+          Alert.alert(
+            result.message ? 'Erro' : 'Sucesso',
+            result.message
+              ? result.message
+              : 'Sucesso ao desativar este equipamento.',
+            [
+              {
+                text: 'Ok',
+                style: 'default',
+              },
+            ],
+          );
         },
       },
     ]);
@@ -55,49 +100,95 @@ function EquipmentInfo({navigation, route}) {
       },
       {
         text: 'Sim',
-        onPress: () => {
-          equipmentController.update(equipamento);
-          Alert.alert('Sucesso', 'Sucesso ao atualizar este equipamento.', [
-            {
-              text: 'Ok',
-              style: 'default',
-            },
-          ]);
+        onPress: async () => {
+          setLoading(true);
+          const result: any = await equipmentController.update(
+            equipamento._id,
+            equipamento,
+          );
+          setLoading(false);
+
+          Alert.alert(
+            result.message ? 'Erro' : 'Sucesso',
+            result.message
+              ? result.message
+              : 'Sucesso ao atualizar este equipamento.',
+            [
+              {
+                text: 'Ok',
+                style: 'default',
+                onPress: () => {
+                  if (!result.message) navigation.navigate('Home');
+                },
+              },
+            ],
+          );
         },
       },
     ]);
   };
 
-  if (!equipment) {
-    navigation.navigate('Home');
-    return;
-  }
+  const openImagePicker = async () => {
+    try {
+      const hasPermissionReadImages = await requestReadImages();
+
+      if (hasPermissionReadImages) {
+        await updateEquipamentoImages(equipamento, setEquipamento);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeImage = () => {
+    const imagensAtualizadas = equipamento.files;
+    if (imagensAtualizadas) {
+      imagensAtualizadas.splice(indexImage, 1);
+      setEquipamento({...equipamento, files: imagensAtualizadas});
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
+      <Modal transparent={true} animationType="fade" visible={loading}>
+        <View style={styles.modalBackground}>
+          <ActivityIndicator size="large" color="#77A490" />
+        </View>
+      </Modal>
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.activeButton} onPress={handleActivateButton}>
+        <Pressable
+          style={styles.activeButton}
+          disabled={loading}
+          onPress={handleActivateButton}>
           <Text style={styles.activeText}>Ativar</Text>
         </Pressable>
-        <Pressable style={styles.disableButton} onPress={handleDisableButton}>
+        <Pressable
+          style={styles.disableButton}
+          disabled={loading}
+          onPress={handleDisableButton}>
           <Text style={styles.disableText}>Desativar</Text>
         </Pressable>
       </View>
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
           {equipment.files && equipment.files.length > 0 ? (
-            <Carousel files={equipment.files ?? []} />
+            <Carousel
+              width={290}
+              files={equipment.files ?? []}
+              index={indexImage}
+              setIndex={setIndexImage}
+            />
           ) : (
-            <View>
+            <View style={styles.fileIconContainer}>
               <Icon style={styles.fileIcon} name="file-image" />
             </View>
           )}
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable>
+          <Pressable onPress={openImagePicker}>
             <Icon style={styles.addIcon} name="plus-circle" />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={removeImage}>
             <Icon style={styles.removeIcon} name="minus-circle" />
           </Pressable>
         </View>
@@ -124,7 +215,7 @@ function EquipmentInfo({navigation, route}) {
             onChangeText={text =>
               setEquipamento({...equipamento, domain: text})
             }
-            value={equipamento._id}
+            value={equipamento.domain}
             style={styles.serialEquipmentInput}
           />
         </View>
@@ -145,13 +236,13 @@ function EquipmentInfo({navigation, route}) {
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Latitude"
-            keyboardType="numeric"
+            keyboardType="number-pad"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
             onChangeText={text =>
-              setEquipamento({...equipamento, latitude: Number(text)})
+              setEquipamento({...equipamento, latitude: text})
             }
-            value={equipamento.latitude + ''}
+            value={equipamento.latitude}
             style={styles.latitudeEquipmentInput}
           />
           <TextInput
@@ -160,9 +251,9 @@ function EquipmentInfo({navigation, route}) {
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
             onChangeText={text =>
-              setEquipamento({...equipamento, longitude: Number(text)})
+              setEquipamento({...equipamento, longitude: text})
             }
-            value={equipamento.longitude + ''}
+            value={equipamento.longitude}
             style={styles.longitudeEquipmentInput}
           />
         </View>
@@ -183,6 +274,7 @@ function EquipmentInfo({navigation, route}) {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.confirmButton}
+          disabled={loading}
           onPress={handleUpdateEquipamento}>
           <Text style={styles.confirmText}>Confirmar</Text>
         </Pressable>
@@ -227,6 +319,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     color: '#fff',
+  },
+  fileIconContainer: {
+    marginHorizontal: 'auto',
+    paddingVertical: 95,
   },
   addIcon: {
     fontSize: 38,
@@ -357,6 +453,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     color: '#EEEEEE',
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

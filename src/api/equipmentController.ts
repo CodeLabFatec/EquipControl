@@ -1,56 +1,62 @@
-import {Equipment, Files} from '@/helpers/models';
+import {Equipment} from '@/helpers/models';
 import {api, endpoints} from './api';
-import {file1, file2} from './files';
 
 class EquipmentController {
-  private array: Equipment[] = [];
-
-  public getEquipment = async (): Promise<Equipment | undefined> => {
-    const result = await api.get(endpoints.GET_EQUIPMENT + '');
-    if (!result) return undefined;
-
-    return result as unknown as Equipment;
-  };
-
-  public postEquipment = async (data: Equipment) => {
-    const result = await api.post(endpoints.POST_EQUIPMENT, data);
-
-    return result;
-  };
-
-  public update = (equipment: Equipment) => {
-    const eqArray = this.array.find(r => r._id === equipment._id);
-
-    if (eqArray) {
-      const index = this.array.indexOf(eqArray);
-      this.array[index] = equipment;
-      console.log(`equipamento ${index} atualizado`);
+  public list = async (): Promise<Equipment[]> => {
+    try {
+      return (await api.get(endpoints.GET_EQUIPMENT)).data.equipments;
+    } catch (e) {
+      return [];
     }
   };
 
-  public list = () => {
-    console.log('buscando lista');
-    if (this.array.length == 0) {
-      for (let i = 0; i < 20; i++) {
-        const equipment: Equipment = {
-          domain: 'Poste',
-          state: true,
-          files: i % 2 == 0 ? [] : [file1, file2],
-          latitude: 1,
-          longitude: 1,
-          name: `Poste #${i}`,
-          notes: 'Poste de Teste',
-          serial: `${i * 9}-${i * 3}`,
-          _id: i + '',
-        };
+  public post = async (data: Equipment) => {
+    try {
+      const {_id, createdAt, updatedAt, ...eq} = data;
+      const result = (await api.post(endpoints.POST_EQUIPMENT, eq)).data;
 
-        this.array.push(equipment);
-      }
-      console.log('nova lista');
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.message);
     }
-
-    return this.array;
   };
+
+  public updateStatus = async (equipmentId: string, status: boolean) => {
+    try {
+      const result = (
+        await api.patch(endpoints.PATCH_EQUIPMENT_STATUS + equipmentId, {
+          isActive: status,
+        })
+      ).data;
+
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.message);
+    }
+  };
+
+  public update = async (equipmentId: string, equipment: Equipment) => {
+    const {_id, createdAt, updatedAt, ...eq} = equipment;
+    try {
+      const result = (
+        await api.patch(endpoints.PATCH_EQUIPMENT_UPDATE + equipmentId, eq)
+      ).data;
+
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.message);
+    }
+  };
+
+  private handleErrors(message: string) {
+    let error = 'Erro de comunicação com o servidor.';
+    if (message.includes('404')) error = 'Equipamento não encontrado.';
+    if (message.includes('422')) error = 'Dados inválidos.';
+    if (message.includes('413'))
+      error = 'Arquivo(s) enviado(s) excederam o tamanho máximo permitido.';
+
+    return {message: error};
+  }
 }
 
 const equipmentController = new EquipmentController();

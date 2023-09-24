@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,59 +7,70 @@ import {
   TextInput,
   ScrollView,
   Alert,
-  Button,
-  Image
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
-import { equipmentController } from '../../api';
-import { Equipment } from '../../helpers/models';
+import {equipmentController} from '../../api';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
-import { defaultEquipment } from '../../helpers/validators/equipmentValidator';
-import ImagePicker from 'react-native-image-crop-picker';
+import {defaultEquipment} from '../../helpers/validators/equipmentValidator';
+import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
-function EquipmentRegister({ navigation }) {
+function EquipmentRegister({navigation}) {
   const [equipamento, setEquipamento] = React.useState(defaultEquipment);
+  const [indexImage, setIndexImage] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  const pickMultiple = async () => {
+  const openImagePicker = async () => {
     try {
-      const images = await ImagePicker.openPicker({
-        width: 150, // Defina a largura desejada para redimensionar a imagem
-        height: 150, // Defina a altura desejada para redimensionar a imagem
-        cropping: true,
-        multiple: true,
-        includeBase64: true,
-        mediaType: 'photo'
-      });
-      setSelectedImages(images);
+      const hasPermissionReadImages = await requestReadImages();
+
+      if (hasPermissionReadImages) {
+        await updateEquipamentoImages(equipamento, setEquipamento);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const removeImage = (index) => {
-    const imagensAtualizadas = [...selectedImages];
-    imagensAtualizadas.splice(index, 2); // Remove a imagem do array
-    setSelectedImages(imagensAtualizadas); // Atualiza o estado com o novo array
+  const removeImage = () => {
+    const imagensAtualizadas = equipamento.files;
+    if (imagensAtualizadas) {
+      imagensAtualizadas.splice(indexImage, 1);
+      setEquipamento({...equipamento, files: imagensAtualizadas});
+    }
   };
 
-  const handleUpdateEquipamento = () => {
-    Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
+  const handleRegister = () => {
+    //validar
+
+    Alert.alert('Cadastrar', 'Deseja realmente cadastrar este equipamento?', [
       {
         text: 'Não',
         style: 'cancel',
       },
       {
         text: 'Sim',
-        onPress: () => {
-          equipmentController.update(equipamento);
-          Alert.alert('Sucesso', 'Sucesso ao atualizar este equipamento.', [
-            {
-              text: 'Ok',
-              style: 'default',
-            },
-          ]);
+        onPress: async () => {
+          setLoading(true);
+          const result: any = await equipmentController.post(equipamento);
+          setLoading(false);
+
+          Alert.alert(
+            result.message ? 'Erro' : 'Sucesso',
+            result.message
+              ? result.message
+              : 'Sucesso ao cadastrar este equipamento.',
+            [
+              {
+                text: 'Ok',
+                style: 'default',
+                onPress: () => {
+                  if (!result.message) navigation.navigate('Home');
+                },
+              },
+            ],
+          );
         },
       },
     ]);
@@ -67,21 +78,41 @@ function EquipmentRegister({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      <Modal transparent={true} animationType="fade" visible={loading}>
+        <View style={styles.modalBackground}>
+          <ActivityIndicator size="large" color="#77A490" />
+        </View>
+      </Modal>
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
           {equipamento.files && equipamento.files.length > 0 ? (
-            <Carousel files={equipamento.files} />
+            <Carousel
+              width={290}
+              files={equipamento.files}
+              index={indexImage}
+              setIndex={setIndexImage}
+            />
           ) : (
-            selectedImages.map((image, index) => (
-                <Image resizeMode='contain' source={{ uri: image.path }} key={index} style={{width: '100%', height: '100%'}}/>
-            ))
+            <View style={styles.fileIconContainer}>
+              <Icon style={styles.fileIcon} name="file-image" />
+            </View>
           )}
         </View>
-        <View style={styles.buttonContainerImage}>
-          <View style={styles.buttonContainer}>
-            <Button title="Adicionar Imagens" onPress={pickMultiple} color='#77A490' />
-            <Button title="Remover Imagens" onPress={removeImage} color='#aa0000' />
-          </View>
+        <View style={styles.buttonContainer}>
+          <Pressable>
+            <Icon
+              style={styles.addIcon}
+              onPress={openImagePicker}
+              name="plus-circle"
+            />
+          </Pressable>
+          <Pressable>
+            <Icon
+              style={styles.removeIcon}
+              onPress={removeImage}
+              name="minus-circle"
+            />
+          </Pressable>
         </View>
       </View>
       <View style={styles.formContainer}>
@@ -91,9 +122,9 @@ function EquipmentRegister({ navigation }) {
             placeholder="Nome do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            onChangeText={text => setEquipamento({ ...equipamento, name: text })}
+            onChangeText={text => setEquipamento({...equipamento, name: text})}
             value={equipamento.name}
-            style={styles.serialEquipmentInput}
+            style={styles.dataEquipmentInput}
           />
         </View>
         <Text style={styles.inputLabel}>Domínio:</Text>
@@ -102,12 +133,11 @@ function EquipmentRegister({ navigation }) {
             placeholder="Domínio do equipamento"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
-            aria-disabled
             onChangeText={text =>
-              setEquipamento({ ...equipamento, domain: text })
+              setEquipamento({...equipamento, domain: text})
             }
-            value={equipamento._id}
-            style={styles.serialEquipmentInput}
+            value={equipamento.domain}
+            style={styles.dataEquipmentInput}
           />
         </View>
         <Text style={styles.inputLabel}>Serial:</Text>
@@ -117,34 +147,34 @@ function EquipmentRegister({ navigation }) {
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
             onChangeText={text =>
-              setEquipamento({ ...equipamento, serial: text })
+              setEquipamento({...equipamento, serial: text})
             }
             value={equipamento.serial}
-            style={styles.serialEquipmentInput}
+            style={styles.dataEquipmentInput}
           />
         </View>
         <Text style={styles.inputLabel}>Latitude e Longitude:</Text>
         <View style={styles.textContainer}>
           <TextInput
             placeholder="Latitude"
-            keyboardType="numeric"
+            keyboardType="number-pad"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
             onChangeText={text =>
-              setEquipamento({ ...equipamento, latitude: Number(text) })
+              setEquipamento({...equipamento, latitude: text})
             }
-            value={equipamento.latitude + ''}
+            value={equipamento.latitude}
             style={styles.latitudeEquipmentInput}
           />
           <TextInput
             placeholder="Longitude"
-            keyboardType="numeric"
+            keyboardType="number-pad"
             placeholderTextColor={'#E2D7C1'}
             maxLength={40}
             onChangeText={text =>
-              setEquipamento({ ...equipamento, longitude: Number(text) })
+              setEquipamento({...equipamento, longitude: text})
             }
-            value={equipamento.longitude + ''}
+            value={equipamento.longitude}
             style={styles.longitudeEquipmentInput}
           />
         </View>
@@ -156,16 +186,14 @@ function EquipmentRegister({ navigation }) {
             placeholderTextColor={'#E2D7C1'}
             multiline={true}
             numberOfLines={7}
-            onChangeText={text => setEquipamento({ ...equipamento, notes: text })}
+            onChangeText={text => setEquipamento({...equipamento, notes: text})}
             value={equipamento.notes}
             style={styles.observationEquipmentInput}
           />
         </View>
       </View>
       <View style={styles.buttonsContainer}>
-        <Pressable
-          style={styles.confirmButton}
-          onPress={handleUpdateEquipamento}>
+        <Pressable style={styles.confirmButton} onPress={handleRegister}>
           <Text style={styles.confirmText}>Cadastrar Equipamento</Text>
         </Pressable>
       </View>
@@ -177,16 +205,13 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 55,
   },
-
   imageContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     width: '100%',
     marginTop: 10,
     justifyContent: 'center',
-    alignItems: 'center',
   },
-
   equipment: {
     width: '80%',
     height: 220,
@@ -195,26 +220,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
   },
-
-  buttonContainerImage: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center', 
-    width: '100%',
-    padding: 10,
-  },
-
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center', 
-    gap: 20,
+    flexDirection: 'column',
+    width: '15%',
+    alignItems: 'flex-end',
+    paddingRight: 15,
   },
 
   inputLabel: {
     paddingLeft: 7,
+    color: '#fff',
   },
 
   equipmentName: {
@@ -225,6 +241,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     color: '#fff',
+  },
+
+  fileIconContainer: {
+    marginHorizontal: 'auto',
+    paddingVertical: 95,
   },
 
   addIcon: {
@@ -251,30 +272,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  tipeEquipmentInput: {
-    backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
-    fontSize: 16,
-    color: '#E2D7C1',
-    padding: 6,
-    width: '60%',
-  },
-
-  idEquipmentInput: {
-    backgroundColor: '#363636',
-    borderColor: '#E2D7C1',
-    borderWidth: 0.5,
-    borderRadius: 5,
-    fontSize: 16,
-    color: '#E2D7C1',
-    padding: 6,
-    width: '32%',
-    marginLeft: '4%',
-  },
-
-  serialEquipmentInput: {
+  dataEquipmentInput: {
     backgroundColor: '#363636',
     borderColor: '#E2D7C1',
     borderWidth: 0.5,
@@ -367,11 +365,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
   },
-  
+
   confirmText: {
     fontSize: 25,
     textAlign: 'center',
     color: '#EEEEEE',
+  },
+
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -13,7 +13,7 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
         <Text style={styles.serial}>Nº Série: {item.serial}</Text>
       </Pressable>
       {item.files && item.files.length > 0 ? (
-        <Carousel files={item.files ?? []} />
+        <Carousel width={165} files={item.files ?? []} />
       ) : (
         <View style={styles.fileIconContainer}>
           <Icon style={styles.fileIcon} name="file-image" />
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   fileIconContainer: {
     marginHorizontal: 'auto',
     paddingVertical: 65,
-  }
+  },
 });
 
 export default EquipmentComponent;
