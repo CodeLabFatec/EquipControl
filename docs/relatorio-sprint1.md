@@ -1,3 +1,4 @@
+
 <br id="topo">
  
 <h1 align="center">EquipControl - Primeira entrega</h1>
@@ -17,45 +18,38 @@
 
 ## 📌 Backlog
 
-| Atividade                                                                   | User story                                                                                                                                                                                           |
-| :-------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Construção da interface principal, com a listagem dos equipamentos e filtro | COMO um usuário EU QUERO ao acessar o aplicativo visualizar a listagem de equipamentos e poder utilizar um filtro PARA QUE seja possível visualizar os equipamentos que necessito                    |
-| Construção da interface de CADASTRO de Equipamentos                         | COMO um usuário EU QUERO acessar a página de cadastro de equipamentos PARA QUE seja possível inserir novos equipamentos no sistema                                                                   |
-| Construção dos componentes para CONSULTA e ATUALIZAÇÃO de Equipamentos      | COMO um usuário EU QUERO visualizar uma página com todos as informações de um equipamento PARA QUE seja possível consultar e editar os detalhes de um equipamento e também realizar manobras com ele |
-| Construção dos componentes fixos da tela, Header e Footer                   | COMO um usuário EU QUERO visualizar componentes fixos PARA QUE seja possível navegar entre as páginas do sistema e também para que eu possa me localizar                                             |
+| Atividade | User story |
+| :---- | :---- |
+|   Construção da interface principal, com a listagem dos equipamentos e filtro   |   COMO um usuário EU QUERO ao acessar o aplicativo visualizar a listagem de equipamentos e poder utilizar um filtro PARA QUE seja possível visualizar os equipamentos que necessito |
+|   Construção da interface de CADASTRO de Equipamentos   |   COMO um usuário EU QUERO acessar a página de cadastro de equipamentos PARA QUE seja possível inserir novos equipamentos no sistema |
+|   Construção dos componentes para CONSULTA e ATUALIZAÇÃO de Equipamentos     |   COMO um usuário EU QUERO visualizar uma página com todos as informações de um equipamento PARA QUE seja possível consultar e editar os detalhes de um equipamento e também realizar manobras com ele |
+|   Construção dos componentes fixos da tela, Header e Footer  |   COMO um usuário EU QUERO visualizar componentes fixos PARA QUE seja possível navegar entre as páginas do sistema e também para que eu possa me localizar |
 
 <span id="entrega">
  
 ## 👩‍💻 Entrega
-<p align="center">
+<p align="center"></p>
 
-- Realização de manobra (ativar/desativar) equipamento
 
-https://github.com/CodeLabFatec/EquipControl/assets/26208169/a84f254d-03a7-48b5-9590-b39511d655df
 
-- Cadastro de equipamento
+<br />
 
-[Cadastro de Equipamento](/docs/videos/cadastro-equipamento.mp4)
-
-- Consulta e atualização de equipamento
-
-[Consulta de Equipamento](/docs/videos/consulta-equipamento.mp4)
-
-</p>
 
 <span id="burndown">
 
-## 📉 Burndown
-
+## 📉  Burndown
 ![image](https://github.com/CodeLabFatec/EquipControl/assets/26208169/274d8b20-180a-4164-9553-f0c80265c704)
 
 <br>
 
-→ [Voltar ao topo](#topo)
 
+  → [Voltar ao topo](#topo)
+  
 <div align='center' height='70'>
   
 ![Logo Fatec](https://github.com/thaleskerber/Projeto-Integrador-4-Semestre/assets/26208169/c5407beb-d912-41da-afbb-13b054a55885)
 
 <h5 align="center"> Projeto Integrador - Faculdade de Tecnologia de São José dos Campos - Prof. Jessen Vidal </h5>
 </div>
+
+
