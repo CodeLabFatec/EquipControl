@@ -71,7 +71,21 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 ## :medal_sports: Entregas
 
 <h4> Entrega da Sprint 1 </h4>
-<p align="center"></p>
+<p align="center">
+
+- Realização de manobra (ativar/desativar) equipamento
+
+https://github.com/CodeLabFatec/EquipControl/assets/26208169/a84f254d-03a7-48b5-9590-b39511d655df
+
+- Cadastro de equipamento
+
+[Cadastro de Equipamento](/docs/videos/cadastro-equipamento.mp4)
+
+- Consulta e atualização de equipamento
+
+[Cadastro de Equipamento](/docs/videos/consulta-equipamento.mp4)
+    
+</p>
 
 <br />
 
