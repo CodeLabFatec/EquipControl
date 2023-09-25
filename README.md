@@ -70,6 +70,9 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 
 <h4> Entrega da Sprint 1 </h4>
 
+*Video Sprint Review 1* <br>
+https://youtu.be/UpCwCpW5Qag
+
 <p align="center">
 
 https://github.com/CodeLabFatec/EquipControl/assets/26208169/03a3142b-8254-4542-b60f-f1388bf04e57
