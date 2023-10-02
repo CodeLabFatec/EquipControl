@@ -9,6 +9,7 @@ import {navigationRef} from './RootNavigation';
 import {SafeAreaView, StatusBar, View, StyleSheet} from 'react-native';
 import Footer from './modules/components/footer';
 import EquipmentInfo from './modules/pages/equipmentInfo';
+import Login from './modules/pages/login';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -26,7 +27,7 @@ function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'light-content'} backgroundColor={'#111111'} />
       <NavigationContainer theme={MyTheme} ref={navigationRef}>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Home"
             navigationKey="Home"
@@ -44,6 +45,12 @@ function App() {
             navigationKey="InfoEquipment"
             component={EquipmentInfo}
             options={{header: Header}}
+          />
+          <Stack.Screen
+            name="Login"
+            navigationKey="Login"
+            component={Login}
+            options={{headerShown: false}}
           />
         </Stack.Navigator>
         <View style={styles.footer}>
