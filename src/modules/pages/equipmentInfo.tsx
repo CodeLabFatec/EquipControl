@@ -13,7 +13,7 @@ import {
 import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {equipmentController} from '../../api';
+import {equipmentController} from '../../services';
 import {equipmentValidator} from '../../helpers/validators';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 

@@ -10,13 +10,10 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import {equipmentController} from '../../api';
+import {equipmentController} from '../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
-import {
-  defaultEquipment,
-  equipmentValidator,
-} from '../../helpers/validators/EquipmentValidator';
+import {defaultEquipment, equipmentValidator} from '../../helpers/validators';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
 
 function EquipmentRegister({navigation}) {

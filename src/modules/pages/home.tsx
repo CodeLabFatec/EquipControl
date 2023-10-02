@@ -3,7 +3,7 @@ import {StyleSheet, FlatList, View} from 'react-native';
 
 import EquipmentComponent from '../components/equipment-item';
 import {Equipment} from '../../helpers/models';
-import {equipmentController} from '../../api';
+import {equipmentController} from '../../services';
 import SearchEquipment from '../components/search-equipment';
 import {useFocusEffect} from '@react-navigation/native';
 import {ActivityIndicator} from 'react-native';
