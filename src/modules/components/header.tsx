@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import {AuthContext} from '../../contexts';
 
 function Header() {
+  const {user} = useContext(AuthContext);
+
   return (
     <View style={styles.headerContainer}>
       {/* <Image
@@ -14,15 +17,17 @@ function Header() {
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
-      {/* <View style={styles.userBox}>
+      <View style={styles.userBox}>
         <Image
           source={{
-            uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
+            uri: user?.image
+              ? `data:${user.image.type};base64,${user.image.base64}`
+              : '',
           }}
           style={styles.headerUser}
         />
-        <Text style={styles.textUser}>Usuário</Text>
-      </View> */}
+        <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+      </View>
     </View>
   );
 }
@@ -39,11 +44,11 @@ const styles = StyleSheet.create({
   },
   headerTextsBigger: {
     fontSize: 30,
-    color: '#EEEEEE'
+    color: '#EEEEEE',
   },
   headerTextsMedium: {
     fontSize: 20,
-    color: '#A7A6A6'
+    color: '#A7A6A6',
   },
   headerLogo: {
     width: 60,
@@ -56,11 +61,13 @@ const styles = StyleSheet.create({
   },
   textUser: {
     alignSelf: 'flex-end',
-    color:'white'
+    color: 'white',
   },
   userBox: {
-    position: 'absolute', 
+    position: 'absolute',
+    textAlign: 'center',
     right: 0,
+    marginRight: 5,
   },
 });
 

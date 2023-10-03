@@ -1,7 +1,28 @@
 import {Equipment} from '@/helpers/models';
-import {api, endpoints} from './api';
+import {api, endpoints} from '../api';
+import {BaseController} from './BaseController';
 
-class EquipmentController {
+class EquipmentController extends BaseController<Equipment> {
+  constructor() {
+    super('Equipamento');
+  }
+
+  async get(id: string): Promise<Equipment | null> {
+    try {
+      return (await api.get(endpoints.GET_EQUIPMENT + id)).data.equipment;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async delete(id: string): Promise<any> {
+    try {
+      return (await api.delete(endpoints.DELETE_EQUIPMENT + id)).data.equipment;
+    } catch (e) {
+      return this.handleErrors(e.message);
+    }
+  }
+
   public list = async (): Promise<Equipment[]> => {
     try {
       return (await api.get(endpoints.GET_EQUIPMENT)).data.equipments;
@@ -47,16 +68,6 @@ class EquipmentController {
       return this.handleErrors(e.message);
     }
   };
-
-  private handleErrors(message: string) {
-    let error = 'Erro de comunicação com o servidor.';
-    if (message.includes('404')) error = 'Equipamento não encontrado.';
-    if (message.includes('422')) error = 'Dados inválidos.';
-    if (message.includes('413'))
-      error = 'Arquivo(s) enviado(s) excederam o tamanho máximo permitido.';
-
-    return {message: error};
-  }
 }
 
 const equipmentController = new EquipmentController();
