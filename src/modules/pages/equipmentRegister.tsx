@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -7,19 +7,18 @@ import {
   TextInput,
   ScrollView,
   Alert,
-  Modal,
-  ActivityIndicator,
 } from 'react-native';
 import {equipmentController} from '../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
 import {defaultEquipment, equipmentValidator} from '../../helpers/validators';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
+import {LoadContext} from '../../contexts';
 
 function EquipmentRegister({navigation}) {
+  const {setLoading} = useContext(LoadContext);
   const [equipamento, setEquipamento] = React.useState(defaultEquipment);
   const [indexImage, setIndexImage] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [isNameValid, setIsNameValid] = React.useState(true);
   const [isDominioValid, setIsDominioValid] = React.useState(true);
   const [isSerialValid, setIsSerialValid] = React.useState(true);
@@ -91,16 +90,16 @@ function EquipmentRegister({navigation}) {
           setLoading(false);
 
           Alert.alert(
-            result.message ? 'Erro' : 'Sucesso',
-            result.message
-              ? result.message
+            result.errorMessage ? 'Erro' : 'Sucesso',
+            result.errorMessage
+              ? result.errorMessage
               : 'Sucesso ao cadastrar este equipamento.',
             [
               {
                 text: 'Ok',
                 style: 'default',
                 onPress: () => {
-                  if (!result.message) navigation.navigate('Home');
+                  if (!result.errorMessage) navigation.navigate('Home');
                 },
               },
             ],
@@ -112,11 +111,6 @@ function EquipmentRegister({navigation}) {
 
   return (
     <ScrollView style={styles.container}>
-      <Modal transparent={true} animationType="fade" visible={loading}>
-        <View style={styles.modalBackground}>
-          <ActivityIndicator size="large" color="#77A490" />
-        </View>
-      </Modal>
       <View style={styles.imageContainer}>
         <View style={styles.equipment}>
           {equipamento.files && equipamento.files.length > 0 ? (

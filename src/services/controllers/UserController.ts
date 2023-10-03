@@ -15,24 +15,20 @@ class UserController extends BaseController<User> {
   public login = async (
     username: string,
     password: string,
-  ): Promise<SignInResponse> => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          token: '11111111111111111',
-          user: {
-            _id: 'a',
-            cpf: 'a',
-            email: 'a',
-            lastName: 'b',
-            name: 'a',
-            phone: 'a',
-            registration: 'a',
-            username: 'a',
-          },
-        });
-      }, 1000);
-    });
+  ): Promise<SignInResponse | any> => {
+    try {
+      const data = {username, password};
+      const result = (await api.post(endpoints.LOGIN_USER, data)).data;
+
+      return result;
+    } catch (e) {
+      if (e.message.includes('401'))
+        return {
+          errorMessage: 'Usuário ou senha incorreto(a).',
+        };
+
+      return this.handleErrors(e.message);
+    }
   };
 
   async get(id: string): Promise<User | null> {

@@ -13,11 +13,13 @@ export abstract class BaseController<T> {
 
   public handleErrors(message: string) {
     let error = 'Erro de comunicação com o servidor.';
+    if (message.includes('401'))
+      error = 'Sem autorização, acesse o aplicativo novamente.';
     if (message.includes('404')) error = `${this.entityName} não encontrado.`;
     if (message.includes('422')) error = 'Dados inválidos.';
     if (message.includes('413'))
       error = 'Arquivo(s) enviado(s) excederam o tamanho máximo permitido.';
 
-    return {message: error};
+    return {errorMessage: error};
   }
 }

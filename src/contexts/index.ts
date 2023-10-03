@@ -1,3 +1,4 @@
 import AuthContext from './authContext';
+import LoadContext from './loadContext';
 
-export {AuthContext};
+export {AuthContext, LoadContext};
