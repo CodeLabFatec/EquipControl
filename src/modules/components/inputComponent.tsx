@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         padding: 8,
         borderWidth: 0.5,
         borderRadius: 5,
+        color: '#EEEEEE',
     },
     label: {
         color: '#EEEEEE',

@@ -10,6 +10,7 @@ import {SafeAreaView, StatusBar, View, StyleSheet} from 'react-native';
 import Footer from './modules/components/footer';
 import EquipmentInfo from './modules/pages/equipmentInfo';
 import Login from './modules/pages/login';
+import RecoverPassword from './modules/pages/recoverPassword';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -27,7 +28,7 @@ function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'light-content'} backgroundColor={'#111111'} />
       <NavigationContainer theme={MyTheme} ref={navigationRef}>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="RecoverPassword">
           <Stack.Screen
             name="Home"
             navigationKey="Home"
@@ -50,6 +51,12 @@ function App() {
             name="Login"
             navigationKey="Login"
             component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecoverPassword"
+            navigationKey="RecoverPassword"
+            component={RecoverPassword}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
