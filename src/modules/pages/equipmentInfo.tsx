@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -13,9 +13,10 @@ import {
 import {Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {equipmentController} from '../../api';
+import {equipmentController} from '../../services';
 import {equipmentValidator} from '../../helpers/validators';
 import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
+import {LoadContext} from '../../contexts';
 
 function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
@@ -25,8 +26,8 @@ function EquipmentInfo({navigation, route}) {
     return;
   }
 
+  const {isLoading, setLoading} = useContext(LoadContext);
   const [equipamento, setEquipamento] = React.useState(equipment);
-  const [loading, setLoading] = React.useState(false);
   const [indexImage, setIndexImage] = useState(0);
   const [isNameValid, setIsNameValid] = React.useState(true);
   const [isDominioValid, setIsDominioValid] = React.useState(true);
@@ -51,13 +52,13 @@ function EquipmentInfo({navigation, route}) {
             );
             setLoading(false);
 
-            if (!result.message) {
+            if (!result.errorMessage) {
               setEquipamento({...equipamento, isActive: true});
             }
             Alert.alert(
-              result.message ? 'Erro' : 'Sucesso',
-              result.message
-                ? result.message
+              result.errorMessage ? 'Erro' : 'Sucesso',
+              result.errorMessage
+                ? result.errorMessage
                 : 'Sucesso ao ativar este equipamento.',
               [
                 {
@@ -89,14 +90,14 @@ function EquipmentInfo({navigation, route}) {
             );
             setLoading(false);
 
-            if (!result.message) {
+            if (!result.errorMessage) {
               setEquipamento({...equipamento, isActive: false});
             }
 
             Alert.alert(
-              result.message ? 'Erro' : 'Sucesso',
-              result.message
-                ? result.message
+              result.errorMessage ? 'Erro' : 'Sucesso',
+              result.errorMessage
+                ? result.errorMessage
                 : 'Sucesso ao desativar este equipamento.',
               [
                 {
@@ -160,16 +161,16 @@ function EquipmentInfo({navigation, route}) {
           setLoading(false);
 
           Alert.alert(
-            result.message ? 'Erro' : 'Sucesso',
-            result.message
-              ? result.message
+            result.errorMessage ? 'Erro' : 'Sucesso',
+            result.errorMessage
+              ? result.errorMessage
               : 'Sucesso ao atualizar este equipamento.',
             [
               {
                 text: 'Ok',
                 style: 'default',
                 onPress: () => {
-                  if (!result.message) navigation.navigate('Home');
+                  if (!result.errorMessage) navigation.navigate('Home');
                 },
               },
             ],
@@ -201,11 +202,6 @@ function EquipmentInfo({navigation, route}) {
 
   return (
     <ScrollView style={styles.container}>
-      <Modal transparent={true} animationType="fade" visible={loading}>
-        <View style={styles.modalBackground}>
-          <ActivityIndicator size="large" color="#77A490" />
-        </View>
-      </Modal>
       <View style={styles.buttonsContainer}>
         {equipamento.isActive ? (
           <Pressable
@@ -215,7 +211,7 @@ function EquipmentInfo({navigation, route}) {
                 backgroundColor: equipamento.isActive ? 'gray' : '#77A490',
               },
             ]}
-            disabled={loading}
+            disabled={isLoading}
             aria-disabled={equipamento.isActive}
             onPress={handleDisableButton}>
             <Text style={styles.disableText}>Desativar</Text>
@@ -228,7 +224,7 @@ function EquipmentInfo({navigation, route}) {
                 backgroundColor: equipamento.isActive ? 'gray' : '#77A490',
               },
             ]}
-            disabled={loading}
+            disabled={isLoading}
             aria-disabled={!equipamento.isActive}
             onPress={handleActivateButton}>
             <Text style={styles.activeText}>Ativar</Text>
@@ -384,7 +380,7 @@ function EquipmentInfo({navigation, route}) {
       <View style={styles.buttonsContainer}>
         <Pressable
           style={styles.confirmButton}
-          disabled={loading}
+          disabled={isLoading}
           onPress={handleUpdateEquipamento}>
           <Text style={styles.confirmText}>Confirmar</Text>
         </Pressable>

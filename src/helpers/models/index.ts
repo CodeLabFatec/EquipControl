@@ -1,4 +1,5 @@
 import {Equipment} from './equipment';
 import {Files} from './files';
+import {User} from './user';
 
-export {Equipment, Files};
+export type {Equipment, Files, User};

@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 
+import {LoadContext} from '../../contexts';
 import EquipmentComponent from '../components/equipment-item';
 import {Equipment} from '../../helpers/models';
-import {equipmentController} from '../../api';
+import {equipmentController} from '../../services';
 import SearchEquipment from '../components/search-equipment';
 import {useFocusEffect} from '@react-navigation/native';
 import {ActivityIndicator} from 'react-native';
 
 function Home({navigation}) {
+  const {isLoading, setLoading} = useContext(LoadContext);
   const [equipments, setEquipments] = useState<Equipment[]>([]);
   const [filter, setFilter] = useState('');
-  const [loading, setLoading] = useState(true);
 
   async function load() {
     const data = await equipmentController.list();
@@ -36,7 +37,7 @@ function Home({navigation}) {
         value={filter}
         onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
       />
-      {loading ? (
+      {isLoading ? (
         <ActivityIndicator size="large" color="#77A490" />
       ) : (
         <FlatList
