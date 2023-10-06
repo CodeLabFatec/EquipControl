@@ -7,6 +7,7 @@ import EquipmentRegister from '../modules/pages/equipmentRegister';
 import EquipmentInfo from '../modules/pages/equipmentInfo';
 import {StyleSheet, View} from 'react-native';
 import Footer from '../modules/components/footer';
+import UserPage from '../modules/pages/user';
 
 const AppStack = createNativeStackNavigator();
 
@@ -29,6 +30,12 @@ const AppRoutes: React.FC = () => (
         name="InfoEquipment"
         navigationKey="InfoEquipment"
         component={EquipmentInfo}
+        options={{header: Header}}
+      />
+      <AppStack.Screen
+        name="User"
+        navigationKey="User"
+        component={UserPage}
         options={{header: Header}}
       />
     </AppStack.Navigator>

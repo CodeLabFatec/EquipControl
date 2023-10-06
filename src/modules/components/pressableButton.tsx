@@ -1,23 +1,28 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Pressable,
-  Text,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, View, Pressable, Text} from 'react-native';
 
 interface props {
   children?: string;
   pressableStyle?: any;
   textStyle?: any;
-  onPress?: () => void,
+  disabled?: boolean;
+  onPress?: () => void;
 }
 
-function PressableButton({children, pressableStyle, textStyle, onPress}: props) {
+function PressableButton({
+  children,
+  pressableStyle,
+  textStyle,
+  disabled,
+  onPress,
+}: props) {
   return (
     <View style={styles.container}>
-      <Pressable style={[styles.pressableContainer, pressableStyle]} onPress={onPress}>
-        <Text style={[styles.default,textStyle]}>{children}</Text>
+      <Pressable
+        style={[styles.pressableContainer, pressableStyle]}
+        disabled={disabled}
+        onPress={onPress}>
+        <Text style={[styles.default, textStyle]}>{children}</Text>
       </Pressable>
     </View>
   );
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   default: {
     paddingVertical: 10,

@@ -11,4 +11,6 @@ export interface User {
   registration: string;
   cpf: string;
   image?: Files;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
