@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,24 +6,47 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  Alert,
 } from 'react-native';
 import {equipmentController} from '../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
 import {defaultEquipment, equipmentValidator} from '../../helpers/validators';
-import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
-import {LoadContext} from '../../contexts';
+import {
+  alertRequest,
+  alertResult,
+  requestReadImages,
+  updateEquipamentoImages,
+} from '../../helpers/utils';
+import {AuthContext, LoadContext} from '../../contexts';
+import {Domain} from '../../helpers/models';
+import {PickerComponent} from '../components/picker';
+import {PickerItemProps} from '@react-native-picker/picker';
 
 function EquipmentRegister({navigation}) {
   const {setLoading} = useContext(LoadContext);
+  const {user} = useContext(AuthContext);
+
   const [equipamento, setEquipamento] = React.useState(defaultEquipment);
   const [indexImage, setIndexImage] = useState(0);
+  const [domainOptions, setDomainOptions] = useState<Domain[]>([]);
   const [isNameValid, setIsNameValid] = React.useState(true);
   const [isDominioValid, setIsDominioValid] = React.useState(true);
   const [isSerialValid, setIsSerialValid] = React.useState(true);
   const [isLongitudeValid, setIsLongitudeValid] = React.useState(true);
   const [isLatitudeValid, setIsLatitudeValid] = React.useState(true);
+
+  const loadDomains = async () => {
+    setDomainOptions([
+      {_id: 'a', name: 'a'},
+      {_id: 'b', name: 'b'},
+      {_id: 'c', name: 'c'},
+      {_id: 'd', name: 'd'},
+    ]);
+  };
+
+  useEffect(() => {
+    loadDomains();
+  }, []);
 
   const openImagePicker = async () => {
     try {
@@ -77,36 +100,28 @@ function EquipmentRegister({navigation}) {
     )
       return;
 
-    Alert.alert('Cadastrar', 'Deseja realmente cadastrar este equipamento?', [
-      {
-        text: 'Não',
-        style: 'cancel',
-      },
-      {
-        text: 'Sim',
-        onPress: async () => {
-          setLoading(true);
-          const result: any = await equipmentController.post(equipamento);
-          setLoading(false);
+    alertRequest(
+      'Cadastrar',
+      'Deseja realmente cadastrar este equipamento?',
+      async () => {
+        setLoading(true);
 
-          Alert.alert(
-            result.errorMessage ? 'Erro' : 'Sucesso',
-            result.errorMessage
-              ? result.errorMessage
-              : 'Sucesso ao cadastrar este equipamento.',
-            [
-              {
-                text: 'Ok',
-                style: 'default',
-                onPress: () => {
-                  if (!result.errorMessage) navigation.navigate('Home');
-                },
-              },
-            ],
-          );
-        },
+        equipamento.created_by = {
+          id: (user && user._id) ?? '',
+          name: (user && user.name) ?? '',
+        };
+
+        const result: any = await equipmentController.post(equipamento);
+        setLoading(false);
+
+        alertResult(
+          result.errorMessage == null,
+          'Sucesso ao cadastrar este equipamento!',
+          result.errorMessage,
+          'Home',
+        );
       },
-    ]);
+    );
   };
 
   return (
@@ -168,19 +183,22 @@ function EquipmentRegister({navigation}) {
         </View>
         <Text style={styles.inputLabel}>Domínio:</Text>
         <View style={styles.textContainer}>
-          <TextInput
-            placeholder="Domínio do equipamento"
-            placeholderTextColor={'#E2D7C1'}
-            maxLength={40}
-            onChangeText={text => {
+          <PickerComponent
+            onChange={value => {
               setIsDominioValid(true);
-              setEquipamento({...equipamento, domain: text});
+              setEquipamento({...equipamento, domain: value});
             }}
+            items={domainOptions.map(
+              i => ({value: i._id, label: i.name} as PickerItemProps),
+            )}
             value={equipamento.domain}
-            style={[
-              isDominioValid ? styles.isValid : styles.isRequired,
-              styles.inputField,
+            placeholder="Domínio do equipamento"
+            pickerStyle={styles.selectField}
+            containerStyle={[
+              {width: '96%'},
+              isDominioValid ? styles.isValidSelect : styles.isRequiredSelect,
             ]}
+            itemStyle={{color: '#E2D7C1'}}
             onBlur={() => {
               if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
                 setIsDominioValid(false);
@@ -353,6 +371,14 @@ const styles = StyleSheet.create({
     width: '96%',
   },
 
+  selectField: {
+    backgroundColor: '#363636',
+    fontSize: 16,
+    color: '#E2D7C1',
+    padding: 6,
+    width: '100%',
+  },
+
   dataEquipmentInput: {
     backgroundColor: '#363636',
     borderColor: '#E2D7C1',
@@ -445,13 +471,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#EEEEEE',
   },
-
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   isRequired: {
     borderColor: 'red',
     borderWidth: 0.5,
@@ -461,6 +480,17 @@ const styles = StyleSheet.create({
     borderColor: '#E2D7C1',
     borderWidth: 0.5,
     borderRadius: 5,
+  },
+
+  isRequiredSelect: {
+    borderColor: 'red',
+    borderWidth: 0.5,
+    borderRadius: 2,
+  },
+  isValidSelect: {
+    borderColor: '#E2D7C1',
+    borderWidth: 0.5,
+    borderRadius: 2,
   },
 });
 

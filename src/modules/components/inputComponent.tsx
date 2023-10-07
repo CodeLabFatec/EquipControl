@@ -18,6 +18,7 @@ interface props {
   labelStyle?: any;
   onBlur?: () => void;
   secureTextEntry?: boolean;
+  editable?: boolean;
 }
 
 function InputComponent({
@@ -31,6 +32,7 @@ function InputComponent({
   labelStyle,
   onBlur,
   secureTextEntry,
+  editable,
 }: props) {
   return (
     <View style={styles.container}>
@@ -46,6 +48,7 @@ function InputComponent({
           style={[styles.default, inputStyle]}
           onBlur={onBlur}
           secureTextEntry={secureTextEntry}
+          editable={editable ?? true}
         />
       </View>
     </View>
