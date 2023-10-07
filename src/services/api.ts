@@ -7,6 +7,7 @@ const api: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true,
+  timeout: 2000,
 });
 
 const endpoints = {
