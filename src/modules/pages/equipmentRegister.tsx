@@ -7,7 +7,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import {equipmentController} from '../../services';
+import {domainController, equipmentController} from '../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../components/carousel';
 import {defaultEquipment, equipmentValidator} from '../../helpers/validators';
@@ -36,12 +36,10 @@ function EquipmentRegister({navigation}) {
   const [isLatitudeValid, setIsLatitudeValid] = React.useState(true);
 
   const loadDomains = async () => {
-    setDomainOptions([
-      {_id: 'a', name: 'a'},
-      {_id: 'b', name: 'b'},
-      {_id: 'c', name: 'c'},
-      {_id: 'd', name: 'd'},
-    ]);
+    setLoading(true);
+    const result = await domainController.list();
+    setDomainOptions(result);
+    setLoading(false);
   };
 
   useEffect(() => {

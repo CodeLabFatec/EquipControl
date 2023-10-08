@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,20 @@ import {
   ActivityIndicator,
   Modal,
 } from 'react-native';
-import {Equipment} from '../../helpers/models';
+import {Domain, Equipment} from '../../helpers/models';
 import Carousel from '../components/carousel';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {equipmentController} from '../../services';
+import {domainController, equipmentController} from '../../services';
 import {equipmentValidator} from '../../helpers/validators';
-import {requestReadImages, updateEquipamentoImages} from '../../helpers/utils';
+import {
+  alertRequest,
+  alertResult,
+  requestReadImages,
+  updateEquipamentoImages,
+} from '../../helpers/utils';
 import {LoadContext} from '../../contexts';
+import {PickerComponent} from '../components/picker';
+import {PickerItemProps} from '@react-native-picker/picker';
 
 function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
@@ -27,89 +34,75 @@ function EquipmentInfo({navigation, route}) {
   }
 
   const {isLoading, setLoading} = useContext(LoadContext);
-  const [equipamento, setEquipamento] = React.useState(equipment);
+
+  const [domainOptions, setDomainOptions] = useState<Domain[]>([]);
+  const [equipamento, setEquipamento] = useState(equipment);
   const [indexImage, setIndexImage] = useState(0);
-  const [isNameValid, setIsNameValid] = React.useState(true);
-  const [isDominioValid, setIsDominioValid] = React.useState(true);
-  const [isSerialValid, setIsSerialValid] = React.useState(true);
-  const [isLongitudeValid, setIsLongitudeValid] = React.useState(true);
-  const [isLatitudeValid, setIsLatitudeValid] = React.useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+  const [isDominioValid, setIsDominioValid] = useState(true);
+  const [isSerialValid, setIsSerialValid] = useState(true);
+  const [isLongitudeValid, setIsLongitudeValid] = useState(true);
+  const [isLatitudeValid, setIsLatitudeValid] = useState(true);
+
+  const loadDomains = async () => {
+    setLoading(true);
+    const result = await domainController.list();
+    setDomainOptions(result);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadDomains();
+  }, []);
 
   const handleActivateButton = () => {
-    if (!equipamento.isActive) {
-      Alert.alert('Ativar', 'Deseja ativar este equipamento?', [
-        {
-          text: 'Não',
-          style: 'cancel',
-        },
-        {
-          text: 'Sim',
-          onPress: async () => {
-            setLoading(true);
-            const result: any = await equipmentController.updateStatus(
-              equipamento._id,
-              true,
-            );
-            setLoading(false);
+    if (equipamento.isActive) return;
 
-            if (!result.errorMessage) {
-              setEquipamento({...equipamento, isActive: true});
-            }
-            Alert.alert(
-              result.errorMessage ? 'Erro' : 'Sucesso',
-              result.errorMessage
-                ? result.errorMessage
-                : 'Sucesso ao ativar este equipamento.',
-              [
-                {
-                  text: 'Ok',
-                  style: 'default',
-                },
-              ],
-            );
-          },
-        },
-      ]);
-    }
+    alertRequest('Ativar', 'Deseja ativar este equipamento?', async () => {
+      setLoading(true);
+      const result: any = await equipmentController.updateStatus(
+        equipamento._id,
+        true,
+      );
+      setLoading(false);
+
+      if (!result.errorMessage) {
+        setEquipamento({...equipamento, isActive: true});
+      }
+
+      alertResult(
+        result.errorMessage == null,
+        'Sucesso ao ativar este equipamento!',
+        result.errorMessage,
+      );
+    });
   };
 
   const handleDisableButton = () => {
-    if (equipamento.isActive) {
-      Alert.alert('Desativar', 'Deseja desativar este equipamento?', [
-        {
-          text: 'Não',
-          style: 'cancel',
-        },
-        {
-          text: 'Sim',
-          onPress: async () => {
-            setLoading(true);
-            const result: any = await equipmentController.updateStatus(
-              equipamento._id,
-              false,
-            );
-            setLoading(false);
+    if (!equipamento.isActive) return;
 
-            if (!result.errorMessage) {
-              setEquipamento({...equipamento, isActive: false});
-            }
+    alertRequest(
+      'Desativar',
+      'Deseja desativar este equipamento?',
+      async () => {
+        setLoading(true);
+        const result: any = await equipmentController.updateStatus(
+          equipamento._id,
+          false,
+        );
+        setLoading(false);
 
-            Alert.alert(
-              result.errorMessage ? 'Erro' : 'Sucesso',
-              result.errorMessage
-                ? result.errorMessage
-                : 'Sucesso ao desativar este equipamento.',
-              [
-                {
-                  text: 'Ok',
-                  style: 'default',
-                },
-              ],
-            );
-          },
-        },
-      ]);
-    }
+        if (!result.errorMessage) {
+          setEquipamento({...equipamento, isActive: false});
+        }
+
+        alertResult(
+          result.errorMessage == null,
+          'Sucesso ao desativar este equipamento!',
+          result.errorMessage,
+        );
+      },
+    );
   };
 
   const handleUpdateEquipamento = () => {
@@ -145,39 +138,25 @@ function EquipmentInfo({navigation, route}) {
     )
       return;
 
-    Alert.alert('Atualizar', 'Deseja realmente atualizar este equipamento?', [
-      {
-        text: 'Não',
-        style: 'cancel',
-      },
-      {
-        text: 'Sim',
-        onPress: async () => {
-          setLoading(true);
-          const result: any = await equipmentController.update(
-            equipamento._id,
-            equipamento,
-          );
-          setLoading(false);
+    alertRequest(
+      'Atualizar',
+      'Deseja realmente atualizar este equipamento?',
+      async () => {
+        setLoading(true);
+        const result: any = await equipmentController.update(
+          equipamento._id,
+          equipamento,
+        );
+        setLoading(false);
 
-          Alert.alert(
-            result.errorMessage ? 'Erro' : 'Sucesso',
-            result.errorMessage
-              ? result.errorMessage
-              : 'Sucesso ao atualizar este equipamento.',
-            [
-              {
-                text: 'Ok',
-                style: 'default',
-                onPress: () => {
-                  if (!result.errorMessage) navigation.navigate('Home');
-                },
-              },
-            ],
-          );
-        },
+        alertResult(
+          result.errorMessage == null,
+          'Sucesso ao atualizar este equipamento!',
+          result.errorMessage,
+          'Home',
+        );
       },
-    ]);
+    );
   };
 
   const openImagePicker = async () => {
@@ -280,19 +259,22 @@ function EquipmentInfo({navigation, route}) {
         </View>
         <Text style={styles.inputLabel}>Domínio:</Text>
         <View style={styles.textContainer}>
-          <TextInput
-            placeholder="Domínio do equipamento"
-            placeholderTextColor={'#808080'}
-            maxLength={40}
-            onChangeText={text => {
+          <PickerComponent
+            onChange={value => {
               setIsDominioValid(true);
-              setEquipamento({...equipamento, domain: text});
+              setEquipamento({...equipamento, domain: value});
             }}
+            items={domainOptions.map(
+              i => ({value: i._id, label: i.name} as PickerItemProps),
+            )}
             value={equipamento.domain}
-            style={[
-              isDominioValid ? styles.isValid : styles.isRequired,
-              styles.inputField,
+            placeholder="Domínio do equipamento"
+            pickerStyle={styles.selectField}
+            containerStyle={[
+              {width: '96%'},
+              isDominioValid ? styles.isValidSelect : styles.isRequiredSelect,
             ]}
+            itemStyle={{color: '#E2D7C1'}}
             onBlur={() => {
               if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
                 setIsDominioValid(false);
@@ -537,12 +519,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#EEEEEE',
   },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   isRequired: {
     borderColor: 'red',
     borderWidth: 0.5,
@@ -552,6 +528,23 @@ const styles = StyleSheet.create({
     borderColor: '#E2D7C1',
     borderWidth: 0.5,
     borderRadius: 5,
+  },
+  selectField: {
+    backgroundColor: '#363636',
+    fontSize: 16,
+    color: '#E2D7C1',
+    padding: 6,
+    width: '100%',
+  },
+  isRequiredSelect: {
+    borderColor: 'red',
+    borderWidth: 0.5,
+    borderRadius: 2,
+  },
+  isValidSelect: {
+    borderColor: '#E2D7C1',
+    borderWidth: 0.5,
+    borderRadius: 2,
   },
 });
 
