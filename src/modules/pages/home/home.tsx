@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 
-import {LoadContext} from '../../contexts';
-import EquipmentComponent from '../components/equipment-item';
-import {Equipment} from '../../helpers/models';
-import {equipmentController} from '../../services';
-import SearchEquipment from '../components/search-equipment';
+import {LoadContext} from '../../../contexts';
+import EquipmentComponent from '../../components/equipment/equipment-item';
+import {Equipment} from '../../../helpers/models';
+import {equipmentController} from '../../../services';
+import SearchEquipment from '../../components/equipment/search-equipment';
 import {useFocusEffect} from '@react-navigation/native';
 
 function Home({navigation}) {

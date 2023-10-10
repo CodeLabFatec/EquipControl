@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import InputComponent from '../components/inputComponent';
-import PressableButton from '../components/pressableButton';
-import CodeInput from '../components/codeInput';
+import InputComponent from '../../components/base/inputComponent';
+import PressableButton from '../../components/base/pressableButton';
+import CodeInput from '../../components/base/codeInput';
 
 function RecoverPassword({navigation}) {
   return (
@@ -20,7 +20,7 @@ function RecoverPassword({navigation}) {
       />
 
       <CodeInput />
-      
+
       <PressableButton
         children="Confirmar código"
         textStyle={styles.recoverButton}

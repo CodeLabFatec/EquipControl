@@ -1,10 +1,16 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import {AuthContext} from '../../contexts';
+import Dropdown from './base/dropdown';
 import navigate from '../../RootNavigation';
 
 function Header() {
-  const {user} = useContext(AuthContext);
+  const {user, logout} = useContext(AuthContext);
+
+  const dropdownItems: any[] = [
+    {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Sair', onPress: () => logout()},
+  ];
 
   return (
     <View style={styles.headerContainer}>
@@ -18,7 +24,7 @@ function Header() {
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
-      <Pressable onPress={() => navigate('User')} style={styles.userBox}>
+      {/* <Pressable onPress={() => navigate('User')} style={styles.userBox}>
         <Image
           source={{
             uri:
@@ -29,7 +35,21 @@ function Header() {
           style={styles.headerUser}
         />
         <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
-      </Pressable>
+      </Pressable> */}
+      <View style={styles.userBox}>
+        <Dropdown items={dropdownItems}>
+          <Image
+            source={{
+              uri:
+                user && user.image
+                  ? `data:${user.image.type};base64,${user.image.base64}`
+                  : '',
+            }}
+            style={styles.headerUser}
+          />
+          <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+        </Dropdown>
+      </View>
     </View>
   );
 }
@@ -70,7 +90,7 @@ const styles = StyleSheet.create({
   userBox: {
     position: 'absolute',
     textAlign: 'center',
-    right: 0,
+    right: 2,
     marginRight: 5,
   },
 });
