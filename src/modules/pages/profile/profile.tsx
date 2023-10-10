@@ -1,20 +1,20 @@
 import React, {useContext, useState} from 'react';
 import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
-import {AuthContext, LoadContext} from '../../contexts';
-import InputComponent from '../components/inputComponent';
-import PressableButton from '../components/pressableButton';
-import {userValidator} from '../../helpers/validators';
+import {AuthContext, LoadContext} from '../../../contexts';
+import InputComponent from '../../components/base/inputComponent';
+import PressableButton from '../../components/base/pressableButton';
+import {userValidator} from '../../../helpers/validators';
 import {
   alertError,
   alertRequest,
   alertResult,
   requestReadImages,
   updateUserImage,
-} from '../../helpers/utils';
-import {userController} from '../../services';
+} from '../../../helpers/utils';
+import {userController} from '../../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-function UserPage({navigation}) {
+function ProfilePage({navigation}) {
   const {user, updateUser, logout} = useContext(AuthContext);
 
   if (!user) {
@@ -184,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserPage;
+export default ProfilePage;

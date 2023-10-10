@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View, ListRenderItem, Pressable} from 'react-native';
-import {Equipment} from '../../helpers/models';
-import navigate from '../../RootNavigation';
+import {Equipment} from '../../../helpers/models';
+import navigate from '../../../RootNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Carousel from './carousel';
+import Carousel from '../carousel/carousel';
 
 const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
   return (

@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import InputComponent from '../components/inputComponent';
-import PressableButton from '../components/pressableButton';
-import {AuthContext, LoadContext} from '../../contexts';
+import InputComponent from '../../components/base/inputComponent';
+import PressableButton from '../../components/base/pressableButton';
+import {AuthContext, LoadContext} from '../../../contexts';
 
 function Login({navigation}) {
   const {login} = useContext(AuthContext);
@@ -44,13 +44,14 @@ function Login({navigation}) {
         pressableStyle={styles.pressableContainer}
         textStyle={styles.enterButton}
         onPress={signIn}
+        disabled={isLoading}
       />
 
       <PressableButton
         children="Esqueci minha senha"
         pressableStyle={styles.pressableContainer}
         textStyle={styles.forgotPassword}
-      />
+        disabled={isLoading}></PressableButton>
     </View>
   );
 }
