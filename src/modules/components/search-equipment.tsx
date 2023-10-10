@@ -24,7 +24,7 @@ const SearchEquipment = ({value, onChangeText}: Props) => {
 
       <Pressable
         style={styles.addIconContainer}
-        onPress={() => navigate('RegisterEquipment')}>
+        onPress={() => navigate('RegisterDomain')}>
         <Icon style={styles.addIcon} name="plus-circle" />
       </Pressable>
     </View>

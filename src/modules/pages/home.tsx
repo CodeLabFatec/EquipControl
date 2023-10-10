@@ -48,6 +48,7 @@ function Home({navigation}) {
           keyExtractor={item => item._id ?? ''}
         />
       )}
+      
     </View>
   );
 }
