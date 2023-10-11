@@ -23,7 +23,6 @@ const endpoints = {
   POST_EQUIPMENT: '/equipment/create',
   POST_DOMAIN: '/domain/create',
   POST_USER: '/user/register',
-  POST_DOMAIN: '/user/registerDomain',
   LOGIN_USER: '/user/login',
 
   //PATCH
@@ -31,12 +30,11 @@ const endpoints = {
   PATCH_EQUIPMENT_UPDATE: '/equipment/update/',
   PATCH_DOMAIN_UPDATE: '/domain/update/',
   PATCH_USER_UPDATE: '/user/update/',
-  PATCH_DOMAIN_UPDATE: '/domain/update/',
 
   //DELETE
   DELETE_USER: '/user/delete/',
   DELETE_EQUIPMENT: '/equipment/delete/',
   DELETE_DOMAIN: '/domain/delete/',
-};
+}; 
 
 export {api, endpoints};

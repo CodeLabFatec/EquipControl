@@ -8,7 +8,7 @@ interface Props {
   onChangeText: (text: React.SetStateAction<string>) => void;
 }
 
-const SearchEquipment = ({value, onChangeText}: Props) => {
+const SearchDomain = ({value, onChangeText}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -24,7 +24,7 @@ const SearchEquipment = ({value, onChangeText}: Props) => {
 
       <Pressable
         style={styles.addIconContainer}
-        onPress={() => navigate('RegisterEquipment')}>
+        onPress={() => navigate('RegisterDomain')}>
         <Icon style={styles.addIcon} name="plus-circle" />
       </Pressable>
     </View>
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchEquipment;
+export default SearchDomain;

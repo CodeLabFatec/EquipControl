@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {defaultDomain, domainValidator} from '../../helpers/validators/domainValidator';
-import InputComponent from '../components/inputComponent';
-import PressableButton from '../components/pressableButton';
+import {defaultDomain, domainValidator} from '../../../helpers/validators/domainValidator';
+import InputComponent from '../../components/base/inputComponent';
+import PressableButton from '../../components/base/pressableButton';
 
 function DomainRegister({navigation}) {
   const [domain, setDomain] = React.useState(defaultDomain);
@@ -76,3 +76,5 @@ function DomainRegister({navigation}) {
   });
   
   export default DomainRegister;
+
+  //pagina pra listar, pagina pra puxar os dados e atualizaar, search domain
