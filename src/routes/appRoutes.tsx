@@ -1,12 +1,14 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../modules/pages/home';
+
+import Home from '../modules/pages/home/home';
 import Header from '../modules/components/header';
-import EquipmentRegister from '../modules/pages/equipmentRegister';
+import EquipmentRegister from '../modules/pages/equipment/equipmentRegister';
 import DomainRegister from '../modules/pages/domainRegister';
-import EquipmentInfo from '../modules/pages/equipmentInfo';
+import EquipmentInfo from '../modules/pages/equipment/equipmentInfo';
 import {StyleSheet, View} from 'react-native';
 import Footer from '../modules/components/footer';
+import ProfilePage from '../modules/pages/profile/profile';
 
 const AppStack = createNativeStackNavigator();
 
@@ -29,6 +31,12 @@ const AppRoutes: React.FC = () => (
         name="InfoEquipment"
         navigationKey="InfoEquipment"
         component={EquipmentInfo}
+        options={{header: Header}}
+      />
+      <AppStack.Screen
+        name="Profile"
+        navigationKey="Profile"
+        component={ProfilePage}
         options={{header: Header}}
       />
        <AppStack.Screen

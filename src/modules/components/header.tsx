@@ -1,9 +1,16 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {AuthContext} from '../../contexts';
+import Dropdown from './base/dropdown';
+import navigate from '../../RootNavigation';
 
 function Header() {
-  const {user} = useContext(AuthContext);
+  const {user, logout} = useContext(AuthContext);
+
+  const dropdownItems: any[] = [
+    {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Sair', onPress: () => logout()},
+  ];
 
   return (
     <View style={styles.headerContainer}>
@@ -17,16 +24,31 @@ function Header() {
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
-      <View style={styles.userBox}>
+      {/* <Pressable onPress={() => navigate('User')} style={styles.userBox}>
         <Image
           source={{
-            uri: user?.image
-              ? `data:${user.image.type};base64,${user.image.base64}`
-              : '',
+            uri:
+              user && user.image
+                ? `data:${user.image.type};base64,${user.image.base64}`
+                : '',
           }}
           style={styles.headerUser}
         />
         <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+      </Pressable> */}
+      <View style={styles.userBox}>
+        <Dropdown items={dropdownItems}>
+          <Image
+            source={{
+              uri:
+                user && user.image
+                  ? `data:${user.image.type};base64,${user.image.base64}`
+                  : '',
+            }}
+            style={styles.headerUser}
+          />
+          <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+        </Dropdown>
       </View>
     </View>
   );
@@ -51,6 +73,7 @@ const styles = StyleSheet.create({
     color: '#A7A6A6',
   },
   headerLogo: {
+    backgroundColor: 'blue',
     width: 60,
     height: 60,
   },
@@ -58,6 +81,7 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     alignSelf: 'flex-end',
+    borderRadius: 50,
   },
   textUser: {
     alignSelf: 'flex-end',
@@ -66,7 +90,7 @@ const styles = StyleSheet.create({
   userBox: {
     position: 'absolute',
     textAlign: 'center',
-    right: 0,
+    right: 2,
     marginRight: 5,
   },
 });

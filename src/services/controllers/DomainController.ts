@@ -1,10 +1,10 @@
-import {Domain} from 'helpers/models/domain';
+import {Domain} from '@/helpers/models';
 import {api, endpoints} from '../api';
 import {BaseController} from './BaseController';
 
 class DomainController extends BaseController<Domain> {
   constructor() {
-    super('Domain');
+    super('Domínio');
   }
 
   async get(id: string): Promise<Domain | null> {
@@ -25,7 +25,7 @@ class DomainController extends BaseController<Domain> {
 
   public list = async (): Promise<Domain[]> => {
     try {
-      return (await api.get(endpoints.GET_DOMAIN)).data.domain;
+      return (await api.get(endpoints.GET_ALL_DOMAINS)).data.domains;
     } catch (e) {
       return [];
     }
@@ -33,7 +33,7 @@ class DomainController extends BaseController<Domain> {
 
   public post = async (data: Domain) => {
     try {
-      const {_id, ...eq} = data;
+      const {_id, createdAt, updatedAt, ...eq} = data;
       const result = (await api.post(endpoints.POST_DOMAIN, eq)).data;
 
       return result;
@@ -42,25 +42,11 @@ class DomainController extends BaseController<Domain> {
     }
   };
 
-  // public updateStatus = async (name: string, status: boolean) => {
-  //   try {
-  //     const result = (
-  //       await api.patch(endpoints.PATCH_DOMAIN_STATUS + name, {
-  //         isActive: status,
-  //       })
-  //     ).data;
-
-  //     return result;
-  //   } catch (e) {
-  //     return this.handleErrors(e.message);
-  //   }
-  // };
-
-  public update = async (domainId: string, domain: Domain) => {
-    const {_id, ...eq} = domain;
+  public update = async (equipmentId: string, equipment: Domain) => {
+    const {_id, createdAt, updatedAt, ...eq} = equipment;
     try {
       const result = (
-        await api.patch(endpoints.PATCH_DOMAIN_UPDATE + domainId, eq)
+        await api.patch(endpoints.PATCH_DOMAIN_UPDATE + equipmentId, eq)
       ).data;
 
       return result;

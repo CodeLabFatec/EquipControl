@@ -7,6 +7,7 @@ const api: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true,
+  timeout: 2000,
 });
 
 const endpoints = {
@@ -14,13 +15,15 @@ const endpoints = {
   GET_EQUIPMENT: '/equipment/get',
   GET_USER: '/user/get/',
   GET_ALL_USERS: '/user/getAllUsers',
-  GET_DOMAIN: '/domain/get',
+  GET_DOMAIN: '/domain/get/',
+  GET_ALL_DOMAINS: '/domain/getAllDomains',
   VALIDATE_TOKEN: '/user/validate',
 
   //POST
   POST_EQUIPMENT: '/equipment/create',
   POST_DOMAIN: '/domain/create',
   POST_USER: '/user/register',
+  POST_DOMAIN: '/user/registerDomain',
   LOGIN_USER: '/user/login',
 
   //PATCH
@@ -28,6 +31,7 @@ const endpoints = {
   PATCH_EQUIPMENT_UPDATE: '/equipment/update/',
   PATCH_DOMAIN_UPDATE: '/domain/update/',
   PATCH_USER_UPDATE: '/user/update/',
+  PATCH_DOMAIN_UPDATE: '/domain/update/',
 
   //DELETE
   DELETE_USER: '/user/delete/',

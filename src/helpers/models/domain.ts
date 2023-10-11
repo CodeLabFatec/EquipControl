@@ -1,7 +1,6 @@
-import {Files} from './files';
-
 export interface Domain {
-  _id: string;
+  _id?: string;
   name: string;
-  
+  createdAt?: Date;
+  updatedAt?: Date;
 }

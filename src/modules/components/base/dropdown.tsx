@@ -1,0 +1,178 @@
+import React, {useState} from 'react';
+import {
+  FlatList,
+  Pressable,
+  PressableProps,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+interface PropsItem extends PressableProps {
+  label: string;
+}
+
+interface DropdownItemProps {
+  label: string;
+  value: string;
+  onPress?: () => void;
+}
+
+function DropdownItem({label, ...props}: PropsItem) {
+  const [clicked, setClicked] = useState(false);
+
+  const stylesItem = StyleSheet.create({
+    background: {
+      backgroundColor: clicked ? '#fffff' : 'transparent',
+    },
+  });
+
+  return (
+    <Pressable
+      style={[styles.item, stylesItem.background]}
+      onPress={props.onPress}
+      onPressIn={() => setClicked(true)}
+      onPressOut={() => setClicked(false)}>
+      <Text style={styles.itemText}>{label}</Text>
+    </Pressable>
+  );
+}
+
+interface Props {
+  items: DropdownItemProps[];
+  useArrows?: boolean;
+  children?: React.ReactNode;
+  placeholder?: string;
+  enable?: boolean;
+  color?: 'white' | 'gray';
+  value?: string;
+  containerStyle?: any;
+  onSelect?: (value: string) => void;
+}
+
+function Dropdown({
+  items,
+  placeholder,
+  useArrows,
+  children,
+  enable = true,
+  color = 'white',
+  containerStyle,
+  value,
+  onSelect,
+}: Props) {
+  const [open, setOpen] = useState(false);
+
+  const onItemSelect = (item: {
+    value: string;
+    label: string;
+    onPress?: () => void;
+  }) => {
+    setOpen(false);
+    if (onSelect) onSelect(item.value);
+    if (item.onPress) item.onPress();
+  };
+
+  return (
+    <View style={containerStyle ?? styles.container}>
+      <Pressable
+        disabled={!enable}
+        style={
+          !children
+            ? [
+                styles.button,
+                color === 'gray' ? {backgroundColor: '#ffffff'} : {},
+                !enable ? {backgroundColor: '#BFBFBF'} : {},
+              ]
+            : null
+        }
+        onPress={() => setOpen(!open)}>
+        {placeholder && useArrows && (
+          <Text style={styles.buttonText}>
+            {items.find(option => option.value === value)?.label || placeholder}
+          </Text>
+        )}
+        {useArrows && (
+          <>
+            {open ? (
+              <Icon
+                name="arrow-up"
+                style={{...styles.buttonIcon, width: 14, height: 14}}
+              />
+            ) : (
+              <Icon
+                name="arrow-down"
+                style={{...styles.buttonIcon, width: 14, height: 14}}
+              />
+            )}
+          </>
+        )}
+        {children}
+      </Pressable>
+
+      {open && (
+        <FlatList
+          style={styles.list}
+          data={items}
+          renderItem={item => (
+            <DropdownItem
+              label={item.item.label}
+              onPress={() => onItemSelect(item.item)}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
+  button: {
+    backgroundColor: '#ffffff',
+    padding: 8,
+    borderRadius: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#656565',
+    flex: 1,
+    marginRight: 16,
+  },
+  buttonPlaceholder: {
+    color: '#BFBFBF',
+    flex: 1,
+    marginRight: 16,
+  },
+  buttonIcon: {
+    marginRight: 4,
+  },
+  list: {
+    width: 100,
+    height: 70,
+    marginTop: 6,
+    paddingVertical: 4,
+    backgroundColor: '#111111',
+    borderRadius: 8,
+    borderColor: '#77A490',
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  item: {
+    marginVertical: 8,
+    backgroundColor: 'red',
+  },
+  itemText: {
+    color: '#ffffff',
+    marginLeft: 8,
+  },
+});
+
+export default Dropdown;
