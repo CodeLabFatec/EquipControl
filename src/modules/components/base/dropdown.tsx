@@ -154,24 +154,19 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   list: {
-    width: 100,
-    height: 70,
-    marginTop: 6,
+    width: 150,
+    height: 100,
+    marginTop: 18,
     paddingVertical: 4,
-    backgroundColor: '#111111',
+    backgroundColor: '#444',
     borderRadius: 8,
-    borderColor: '#77A490',
-    borderWidth: 1,
     display: 'flex',
     flexDirection: 'column',
   },
-  item: {
-    marginVertical: 8,
-    backgroundColor: 'red',
-  },
+  item: {},
   itemText: {
     color: '#ffffff',
-    marginLeft: 8,
+    padding: 8,
   },
 });
 
