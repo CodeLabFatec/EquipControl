@@ -27,7 +27,7 @@ function Home({navigation}) {
   );
 
   const filteredEquipments = equipments?.filter(equipment =>
-    equipment.name?.includes(filter),
+    equipment.name?.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (

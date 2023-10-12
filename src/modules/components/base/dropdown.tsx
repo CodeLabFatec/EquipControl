@@ -1,25 +1,21 @@
 import React, {useState} from 'react';
-import {
-  FlatList,
-  Pressable,
-  PressableProps,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-interface PropsItem extends PressableProps {
-  label: string;
-}
 
 interface DropdownItemProps {
   label: string;
   value: string;
+  containerStyle?: any;
+  textStyle?: any;
   onPress?: () => void;
 }
 
-function DropdownItem({label, ...props}: PropsItem) {
+function DropdownItem({
+  label,
+  containerStyle,
+  onPress,
+  textStyle,
+}: DropdownItemProps) {
   const [clicked, setClicked] = useState(false);
 
   const stylesItem = StyleSheet.create({
@@ -30,11 +26,11 @@ function DropdownItem({label, ...props}: PropsItem) {
 
   return (
     <Pressable
-      style={[styles.item, stylesItem.background]}
-      onPress={props.onPress}
+      style={[styles.item, stylesItem.background, containerStyle ?? null]}
+      onPress={onPress}
       onPressIn={() => setClicked(true)}
       onPressOut={() => setClicked(false)}>
-      <Text style={styles.itemText}>{label}</Text>
+      <Text style={[styles.itemText, textStyle ?? null]}>{label}</Text>
     </Pressable>
   );
 }
@@ -118,6 +114,9 @@ function Dropdown({
           renderItem={item => (
             <DropdownItem
               label={item.item.label}
+              value={item.item.value}
+              containerStyle={item.item.containerStyle}
+              textStyle={item.item.textStyle}
               onPress={() => onItemSelect(item.item)}
             />
           )}

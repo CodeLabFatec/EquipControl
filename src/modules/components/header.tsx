@@ -8,6 +8,12 @@ function Header() {
   const {user, logout} = useContext(AuthContext);
 
   const dropdownItems: any[] = [
+    {
+      value: null,
+      label: (user && user.name) ?? 'Usuário',
+      onPress: null,
+      textStyle: {textAlign: 'center'},
+    },
     {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
     {value: null, label: 'Sair', onPress: () => logout()},
   ];
@@ -29,9 +35,9 @@ function Header() {
             }}
             style={styles.headerUser}
           />
-          <View style={styles.teste}>
+          {/* <View style={styles.teste}>
             <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
-          </View>
+          </View> */}
         </Dropdown>
       </View>
     </View>
@@ -75,14 +81,13 @@ const styles = StyleSheet.create({
     right: 5,
     marginRight: 10,
   },
-  teste:{
+  teste: {
     position: 'absolute',
     bottom: -15,
-    right:0,
+    right: 0,
     width: 45,
     alignItems: 'center',
-
-  }
+  },
 });
 
 export default Header;
