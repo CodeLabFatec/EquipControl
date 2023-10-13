@@ -77,4 +77,4 @@ function DomainRegister({navigation}) {
   
   export default DomainRegister;
 
-  //pagina pra listar, pagina pra puxar os dados e atualizaar, search domain
+ 

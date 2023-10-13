@@ -8,7 +8,7 @@ import { domainController } from '../../../services';
 import SearchDomain from '../../components/domain/search-domain';
 import {useFocusEffect} from '@react-navigation/native';
 
-function Home({navigation}) {
+function DomainList({navigation}) {
   const {setLoading} = useContext(LoadContext);
   const [domain, setDomain] = useState<Domain[]>([]);
   const [filter, setFilter] = useState('');
@@ -41,7 +41,7 @@ function Home({navigation}) {
        renderItem={DomainComponent}
         numColumns={2}
         contentContainerStyle={styles.domainList}
-        keyExtractor={item => item._id ?? ''}
+        keyExtractor={item => item.name ?? ''}
       />
     </View>
   );
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default DomainList;

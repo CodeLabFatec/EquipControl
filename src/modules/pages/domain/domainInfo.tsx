@@ -59,23 +59,16 @@ function DomainInfo({ navigation }) {
   const handleDeleteDomain = () => {
     const validaSubmit = domainValidator.validateDomain(domain);
 
-    if (validaSubmit) {
-      if (validaSubmit.includes('name')) {
+    
+      if (validaSubmit?.includes('name')) {
         setIsNameValid(false);
+      return;
       }
+    
 
-      return;
-    }
-
-    if (
-
-      !isNameValid
-
-    )
-      return;
 
     alertRequest(
-      'Atualizar',
+      'Deletar',
       'Deseja realmente deletar este domínio?',
       async () => {
         setLoading(true);
