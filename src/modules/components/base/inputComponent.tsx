@@ -19,6 +19,7 @@ interface props {
   onBlur?: () => void;
   secureTextEntry?: boolean;
   editable?: boolean;
+  rightIcon?: React.ReactNode;
 }
 
 function InputComponent({
@@ -33,6 +34,7 @@ function InputComponent({
   onBlur,
   secureTextEntry,
   editable,
+  rightIcon,
 }: props) {
   return (
     <View style={styles.container}>
@@ -50,6 +52,11 @@ function InputComponent({
           secureTextEntry={secureTextEntry}
           editable={editable ?? true}
         />
+        {rightIcon && (
+          <View style={styles.rightIconContainer}>
+            {rightIcon}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -76,6 +83,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  rightIconContainer: {
+    position: 'absolute',
+    top: '10%',
+    right: '5%',
+    backgroundColor: 'blue',
+  }
+  
 });
 
 export default InputComponent;

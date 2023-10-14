@@ -8,7 +8,12 @@ function Footer() {
       <Pressable
         style={styles.equipamentosButton}
         onPress={() => navigate('Home')}>
-        <Text style={styles.equipamentosButtonText}>Lista de equipamentos</Text>
+        <Text style={styles.equipamentosButtonText}>Equipamentos</Text>
+      </Pressable>
+      <Pressable
+        style={styles.equipamentosButton}
+        onPress={() => navigate('ListDomain')}>
+        <Text style={styles.equipamentosButtonText}>Domínios</Text>
       </Pressable>
     </View>
   );

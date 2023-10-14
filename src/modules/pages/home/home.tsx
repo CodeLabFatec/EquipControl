@@ -27,7 +27,7 @@ function Home({navigation}) {
   );
 
   const filteredEquipments = equipments?.filter(equipment =>
-    equipment.name?.includes(filter),
+    equipment.name?.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
@@ -39,7 +39,7 @@ function Home({navigation}) {
       <FlatList
         data={filteredEquipments}
         renderItem={EquipmentComponent}
-        numColumns={2}
+        numColumns={1}
         contentContainerStyle={styles.equipmentList}
         keyExtractor={item => item._id ?? ''}
       />
@@ -49,9 +49,7 @@ function Home({navigation}) {
 
 const styles = StyleSheet.create({
   equipmentList: {
-    paddingHorizontal: 10,
-    paddingTop: 15,
-    paddingBottom: 175,
+    paddingBottom: 120,
   },
 });
 
