@@ -16,7 +16,7 @@
 
 ## 🚀 Informações & Objetivo
 
-> **Projeto em Desenvolvimento** <br> > **Para acessar o repositório do backend clique [aqui](https://github.com/CodeLabFatec/EquipControl-Server)**
+> **Projeto em Desenvolvimento** <br> **Para acessar o repositório do backend clique [aqui](https://github.com/CodeLabFatec/EquipControl-Server)**
 
 <p align="justify">O objeto desse projeto é de possibilitar manobras de ativação/desativação de equipamentos de diversas áreas diferentes, como empresas de Saneamento, Elétrica, Telecomunicações e outras. A aplicação deve ser desenvolvida para mobile e também deve possibilitar consultas, listagens, atualizações, manobras e cadastros de equipamentos, além de disponibilizar uma api para a realização dessas manobras. </p>
 
@@ -60,16 +60,19 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 
 | Sprint |  Entrega   |       Status       |                  Relatório                  |
 | :----: | :--------: | :----------------: | :-----------------------------------------: |
-|   01   | 02/04/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint1.md) |
-|   02   | 23/04/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint2.md) |
-|   03   | 14/05/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint3.md) |
-|   04   | 04/06/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint4.md) |
+|   01   | 24/09/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint1.md) |
+|   02   | 15/10/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint2.md) |
+|   03   | 05/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint3.md) |
+|   04   | 26/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint4.md) |
 
 <br />
 
 ## :medal_sports: Entregas
 
 <h4> Entrega da Sprint 1 </h4>
+
+*Video Sprint Review 1* <br>
+https://youtu.be/UpCwCpW5Qag
 
 <p align="center">
 

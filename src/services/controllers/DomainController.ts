@@ -42,11 +42,11 @@ class DomainController extends BaseController<Domain> {
     }
   };
 
-  public update = async (equipmentId: string, equipment: Domain) => {
-    const {_id, createdAt, updatedAt, ...eq} = equipment;
+  public update = async (domainIn: string, domain: Domain) => {
+    const {_id, createdAt, updatedAt, ...eq} = domain;
     try {
       const result = (
-        await api.patch(endpoints.PATCH_DOMAIN_UPDATE + equipmentId, eq)
+        await api.patch(endpoints.PATCH_DOMAIN_UPDATE + domainIn, eq)
       ).data;
 
       return result;
