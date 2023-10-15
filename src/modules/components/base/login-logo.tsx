@@ -5,7 +5,7 @@ export default function LogoLoginComponent() {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../../assets/logo-login.png')}
+        source={require('../../../../assets/logo-login.png')}
         style={{
           marginLeft: 35,
           marginBottom: 70,

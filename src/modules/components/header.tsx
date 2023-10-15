@@ -22,7 +22,7 @@ function Header() {
     <View style={styles.headerContainer}>
       <View style={styles.headerLogo}>
         <Image
-          source={require('../../assets/logo-equip-control.png')}
+          source={require('../../../assets/logo-equip-control.png')}
           style={{
             marginTop: 10,
             width: 50,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     right: 5,
     marginRight: 10,
-    paddingTop: 12
+    paddingTop: 12,
   },
   teste: {
     position: 'absolute',
