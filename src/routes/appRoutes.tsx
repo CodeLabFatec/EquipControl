@@ -11,6 +11,8 @@ import DomainList from '../modules/pages/domain/domainList';
 import {StyleSheet, View} from 'react-native';
 import Footer from '../modules/components/footer';
 import ProfilePage from '../modules/pages/profile/profile';
+import ListUsers from '../modules/pages/users/listUsers';
+import RegisterUser from '../modules/pages/users/registerUser';
 
 const AppStack = createNativeStackNavigator();
 
@@ -57,6 +59,18 @@ const AppRoutes: React.FC = () => (
         name="ListDomain"
         navigationKey="ListDomain"
         component={DomainList}
+        options={{header: Header}}
+      />
+        <AppStack.Screen
+        name="RegisterUser"
+        navigationKey="RegisterUser"
+        component={RegisterUser}
+        options={{header: Header}}
+      />
+        <AppStack.Screen
+        name="ListUsers"
+        navigationKey="ListUsers"
+        component={ListUsers}
         options={{header: Header}}
       />
     </AppStack.Navigator>

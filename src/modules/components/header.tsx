@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     height: 60,
   },
   headerUser: {
-    width: 45,
-    height: 45,
+    width: 60,
+    height: 60,
     alignSelf: 'flex-end',
     borderRadius: 50,
   },

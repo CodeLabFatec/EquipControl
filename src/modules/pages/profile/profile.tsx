@@ -28,7 +28,7 @@ function ProfilePage({navigation}) {
 
   const changeUser = () => {
     if (isLoading) return;
-    const validation = userValidator.validateEquipment(usuario);
+    const validation = userValidator.validateUser(usuario);
 
     if (validation) {
       alertError(`O campo ${validation} é obrigatório!`);
@@ -126,9 +126,6 @@ function ProfilePage({navigation}) {
           onPress={changeUser}
           disabled={isLoading}>
           Salvar
-        </PressableButton>
-        <PressableButton onPress={logout} pressableStyle={styles.logoutButton}>
-          Sair
         </PressableButton>
       </View>
     </ScrollView>

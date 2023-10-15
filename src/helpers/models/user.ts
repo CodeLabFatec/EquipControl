@@ -6,7 +6,7 @@ export interface User {
   lastName: string;
   email: string;
   username: string;
-  password?: string;
+  password: string;
   phone: string;
   registration: string;
   cpf: string;

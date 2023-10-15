@@ -6,14 +6,19 @@ function Footer() {
   return (
     <View style={styles.footerContainer}>
       <Pressable
-        style={styles.equipamentosButton}
+        style={styles.Button}
         onPress={() => navigate('Home')}>
-        <Text style={styles.equipamentosButtonText}>Equipamentos</Text>
+        <Text style={styles.ButtonText}>Equipamentos</Text>
       </Pressable>
       <Pressable
-        style={styles.equipamentosButton}
+        style={styles.Button}
         onPress={() => navigate('ListDomain')}>
-        <Text style={styles.equipamentosButtonText}>Domínios</Text>
+        <Text style={styles.ButtonText}>Domínios</Text>
+      </Pressable>
+      <Pressable
+        style={styles.Button}
+        onPress={() => navigate('ListUsers')}>
+        <Text style={styles.ButtonText}>Usuários</Text>
       </Pressable>
     </View>
   );
@@ -30,7 +35,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
   },
-  equipamentosButton: {
+  Button: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: '#77A490',
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 5,
   },
-  equipamentosButtonText: {
+  ButtonText: {
     textAlign: 'center',
     paddingTop: 5,
     color: '#EEEEEE',
