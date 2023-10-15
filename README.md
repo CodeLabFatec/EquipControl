@@ -35,11 +35,11 @@ Na tabela abaixo é possível visualizar a divisão de tarefas do Backlog por Sp
 | 01 | Construção dos componentes para CONSULTA e ATUALIZAÇÃO de Equipamentos | :heavy_check_mark: | (90) Alta    |
 | 01 | Construção dos componentes fixos da tela, Header e Footer | :heavy_check_mark: | (60) Média |
 |        |
-| 02 | Construção da interface de autenticação | :hourglass: | (85) Alta |
-| 02 | Desenvolvimento de métodos para AUTENTICAÇÃO (APP & API)  |  :hourglass:  | (80)  Alta |
-| 02 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Usuários | :hourglass: | (75) Média |
-| 02 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Domínio de Dados | :hourglass: | (70) Média |
-| 02 | Construção da interface de CONSULTA do Perfil do usuário conectado  | :hourglass: | (65) Média |
+| 02 | Construção da interface de autenticação | :heavy_check_mark: | (85) Alta |
+| 02 | Desenvolvimento de métodos para AUTENTICAÇÃO (APP & API)  |  :heavy_check_mark:  | (80)  Alta |
+| 02 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Usuários | :heavy_check_mark: | (75) Média |
+| 02 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Domínio de Dados | :heavy_check_mark: | (70) Média |
+| 02 | Construção da interface de CONSULTA do Perfil do usuário conectado  | :heavy_check_mark: | (65) Média |
 |        |
 | 03 | Construção da interface e métodos de RECUPERAÇÃO de SENHA do Usuário | :hourglass:  | (55) Média |
 | 03 | Desenvolvimento de métodos para salvar LOG das manobras realizadas   | :hourglass:  | (50) Média |
@@ -61,7 +61,7 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 | Sprint |  Entrega   |       Status       |                  Relatório                  |
 | :----: | :--------: | :----------------: | :-----------------------------------------: |
 |   01   | 24/09/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint1.md) |
-|   02   | 15/10/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint2.md) |
+|   02   | 15/10/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint2.md) |
 |   03   | 05/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint3.md) |
 |   04   | 26/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint4.md) |
 
@@ -81,6 +81,14 @@ https://github.com/CodeLabFatec/EquipControl/assets/26208169/03a3142b-8254-4542-
 </p>
 
 <br />
+
+<h4> Entrega da Sprint 2 </h4>
+
+<p align="center">
+
+
+
+</p>
 
 <span id="tecnologias">
 
