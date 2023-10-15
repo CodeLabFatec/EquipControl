@@ -20,9 +20,18 @@ function Header() {
 
   return (
     <View style={styles.headerContainer}>
-      <View>
-        <Text style={styles.headerTextsBigger}>EquipControl</Text>
-        <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
+      <View style={styles.headerLogo}>
+        <Image
+          source={require('../../assets/logo-equip-control.png')}
+          style={{
+            marginTop: 10,
+            width: 50,
+            height: 50,
+            alignContent: 'center',
+            alignItems: 'center',
+          }}
+          resizeMode="contain"
+        />
       </View>
       <View style={styles.userBox}>
         <Dropdown items={dropdownItems}>
@@ -65,6 +74,8 @@ const styles = StyleSheet.create({
   headerLogo: {
     width: 60,
     height: 60,
+    position: 'relative',
+    right: -153,
   },
   headerUser: {
     width: 45,
@@ -80,6 +91,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     right: 5,
     marginRight: 10,
+    paddingTop: 12
   },
   teste: {
     position: 'absolute',
