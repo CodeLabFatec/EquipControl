@@ -101,6 +101,7 @@ function Login({navigation}) {
             )}
           </Pressable>
         }
+        onPressIn={() => console.log('oi')}
       />
 
       <SwitchComponent
