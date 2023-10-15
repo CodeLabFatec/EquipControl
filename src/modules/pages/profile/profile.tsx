@@ -1,5 +1,12 @@
-import React, {useContext, useState} from 'react';
-import {Image, Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  View,
+} from 'react-native';
 import {AuthContext, LoadContext} from '../../../contexts';
 import InputComponent from '../../components/base/inputComponent';
 import PressableButton from '../../components/base/pressableButton';
@@ -13,9 +20,11 @@ import {
 } from '../../../helpers/utils';
 import {userController} from '../../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import SwitchComponent from '../../components/base/switch';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ProfilePage({navigation}) {
-  const {user, updateUser, logout} = useContext(AuthContext);
+  const {user, updateUser, setBiometricOptions} = useContext(AuthContext);
 
   if (!user) {
     navigation.navigate('Home');
@@ -25,6 +34,56 @@ function ProfilePage({navigation}) {
 
   const [usuario, setUsuario] = useState(user);
   const {isLoading, setLoading} = useContext(LoadContext);
+  const [biometricAuth, setBiometricAuth] = useState(false);
+
+  async function checkBiometricAuthentication() {
+    try {
+      const biometricOption = await AsyncStorage.getItem(
+        'biometricOptionSaved',
+      );
+      if (biometricOption !== null) {
+        setBiometricAuth(true);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  }
+
+  async function enableBiometricAuth() {
+    const biometric = await setBiometricOptions(usuario._id, true);
+    if (!biometric) return;
+
+    const data = {
+      token: biometric.token,
+      username: biometric.user.username,
+      active: true,
+    };
+
+    try {
+      await AsyncStorage.setItem('biometricOptionSaved', JSON.stringify(data));
+      await AsyncStorage.setItem('savedUsername', biometric.user.username);
+    } catch (e) {
+      alertError('Um erro ocorreu ao habilitar a biometria!');
+      setBiometricAuth(false);
+    }
+  }
+
+  async function disableBiometricAuth() {
+    try {
+      await AsyncStorage.removeItem('biometricOptionSaved');
+    } catch (error) {}
+  }
+
+  function toggleBiometricAuth(value: boolean) {
+    setBiometricAuth(value);
+
+    if (value) enableBiometricAuth();
+    else disableBiometricAuth();
+  }
+
+  useEffect(() => {
+    checkBiometricAuthentication();
+  }, []);
 
   const changeUser = () => {
     if (isLoading) return;
@@ -119,16 +178,27 @@ function ProfilePage({navigation}) {
         labelStyle={styles.labelMargin}
         onChangeText={text => setUsuario({...usuario, registration: text})}
       />
-
+      <SwitchComponent
+        label="Autenticar por biometria?"
+        rightIcon={
+          <Switch
+            value={biometricAuth}
+            onValueChange={toggleBiometricAuth}
+            disabled={isLoading}
+            thumbColor={'#EEEEEE'}
+            trackColor={{
+              false: '#363636',
+              true: '#77A490',
+            }}
+          />
+        }
+      />
       <View style={styles.pressableContainer}>
         <PressableButton
           pressableStyle={styles.enterButton}
           onPress={changeUser}
           disabled={isLoading}>
           Salvar
-        </PressableButton>
-        <PressableButton onPress={logout} pressableStyle={styles.logoutButton}>
-          Sair
         </PressableButton>
       </View>
     </ScrollView>
@@ -174,11 +244,6 @@ const styles = StyleSheet.create({
   },
   enterButton: {
     backgroundColor: '#77A490',
-    width: 200,
-    fontSize: 20,
-  },
-  logoutButton: {
-    backgroundColor: '#858585',
     width: 200,
     fontSize: 20,
   },

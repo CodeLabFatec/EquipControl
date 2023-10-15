@@ -9,8 +9,7 @@ import SwitchComponent from '../../components/base/switch';
 import * as LocalAuthentication from 'expo-local-authentication';
 
 function Login({navigation}) {
-  const {login, setBiometricOptions, validateBiometricToken} =
-    useContext(AuthContext);
+  const {login, validateBiometricToken} = useContext(AuthContext);
   const {isLoading, setLoading} = useContext(LoadContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,9 +28,7 @@ function Login({navigation}) {
   const rememberUser = async () => {
     try {
       await AsyncStorage.setItem('savedUsername', username);
-    } catch (error) {
-      // Error saving data
-    }
+    } catch (error) {}
   };
 
   const getRememberedUser = async () => {
@@ -41,95 +38,54 @@ function Login({navigation}) {
         setUsername(username || '');
         setRememberMe(username ? true : false);
       }
-    } catch (error) {
-      // Error retrieving data
-    }
+    } catch (error) {}
   };
 
   const forgetUser = async () => {
     try {
       await AsyncStorage.removeItem('savedUsername');
-    } catch (error) {
-      // Error removing
-    }
+    } catch (error) {}
   };
 
-  const setBiometricOptionOnPhone = async () => {
-    const biometric = await setBiometricOptions(
-      '651188b144fcf07d7bb8a5bb',
-      true,
-    );
-
-    const data = {
-      token: biometric.token,
-      username: biometric.user.username,
-      active: true,
-    };
-
-    await AsyncStorage.setItem('biometricOptionSaved', JSON.stringify(data));
-  };
-
-  const signIn = async (biometricPass?: string) => {
+  const authenticate = async () => {
     if (username.trim() === '') return;
-    if (password.trim() === '') return;
-    setLoading(true);
 
-    if (rememberMe === true) {
-      rememberUser();
-    } else {
-      forgetUser();
-    }
-
-    await login(username, password);
-  };
-
-  const biometricSignIn = async (biometricPass?: string) => {
-    if (username.trim() === '') return;
-    if (!biometricPass) return;
-    setLoading(true);
-
-    if (rememberMe === true) {
-      rememberUser();
-    } else {
-      forgetUser();
-    }
-
-    await login(username, biometricPass);
-  };
-
-  async function handleBiometricAuthentication() {
     if (biometricCanceled) {
       setBiometricCanceled(!biometricCanceled);
 
+      signIn();
       return;
     }
 
     const hasBiometric = await LocalAuthentication.hasHardwareAsync();
 
-    if (!hasBiometric) return;
+    if (!hasBiometric) {
+      signIn();
+      return;
+    }
 
     const biometricOptionSaved = await AsyncStorage.getItem(
       'biometricOptionSaved',
     );
 
-    if (biometricOptionSaved === null) return;
+    if (biometricOptionSaved === null) {
+      signIn();
+      return;
+    }
 
     const jsonBiometricOptions = JSON.parse(biometricOptionSaved);
 
     if (
       jsonBiometricOptions.active === 'FALSE' ||
       username !== jsonBiometricOptions.username
-    )
+    ) {
+      signIn();
       return;
+    }
 
     const isBiometricEnrolled = await LocalAuthentication.isEnrolledAsync();
 
     if (!isBiometricEnrolled) return;
-
-    // return Alert.alert(
-    //   'Login',
-    //   'Nenhuma biometria encontrada. Por favor, cadastre no dispositivo.',
-    // );
 
     const validateToken = await validateBiometricToken(
       `Bearer ${jsonBiometricOptions.token}`,
@@ -156,9 +112,34 @@ function Login({navigation}) {
     } else {
       setBiometricCanceled(true);
     }
+  };
 
-    return;
-  }
+  const signIn = async () => {
+    if (username.trim() === '') return;
+    if (password.trim() === '') return;
+    setLoading(true);
+
+    if (rememberMe === true) {
+      rememberUser();
+    } else {
+      forgetUser();
+    }
+
+    await login(username, password);
+  };
+
+  const biometricSignIn = async (biometricPass?: string) => {
+    if (!biometricPass) return;
+    setLoading(true);
+
+    if (rememberMe === true) {
+      rememberUser();
+    } else {
+      forgetUser();
+    }
+
+    await login(username, biometricPass);
+  };
 
   useEffect(() => {
     getRememberedUser();
@@ -193,7 +174,7 @@ function Login({navigation}) {
             )}
           </Pressable>
         }
-        onPressIn={() => handleBiometricAuthentication()}
+        // onPressIn={() => handleBiometricAuthentication()}
       />
       <SwitchComponent
         label="Lembrar usuário?"
@@ -214,15 +195,15 @@ function Login({navigation}) {
         children="Entrar"
         pressableStyle={styles.pressableContainer}
         textStyle={styles.enterButton}
-        onPress={signIn}
+        onPress={authenticate}
         disabled={isLoading}
       />
-      <PressableButton
+      {/* <PressableButton
         children="Esqueci minha senha"
         pressableStyle={styles.pressableContainer}
         textStyle={styles.forgotPassword}
         disabled={isLoading}
-      />
+      /> */}
     </View>
   );
 }
