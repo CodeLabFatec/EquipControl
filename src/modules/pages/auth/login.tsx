@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SwitchComponent from '../../components/base/switch';
 import * as LocalAuthentication from 'expo-local-authentication';
+import LogoLoginComponent from '../../components/base/login-logo';
 
 function Login({navigation}) {
   const {login, validateBiometricToken} = useContext(AuthContext);
@@ -147,6 +148,7 @@ function Login({navigation}) {
 
   return (
     <View style={styles.container}>
+      <LogoLoginComponent/>
       <InputComponent
         label="Usuário"
         inputStyle={styles.inputWidth}
