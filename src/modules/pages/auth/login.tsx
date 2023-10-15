@@ -48,39 +48,39 @@ function Login({navigation}) {
     } catch (error) {}
   };
 
-  const authenticate = async () => {
-    if (username.trim() === '') return;
-
+  const getBiometryOptions = async () => {
     if (biometricCanceled) {
       setBiometricCanceled(!biometricCanceled);
-
-      signIn();
-      return;
+      return null;
     }
 
     const hasBiometric = await LocalAuthentication.hasHardwareAsync();
 
-    if (!hasBiometric) {
-      signIn();
-      return;
-    }
+    if (!hasBiometric) return null;
 
     const biometricOptionSaved = await AsyncStorage.getItem(
       'biometricOptionSaved',
     );
 
-    if (biometricOptionSaved === null) {
-      signIn();
-      return;
-    }
+    if (biometricOptionSaved === null) return null;
 
     const jsonBiometricOptions = JSON.parse(biometricOptionSaved);
 
     if (
       jsonBiometricOptions.active === 'FALSE' ||
       username !== jsonBiometricOptions.username
-    ) {
-      signIn();
+    )
+      return null;
+
+    return jsonBiometricOptions;
+  };
+
+  const authenticate = async (isOnlyBiometric?: boolean) => {
+    if (username.trim() === '') return;
+
+    const jsonBiometricOptions = await getBiometryOptions();
+    if (!jsonBiometricOptions) {
+      if (isOnlyBiometric) signIn();
       return;
     }
 
@@ -100,19 +100,7 @@ function Login({navigation}) {
       );
     }
 
-    const auth = await LocalAuthentication.authenticateAsync({
-      promptMessage: 'Login com biometria',
-      fallbackLabel: 'Biometria não reconhecida',
-      cancelLabel: 'Cancelar',
-      disableDeviceFallback: true,
-      requireConfirmation: true,
-    });
-
-    if (auth.success) {
-      biometricSignIn(validateToken.user?.password);
-    } else {
-      setBiometricCanceled(true);
-    }
+    biometricSignIn(validateToken.user?.password);
   };
 
   const signIn = async () => {
@@ -131,6 +119,20 @@ function Login({navigation}) {
 
   const biometricSignIn = async (biometricPass?: string) => {
     if (!biometricPass) return;
+
+    const auth = await LocalAuthentication.authenticateAsync({
+      promptMessage: 'Login com biometria',
+      fallbackLabel: 'Biometria não reconhecida',
+      cancelLabel: 'Cancelar',
+      disableDeviceFallback: true,
+      requireConfirmation: true,
+    });
+
+    if (!auth.success) {
+      setBiometricCanceled(true);
+      return;
+    }
+
     setLoading(true);
 
     if (rememberMe === true) {
@@ -148,7 +150,7 @@ function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      <LogoLoginComponent/>
+      <LogoLoginComponent />
       <InputComponent
         label="Usuário"
         inputStyle={styles.inputWidth}
@@ -176,7 +178,7 @@ function Login({navigation}) {
             )}
           </Pressable>
         }
-        // onPressIn={() => handleBiometricAuthentication()}
+        onPressIn={() => authenticate(true)}
       />
       <SwitchComponent
         label="Lembrar usuário?"
