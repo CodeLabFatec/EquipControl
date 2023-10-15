@@ -1,9 +1,11 @@
-import React, {useContext, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Pressable, StyleSheet, Switch, View} from 'react-native';
 import InputComponent from '../../components/base/inputComponent';
 import PressableButton from '../../components/base/pressableButton';
 import {AuthContext, LoadContext} from '../../../contexts';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SwitchComponent from '../../components/base/switch';
 
 function Login({navigation}) {
   const {login} = useContext(AuthContext);
@@ -11,9 +13,43 @@ function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleRememberMe = (value: boolean) => {
+    setRememberMe(value);
+  };
+
+  const rememberUser = async () => {
+    try {
+      await AsyncStorage.setItem('savedUsername', username);
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  const getRememberedUser = async () => {
+    try {
+      const username = await AsyncStorage.getItem('savedUsername');
+      console.log('username: ' + username);
+      if (username !== null) {
+        setUsername(username || '');
+        setRememberMe(username ? true : false);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  const forgetUser = async () => {
+    try {
+      await AsyncStorage.removeItem('savedUsername');
+    } catch (error) {
+      // Error removing
+    }
   };
 
   const signIn = async () => {
@@ -21,8 +57,19 @@ function Login({navigation}) {
     if (password.trim() === '') return;
 
     setLoading(true);
+
+    if (rememberMe === true) {
+      rememberUser();
+    } else {
+      forgetUser();
+    }
+
     await login(username, password);
   };
+
+  useEffect(() => {
+    getRememberedUser();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -53,6 +100,22 @@ function Login({navigation}) {
               <Icon style={styles.eyeIcon} name="eye" />
             )}
           </Pressable>
+        }
+      />
+
+      <SwitchComponent
+        label="Lembrar usuário?"
+        rightIcon={
+          <Switch
+            value={rememberMe}
+            onValueChange={toggleRememberMe}
+            disabled={isLoading}
+            thumbColor={'#EEEEEE'}
+            trackColor={{
+              false: '#363636',
+              true: '#77A490',
+            }}
+          />
         }
       />
 
@@ -105,8 +168,7 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     fontSize: 16,
-    color: '#EEEEEE'
-    
+    color: '#EEEEEE',
   },
 });
 
