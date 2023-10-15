@@ -56,8 +56,8 @@ class UserController extends BaseController<User> {
 
   public post = async (data: User) => {
     try {
-      const {_id, ...eq} = data;
-      const result = (await api.post(endpoints.POST_USER, eq)).data;
+      const {_id, createdAt, updatedAt, ...user} = data;
+      const result = (await api.post(endpoints.POST_USER, user)).data;
 
       return result;
     } catch (e) {
@@ -66,10 +66,11 @@ class UserController extends BaseController<User> {
   };
 
   public update = async (userId: string, data: User) => {
-    const {_id, ...eq} = data;
+    const {_id, createdAt, updatedAt, ...user} = data;
     try {
-      const result = (await api.patch(endpoints.PATCH_USER_UPDATE + userId, eq))
-        .data;
+      const result = (
+        await api.patch(endpoints.PATCH_USER_UPDATE + userId, user)
+      ).data;
 
       return result;
     } catch (e) {

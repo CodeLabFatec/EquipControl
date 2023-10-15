@@ -1,32 +1,44 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {AuthContext} from '../../contexts';
+import Dropdown from './base/dropdown';
+import navigate from '../../RootNavigation';
 
 function Header() {
-  const {user} = useContext(AuthContext);
+  const {user, logout} = useContext(AuthContext);
+
+  const dropdownItems: any[] = [
+    {
+      value: null,
+      label: (user && user.name) ?? 'Usuário',
+      onPress: null,
+      textStyle: {textAlign: 'center'},
+    },
+    {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Sair', onPress: () => logout()},
+  ];
 
   return (
     <View style={styles.headerContainer}>
-      {/* <Image
-        source={{
-          uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
-        }}
-        style={styles.headerLogo}
-      /> */}
       <View>
         <Text style={styles.headerTextsBigger}>EquipControl</Text>
         <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
       <View style={styles.userBox}>
-        <Image
-          source={{
-            uri: user?.image
-              ? `data:${user.image.type};base64,${user.image.base64}`
-              : '',
-          }}
-          style={styles.headerUser}
-        />
-        <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+        <Dropdown items={dropdownItems}>
+          <Image
+            source={{
+              uri:
+                user && user.image
+                  ? `data:${user.image.type};base64,${user.image.base64}`
+                  : '',
+            }}
+            style={styles.headerUser}
+          />
+          {/* <View style={styles.teste}>
+            <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
+          </View> */}
+        </Dropdown>
       </View>
     </View>
   );
@@ -58,16 +70,23 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     alignSelf: 'flex-end',
+    borderRadius: 50,
   },
   textUser: {
-    alignSelf: 'flex-end',
     color: 'white',
   },
   userBox: {
     position: 'absolute',
     textAlign: 'center',
+    right: 5,
+    marginRight: 10,
+  },
+  teste: {
+    position: 'absolute',
+    bottom: -15,
     right: 0,
-    marginRight: 5,
+    width: 45,
+    alignItems: 'center',
   },
 });
 

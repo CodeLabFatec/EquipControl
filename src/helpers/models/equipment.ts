@@ -12,4 +12,10 @@ export interface Equipment {
   isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  created_by?: CreatedBy;
+}
+
+interface CreatedBy {
+  id: string;
+  name: string;
 }

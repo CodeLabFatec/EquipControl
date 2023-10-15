@@ -1,12 +1,16 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Home from '../modules/pages/home';
+import Home from '../modules/pages/home/home';
 import Header from '../modules/components/header';
-import EquipmentRegister from '../modules/pages/equipmentRegister';
-import EquipmentInfo from '../modules/pages/equipmentInfo';
+import EquipmentRegister from '../modules/pages/equipment/equipmentRegister';
+import DomainRegister from '../modules/pages/domain/domainRegister';
+import EquipmentInfo from '../modules/pages/equipment/equipmentInfo';
+import DomainInfo from '../modules/pages/domain/domainInfo';
+import DomainList from '../modules/pages/domain/domainList';
 import {StyleSheet, View} from 'react-native';
 import Footer from '../modules/components/footer';
+import ProfilePage from '../modules/pages/profile/profile';
 
 const AppStack = createNativeStackNavigator();
 
@@ -29,6 +33,30 @@ const AppRoutes: React.FC = () => (
         name="InfoEquipment"
         navigationKey="InfoEquipment"
         component={EquipmentInfo}
+        options={{header: Header}}
+      />
+      <AppStack.Screen
+        name="Profile"
+        navigationKey="Profile"
+        component={ProfilePage}
+        options={{header: Header}}
+      />
+       <AppStack.Screen
+        name="RegisterDomain"
+        navigationKey="RegisterDomain"
+        component={DomainRegister}
+        options={{header: Header}}
+      />
+       <AppStack.Screen
+        name="InfoDomain"
+        navigationKey="InfoDomain"
+        component={DomainInfo}
+        options={{header: Header}}
+      />
+       <AppStack.Screen
+        name="ListDomain"
+        navigationKey="ListDomain"
+        component={DomainList}
         options={{header: Header}}
       />
     </AppStack.Navigator>

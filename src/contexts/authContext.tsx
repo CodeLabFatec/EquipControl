@@ -8,6 +8,7 @@ interface AuthContextData {
   signed: boolean;
   token: string | null;
   user: User | null;
+  updateUser: (user: User) => void;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -44,7 +45,8 @@ export const AuthProvider = ({children}: Props) => {
   }
 
   return (
-    <AuthContext.Provider value={{signed: !!user, token, user, login, logout}}>
+    <AuthContext.Provider
+      value={{signed: !!user, token, user, login, logout, updateUser: setUser}}>
       {children}
     </AuthContext.Provider>
   );

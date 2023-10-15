@@ -1,4 +1,15 @@
-import {requestReadImages, updateEquipamentoImages} from './equipmentUtils';
-import {alertError} from './customAlerts';
+import {
+  requestReadImages,
+  updateEquipamentoImages,
+  updateUserImage,
+} from './equipmentUtils';
+import {alertError, alertRequest, alertResult} from './customAlerts';
 
-export {requestReadImages, updateEquipamentoImages, alertError};
+export {
+  requestReadImages,
+  updateEquipamentoImages,
+  updateUserImage,
+  alertError,
+  alertRequest,
+  alertResult,
+};

@@ -1,6 +1,6 @@
 import React, {useRef, useCallback, useState} from 'react';
 
-import {Files} from '../../helpers/models';
+import {Files} from '../../../helpers/models';
 import {FlatList} from 'react-native';
 import Slide from './carousel-slide';
 
