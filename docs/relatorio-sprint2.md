@@ -19,7 +19,6 @@
 
 | Atividade | User story | 
 | :-------- | :--------- |
-
 | Construção da interface de autenticação | COMO um usuário EU QUERO me autenticar no aplicativo por meio de uma interface PARA QUE eu consiga acessar as páginas do sistema e suas funcionalidades |
 | Desenvolvimento de métodos para AUTENTICAÇÃO (APP & API)  |  COMO um usuário e desenvolvedor EU QUERO me autenticar no aplicativo ou API PARA QUE eu consiga obter permissão para executar as ações do sistema  |
 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Usuários | COMO um usuário administrador EU QUERO conseguir cadastrar, consultar, atualizar e excluir usuários PARA QUE seja possível controlar os usuários existentes no sistema |
