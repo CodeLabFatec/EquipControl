@@ -79,13 +79,11 @@ class UserController extends BaseController<User> {
     }
   };
 
-  public generateBiometricToken = async (
-    userId: string,
-    active: boolean,
-  ): Promise<SignInResponse | any> => {
+  public generateBiometricToken = async (data: {
+    userId: string;
+    active: boolean;
+  }): Promise<SignInResponse | any> => {
     try {
-      const data = {userId, active};
-
       const result = await api.post(endpoints.GENERTE_BIOMETRIC_TOKEN, data);
 
       return result.data;
@@ -104,13 +102,15 @@ class UserController extends BaseController<User> {
     biometricSecret: string,
   ): Promise<any> => {
     try {
-      const res = await api.get(endpoints.VALIDATE_TOKEN + biometricSecret, {
-        headers: {
-          authorization: biometricToken,
+      const res = await api.get(
+        endpoints.VALIDATE_BIOMETRIC_TOKEN + biometricSecret,
+        {
+          headers: {
+            authorization: biometricToken,
+          },
         },
-      });
+      );
 
-      console.log(res.data.jwt);
       return res.data.jwt;
     } catch (e) {
       if (e.message.includes('401'))

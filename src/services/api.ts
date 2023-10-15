@@ -18,6 +18,7 @@ const endpoints = {
   GET_DOMAIN: '/domain/get/',
   GET_ALL_DOMAINS: '/domain/getAllDomains',
   VALIDATE_TOKEN: '/user/validate',
+  VALIDATE_BIOMETRIC_TOKEN: '/user/validateBiometric/',
 
   //POST
   POST_EQUIPMENT: '/equipment/create',

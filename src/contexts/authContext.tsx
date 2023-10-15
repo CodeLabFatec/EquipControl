@@ -17,9 +17,9 @@ interface AuthContextData {
   ) => Promise<{
     auth: Boolean;
     user?: {
-      userId: string,
-      username: string,
-      password: string
+      userId: string;
+      username: string;
+      password: string;
     };
   }>;
   setBiometricOptions: (userId: string, active: boolean) => Promise<any>;
@@ -37,7 +37,10 @@ export const AuthProvider = ({children}: Props) => {
   const [token, setToken] = useState<string | null>(null);
 
   async function setBiometricOptions(userId: string, active: boolean) {
-    const result = await userController.generateBiometricToken(userId, active);
+    const result = await userController.generateBiometricToken({
+      userId,
+      active,
+    });
 
     if (result.errorMessage) {
       alertError(result.errorMessage);
@@ -55,8 +58,6 @@ export const AuthProvider = ({children}: Props) => {
       biometricToken,
       biometricSecret,
     );
-
-    console.log('result:' + JSON.stringify(result));
 
     if (result.errorMessage) {
       alertError(result.errorMessage);
