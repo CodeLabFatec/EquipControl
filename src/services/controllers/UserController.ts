@@ -38,6 +38,7 @@ class UserController extends BaseController<User> {
       return null;
     }
   }
+
   async delete(id: string): Promise<any> {
     try {
       return (await api.delete(endpoints.DELETE_USER + id)).data;
@@ -74,6 +75,49 @@ class UserController extends BaseController<User> {
 
       return result;
     } catch (e) {
+      return this.handleErrors(e.message);
+    }
+  };
+
+  public generateBiometricToken = async (data: {
+    userId: string;
+    active: boolean;
+  }): Promise<SignInResponse | any> => {
+    try {
+      const result = await api.post(endpoints.GENERTE_BIOMETRIC_TOKEN, data);
+
+      return result.data;
+    } catch (e) {
+      if (e.message.includes('404'))
+        return {
+          errorMessage: 'Usuário não encontrado.',
+        };
+
+      return this.handleErrors(e.message);
+    }
+  };
+
+  public validateBiometricToken = async (
+    biometricToken: string,
+    biometricSecret: string,
+  ): Promise<any> => {
+    try {
+      const res = await api.get(
+        endpoints.VALIDATE_BIOMETRIC_TOKEN + biometricSecret,
+        {
+          headers: {
+            authorization: biometricToken,
+          },
+        },
+      );
+
+      return res.data.jwt;
+    } catch (e) {
+      if (e.message.includes('401'))
+        return {
+          errorMessage: 'Usuário não autenticado.',
+        };
+
       return this.handleErrors(e.message);
     }
   };

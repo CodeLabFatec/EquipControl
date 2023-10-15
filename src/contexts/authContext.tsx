@@ -11,6 +11,18 @@ interface AuthContextData {
   updateUser: (user: User) => void;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  validateBiometricToken: (
+    biometricToken: string,
+    biometricSecret: string,
+  ) => Promise<{
+    auth: Boolean;
+    user?: {
+      userId: string;
+      username: string;
+      password: string;
+    };
+  }>;
+  setBiometricOptions: (userId: string, active: boolean) => Promise<any>;
 }
 
 type Props = {
@@ -23,6 +35,46 @@ export const AuthProvider = ({children}: Props) => {
   const {isLoading, setLoading} = useContext(LoadContext);
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+
+  async function setBiometricOptions(userId: string, active: boolean) {
+    const result = await userController.generateBiometricToken({
+      userId,
+      active,
+    });
+
+    if (result.errorMessage) {
+      alertError(result.errorMessage);
+      return;
+    }
+
+    return result;
+  }
+
+  async function validateBiometricToken(
+    biometricToken: string,
+    biometricSecret: string,
+  ) {
+    const result = await userController.validateBiometricToken(
+      biometricToken,
+      biometricSecret,
+    );
+
+    if (result.errorMessage) {
+      alertError(result.errorMessage);
+      return {
+        auth: false,
+      };
+    }
+
+    return {
+      auth: true,
+      user: {
+        userId: result.userId,
+        username: result.username,
+        password: result.password,
+      },
+    };
+  }
 
   async function login(username: string, password: string) {
     const result = await userController.login(username, password);
@@ -46,7 +98,16 @@ export const AuthProvider = ({children}: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{signed: !!user, token, user, login, logout, updateUser: setUser}}>
+      value={{
+        signed: !!user,
+        token,
+        user,
+        login,
+        logout,
+        updateUser: setUser,
+        setBiometricOptions,
+        validateBiometricToken,
+      }}>
       {children}
     </AuthContext.Provider>
   );

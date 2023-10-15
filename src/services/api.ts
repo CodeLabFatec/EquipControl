@@ -18,12 +18,14 @@ const endpoints = {
   GET_DOMAIN: '/domain/get/',
   GET_ALL_DOMAINS: '/domain/getAllDomains',
   VALIDATE_TOKEN: '/user/validate',
+  VALIDATE_BIOMETRIC_TOKEN: '/user/validateBiometric/',
 
   //POST
   POST_EQUIPMENT: '/equipment/create',
   POST_DOMAIN: '/domain/registerDomain',
   POST_USER: '/user/register',
   LOGIN_USER: '/user/login',
+  GENERTE_BIOMETRIC_TOKEN: '/user/generateBiometricToken',
 
   //PATCH
   PATCH_EQUIPMENT_STATUS: '/equipment/updateStatus/',
