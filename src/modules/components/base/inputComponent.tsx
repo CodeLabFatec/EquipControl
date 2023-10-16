@@ -5,6 +5,7 @@ import {
   TextInput,
   Text,
   KeyboardTypeOptions,
+  InputModeOptions,
 } from 'react-native';
 
 interface props {
@@ -20,6 +21,7 @@ interface props {
   secureTextEntry?: boolean;
   editable?: boolean;
   rightIcon?: React.ReactNode;
+  inputMode?: InputModeOptions;
   onPressIn?: () => void;
 }
 
@@ -36,6 +38,7 @@ function InputComponent({
   secureTextEntry,
   editable,
   rightIcon,
+  inputMode,
   onPressIn,
 }: props) {
   return (
@@ -45,6 +48,7 @@ function InputComponent({
         <TextInput
           placeholder={placeholder}
           keyboardType={keyboardType}
+          inputMode={inputMode}
           placeholderTextColor={'#E2D7C1'}
           maxLength={maxLength}
           onChangeText={onChangeText}

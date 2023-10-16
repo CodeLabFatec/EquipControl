@@ -23,13 +23,7 @@ function Header() {
       <View style={styles.headerLogo}>
         <Image
           source={require('../../../assets/logo-equip-control.png')}
-          style={{
-            marginTop: 10,
-            width: 50,
-            height: 50,
-            alignContent: 'center',
-            alignItems: 'center',
-          }}
+          style={styles.image}
           resizeMode="contain"
         />
       </View>
@@ -44,9 +38,6 @@ function Header() {
             }}
             style={styles.headerUser}
           />
-          {/* <View style={styles.teste}>
-            <Text style={styles.textUser}>{user ? user.name : 'Usuário'}</Text>
-          </View> */}
         </Dropdown>
       </View>
     </View>
@@ -63,23 +54,22 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
   },
-  headerTextsBigger: {
-    fontSize: 30,
-    color: '#EEEEEE',
-  },
-  headerTextsMedium: {
-    fontSize: 20,
-    color: '#A7A6A6',
-  },
   headerLogo: {
     width: 60,
     height: 60,
     position: 'relative',
     right: -153,
   },
+  image: {
+    marginTop: 10,
+    width: 50,
+    height: 50,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   headerUser: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     alignSelf: 'flex-end',
     borderRadius: 50,
   },
@@ -92,13 +82,6 @@ const styles = StyleSheet.create({
     right: 5,
     marginRight: 10,
     paddingTop: 12,
-  },
-  teste: {
-    position: 'absolute',
-    bottom: -15,
-    right: 0,
-    width: 45,
-    alignItems: 'center',
   },
 });
 

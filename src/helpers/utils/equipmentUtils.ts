@@ -61,6 +61,8 @@ async function updateUserImage(
     mediaType: 'photo',
   });
 
+  if (!selectedImages) return;
+
   const image: Files = {
     base64: selectedImages.data ?? '',
     type: selectedImages.mime,

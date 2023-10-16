@@ -1,16 +1,28 @@
 import React from 'react';
-import {StyleSheet, Text, View, ListRenderItem, Pressable} from 'react-native';
-import {Equipment} from '../../../helpers/models';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ListRenderItem,
+  Pressable,
+  Image,
+} from 'react-native';
+import {User} from '../../../helpers/models';
 import navigate from '../../../RootNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Carousel from '../carousel/carousel';
+import {userValidator} from '../../../helpers/validators';
 
-const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
+const ListUsersItem: ListRenderItem<User> = ({item}) => {
   return (
-    <View style={styles.equipment}>
+    <View style={styles.userContainer}>
       <View style={styles.carrouselContainer}>
-        {item.files && item.files.length > 0 ? (
-          <Carousel width={150} files={item.files ?? []} />
+        {item.image ? (
+          <Image
+            style={{width: 140, height: '100%'}}
+            source={{
+              uri: `data:${item.image.type};base64,${item.image.base64}`,
+            }}
+          />
         ) : (
           <View style={styles.fileIconContainer}>
             <Icon style={styles.fileIcon} name="file-image" />
@@ -19,39 +31,36 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
       </View>
       <Pressable
         style={styles.titleContainer}
-        onPress={() => navigate('InfoEquipment', item)}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Nº Série: </Text>
-          {item.serial}
+        onPress={() => navigate('EditUser', item)}>
+        <Text style={styles.title}>
+          {item.name} {item.lastName}
         </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Tipo: </Text> {item.domain}
+        <Text style={styles.card}>
+          <Text style={{fontWeight: 'bold'}}>E-mail: </Text>
+          {item.email}
         </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Latitude: </Text> {item.latitude}
+        <Text style={styles.card}>
+          <Text style={{fontWeight: 'bold'}}>Telefone: </Text>{' '}
+          {userValidator.formatPhone(item.phone)}
         </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Longitude: </Text> {item.longitude}
-        </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Criado por: </Text>{' '}
-          {item.created_by?.name}
+        <Text style={styles.card}>
+          <Text style={{fontWeight: 'bold'}}>CPF: </Text>{' '}
+          {userValidator.formatCPF(item.cpf)}
         </Text>
       </Pressable>
-      <Text
+      {/* <Text
         style={[
           styles.status,
           item.isActive ? styles.activeStatus : styles.inactiveStatus,
         ]}>
         {item.isActive}
-      </Text>
+      </Text> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  equipment: {
+  userContainer: {
     display: 'flex',
     flexDirection: 'row',
     maxWidth: '96%',
@@ -67,7 +76,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
   },
-  name: {
+  title: {
     fontSize: 18,
     color: '#77A490',
     fontWeight: 'bold',
@@ -75,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
   },
-  serial: {
+  card: {
     marginLeft: 6,
     fontSize: 16,
     color: '#EEE',
@@ -115,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EquipmentComponent;
+export default ListUsersItem;

@@ -60,9 +60,10 @@ class UserController extends BaseController<User> {
       const {_id, createdAt, updatedAt, ...user} = data;
       const result = (await api.post(endpoints.POST_USER, user)).data;
 
+      console.log(result);
       return result;
     } catch (e) {
-      return this.handleErrors(e.message);
+      return this.handleErrors(e.response.data.message);
     }
   };
 

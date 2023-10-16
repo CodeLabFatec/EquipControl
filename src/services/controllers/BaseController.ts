@@ -13,6 +13,8 @@ export abstract class BaseController<T> {
 
   public handleErrors(message: string) {
     let error = 'Erro de comunicação com o servidor.';
+    if (message.includes('Username or email already exist'))
+      error = 'Username ou email já estão cadastrados em outro usuário.';
     if (message.includes('401'))
       error = 'Sem autorização, acesse o aplicativo novamente.';
     if (message.includes('404')) error = `${this.entityName} não encontrado.`;

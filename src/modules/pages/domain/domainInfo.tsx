@@ -1,18 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { domainValidator } from '../../../helpers/validators/domainValidator';
+import React, {useState, useContext} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {domainValidator} from '../../../helpers/validators/domainValidator';
 import InputComponent from '../../components/base/inputComponent';
 import PressableButton from '../../components/base/pressableButton';
-import {
-  alertRequest,
-  alertResult,
-} from '../../../helpers/utils';
-import { LoadContext } from '../../../contexts';
-import { domainController } from '../../../services';
-import { Domain } from '../../../helpers/models';
+import {alertRequest, alertResult} from '../../../helpers/utils';
+import {LoadContext} from '../../../contexts';
+import {domainController} from '../../../services';
+import {Domain} from '../../../helpers/models';
 
-
-function DomainInfo({ navigation, route}) {
+function DomainInfo({navigation, route}) {
   const dominio: Domain = route.params;
 
   if (!dominio) {
@@ -23,26 +19,29 @@ function DomainInfo({ navigation, route}) {
   const [domain, setDomain] = useState(dominio);
   const [isNameValid, setIsNameValid] = useState(true);
 
-  const { isLoading, setLoading } = useContext(LoadContext);
+  const {isLoading, setLoading} = useContext(LoadContext);
 
   const handleUpdateDomain = () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     const validaSubmit = domainValidator.validateDomain(domain);
 
-    if (validaSubmit && validaSubmit.includes('name')){
+    if (validaSubmit && validaSubmit.includes('name')) {
       setIsNameValid(false);
-      return
-    } 
+      return;
+    }
     if (!isNameValid) return;
 
     alertRequest(
       'Cadastrar',
-      'Deseja realmente atualizar este equipamento?',
+      'Deseja realmente atualizar este domínio?',
       async () => {
         setLoading(true);
 
-        const result: any = await domainController.update(domain._id ?? '', domain);
+        const result: any = await domainController.update(
+          domain._id ?? '',
+          domain,
+        );
         setLoading(false);
 
         alertResult(
@@ -53,19 +52,17 @@ function DomainInfo({ navigation, route}) {
         );
       },
     );
-  }
+  };
 
   const handleDeleteDomain = () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     alertRequest(
       'Deletar',
       'Deseja realmente deletar este domínio?',
       async () => {
         setLoading(true);
-        const result: any = await domainController.delete(
-          domain._id ?? '',
-        );
+        const result: any = await domainController.delete(domain._id ?? '');
         setLoading(false);
 
         alertResult(
@@ -80,7 +77,6 @@ function DomainInfo({ navigation, route}) {
 
   return (
     <View style={styles.container}>
-
       <PressableButton
         children="Deletar Domínio"
         pressableStyle={styles.pressableContainer}
@@ -95,7 +91,7 @@ function DomainInfo({ navigation, route}) {
         placeholder="Nome do Domínio"
         onChangeText={text => {
           setIsNameValid(true);
-          setDomain({ ...domain, name: text });
+          setDomain({...domain, name: text});
         }}
         value={domain.name}
         onBlur={() => {
@@ -112,8 +108,6 @@ function DomainInfo({ navigation, route}) {
         onPress={handleUpdateDomain}
         disabled={isLoading}
       />
-
-
     </View>
   );
 }
