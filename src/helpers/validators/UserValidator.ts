@@ -1,7 +1,7 @@
 import {User} from '../models';
 
 class UserValidator {
-  public validateUser(user: User): string | null {
+  public validateUser(user: User, bypassPasswordCpf?: boolean): string | null {
     let validation = null;
     if (!this.validateEmptyString(user.name)) validation = 'name';
     if (!this.validateEmptyString(user.lastName))
@@ -12,20 +12,20 @@ class UserValidator {
       validation = validation ? validation + 'phone' : 'phone';
     if (!this.validateEmptyString(user.registration))
       validation = validation ? validation + 'registration' : 'registration';
-    if (!this.validateEmptyString(user.password))
+    if (!bypassPasswordCpf && !this.validateEmptyString(user.password))
       validation = validation ? validation + 'password' : 'password';
     if (!this.validateEmptyString(user.username))
       validation = validation ? validation + 'username' : 'username';
-    if (!this.validateEmptyString(user.cpf))
+    if (!bypassPasswordCpf && !this.validateEmptyString(user.cpf))
       validation = validation ? validation + 'cpf' : 'cpf';
 
     if (!this.validateEmail(user.email))
       validation = validation ? validation + 'email' : 'email';
-    if (!this.validatePassword(user.password))
+    if (!bypassPasswordCpf && !this.validatePassword(user.password))
       validation = validation ? validation + 'password' : 'password';
     if (!this.validatePhoneNumber(user.phone))
       validation = validation ? validation + 'phone' : 'phone';
-    if (!this.validateCPF(user.cpf))
+    if (!bypassPasswordCpf && !this.validateCPF(user.cpf))
       validation = validation ? validation + 'cpf' : 'cpf';
 
     return validation;
@@ -140,6 +140,7 @@ const defaultUser: User = {
   registration: '',
   password: '',
   image: undefined,
+  isAdmin: false,
 };
 
 const userValidator = new UserValidator();

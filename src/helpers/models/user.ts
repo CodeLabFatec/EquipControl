@@ -10,6 +10,7 @@ export interface User {
   phone: string;
   registration: string;
   cpf: string;
+  isAdmin?: boolean;
   image?: Files;
   createdAt?: Date;
   updatedAt?: Date;
