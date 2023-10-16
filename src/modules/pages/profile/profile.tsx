@@ -87,7 +87,7 @@ function ProfilePage({navigation}) {
 
   const changeUser = () => {
     if (isLoading) return;
-    const validation = userValidator.validateUser(usuario);
+    const validation = userValidator.validateUser(usuario, true);
 
     if (validation) {
       alertError(`O campo ${validation} é obrigatório!`);

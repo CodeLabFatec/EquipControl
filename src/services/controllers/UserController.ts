@@ -62,6 +62,8 @@ class UserController extends BaseController<User> {
 
       return result;
     } catch (e) {
+      console.log(e.response.data);
+      console.log(e.response.data.message);
       return this.handleErrors(e.response.data.message);
     }
   };
@@ -75,6 +77,7 @@ class UserController extends BaseController<User> {
 
       return result;
     } catch (e) {
+      console.log(e.response.data);
       return this.handleErrors(e.message);
     }
   };
