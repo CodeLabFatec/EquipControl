@@ -3,7 +3,7 @@ import {Files} from './files';
 export interface Equipment {
   _id: string;
   name: string;
-  domain: string;
+  domain: Domain;
   longitude: string;
   latitude: string;
   serial: string;
@@ -17,5 +17,10 @@ export interface Equipment {
 
 interface CreatedBy {
   id: string;
+  name: string;
+}
+
+interface Domain {
+  _id: string;
   name: string;
 }

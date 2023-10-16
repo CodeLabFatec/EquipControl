@@ -26,7 +26,7 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
           {item.serial}
         </Text>
         <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Tipo: </Text> {item.domain}
+          <Text style={{fontWeight: 'bold'}}>Tipo: </Text> {item.domain.name}
         </Text>
         <Text style={styles.serial}>
           <Text style={{fontWeight: 'bold'}}>Latitude: </Text> {item.latitude}

@@ -57,10 +57,14 @@ class EquipmentController extends BaseController<Equipment> {
   };
 
   public update = async (equipmentId: string, equipment: Equipment) => {
-    const {_id, createdAt, updatedAt, created_by, ...eq} = equipment;
+    const {_id, createdAt, updatedAt, created_by, domain, ...eq} = equipment;
     try {
+      const data = {
+        domain: domain._id,
+        ...eq,
+      };
       const result = (
-        await api.patch(endpoints.PATCH_EQUIPMENT_UPDATE + equipmentId, eq)
+        await api.patch(endpoints.PATCH_EQUIPMENT_UPDATE + equipmentId, data)
       ).data;
 
       return result;

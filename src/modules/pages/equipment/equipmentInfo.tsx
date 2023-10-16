@@ -24,7 +24,6 @@ import {PickerItemProps} from '@react-native-picker/picker';
 
 function EquipmentInfo({navigation, route}) {
   const equipment: Equipment = route.params;
-
   if (!equipment) {
     navigation.navigate('Home');
     return;
@@ -259,12 +258,15 @@ function EquipmentInfo({navigation, route}) {
           <PickerComponent
             onChange={value => {
               setIsDominioValid(true);
-              setEquipamento({...equipamento, domain: value});
+              setEquipamento({
+                ...equipamento,
+                domain: {_id: value, name: equipamento.domain.name},
+              });
             }}
             items={domainOptions.map(
               i => ({value: i._id, label: i.name} as PickerItemProps),
             )}
-            value={equipamento.domain}
+            value={equipamento.domain._id}
             placeholder="Domínio do equipamento"
             pickerStyle={styles.selectField}
             containerStyle={[
@@ -273,7 +275,9 @@ function EquipmentInfo({navigation, route}) {
             ]}
             itemStyle={{color: '#E2D7C1'}}
             onBlur={() => {
-              if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
+              if (
+                !equipmentValidator.validateEmptyString(equipamento.domain._id)
+              ) {
                 setIsDominioValid(false);
               }
             }}

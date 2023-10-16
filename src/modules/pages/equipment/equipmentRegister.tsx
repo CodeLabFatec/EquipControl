@@ -192,7 +192,7 @@ function EquipmentRegister({navigation}) {
             items={domainOptions.map(
               i => ({value: i._id, label: i.name} as PickerItemProps),
             )}
-            value={equipamento.domain}
+            value={equipamento.domain._id}
             placeholder="Domínio do equipamento"
             pickerStyle={styles.selectField}
             containerStyle={[
@@ -201,7 +201,7 @@ function EquipmentRegister({navigation}) {
             ]}
             itemStyle={{color: '#E2D7C1'}}
             onBlur={() => {
-              if (!equipmentValidator.validateEmptyString(equipamento.domain)) {
+              if (!equipmentValidator.validateEmptyString(equipamento.domain._id)) {
                 setIsDominioValid(false);
               }
             }}
