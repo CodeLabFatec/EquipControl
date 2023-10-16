@@ -1,18 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { domainValidator } from '../../../helpers/validators/domainValidator';
+import React, {useState, useContext} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {domainValidator} from '../../../helpers/validators/domainValidator';
 import InputComponent from '../../components/base/inputComponent';
 import PressableButton from '../../components/base/pressableButton';
-import {
-  alertRequest,
-  alertResult,
-} from '../../../helpers/utils';
-import { LoadContext } from '../../../contexts';
-import { domainController } from '../../../services';
-import { Domain } from '../../../helpers/models';
+import {alertRequest, alertResult} from '../../../helpers/utils';
+import {LoadContext} from '../../../contexts';
+import {domainController} from '../../../services';
+import {Domain} from '../../../helpers/models';
 
-
-function DomainInfo({ navigation, route}) {
+function DomainInfo({navigation, route}) {
   const dominio: Domain = route.params;
 
   if (!dominio) {
@@ -23,17 +19,17 @@ function DomainInfo({ navigation, route}) {
   const [domain, setDomain] = useState(dominio);
   const [isNameValid, setIsNameValid] = useState(true);
 
-  const { isLoading, setLoading } = useContext(LoadContext);
+  const {isLoading, setLoading} = useContext(LoadContext);
 
   const handleUpdateDomain = () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     const validaSubmit = domainValidator.validateDomain(domain);
 
-    if (validaSubmit && validaSubmit.includes('name')){
+    if (validaSubmit && validaSubmit.includes('name')) {
       setIsNameValid(false);
-      return
-    } 
+      return;
+    }
     if (!isNameValid) return;
 
     alertRequest(
@@ -42,7 +38,10 @@ function DomainInfo({ navigation, route}) {
       async () => {
         setLoading(true);
 
-        const result: any = await domainController.update(domain._id ?? '', domain);
+        const result: any = await domainController.update(
+          domain._id ?? '',
+          domain,
+        );
         setLoading(false);
 
         alertResult(
@@ -53,19 +52,17 @@ function DomainInfo({ navigation, route}) {
         );
       },
     );
-  }
+  };
 
   const handleDeleteDomain = () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     alertRequest(
       'Deletar',
       'Deseja realmente deletar este domínio?',
       async () => {
         setLoading(true);
-        const result: any = await domainController.delete(
-          domain._id ?? '',
-        );
+        const result: any = await domainController.delete(domain._id ?? '');
         setLoading(false);
 
         alertResult(
@@ -80,14 +77,6 @@ function DomainInfo({ navigation, route}) {
 
   return (
     <View style={styles.container}>
-
-      <PressableButton
-        children="Deletar Domínio"
-        pressableStyle={styles.pressableContainer}
-        textStyle={styles.deleteButton}
-        onPress={handleDeleteDomain}
-        disabled={isLoading}
-      />
       <InputComponent
         label="Nome"
         inputStyle={styles.inputWidth}
@@ -95,7 +84,7 @@ function DomainInfo({ navigation, route}) {
         placeholder="Nome do Domínio"
         onChangeText={text => {
           setIsNameValid(true);
-          setDomain({ ...domain, name: text });
+          setDomain({...domain, name: text});
         }}
         value={domain.name}
         onBlur={() => {
@@ -105,23 +94,28 @@ function DomainInfo({ navigation, route}) {
         }}
       />
 
-      <PressableButton
-        children="Atualizar Domínio"
-        pressableStyle={styles.pressableContainer}
-        textStyle={styles.confirmButton}
-        onPress={handleUpdateDomain}
-        disabled={isLoading}
-      />
-
-
+      <View style={styles.pressableContainer}>
+        <PressableButton
+          children="Confirmar"
+          textStyle={styles.confirmButton}
+          onPress={handleUpdateDomain}
+          disabled={isLoading}
+        />
+        <PressableButton
+          children="Deletar"
+          textStyle={styles.deleteButton}
+          onPress={handleDeleteDomain}
+          disabled={isLoading}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '60%',
-    marginBottom: 50,
+    flex: 1,
+    justifyContent: 'center',
   },
   inputWidth: {
     width: '93%',
@@ -131,20 +125,19 @@ const styles = StyleSheet.create({
   },
   pressableContainer: {
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 20
   },
   confirmButton: {
     backgroundColor: '#77A490',
-    width: '93%',
-    marginTop: '2%',
     fontSize: 20,
+    width: 150,
   },
-
   deleteButton: {
     backgroundColor: '#e03232',
-    width: '93%',
-    marginTop: '3%',
-    fontSize: 20,
+    width: 150,
   },
 });
 

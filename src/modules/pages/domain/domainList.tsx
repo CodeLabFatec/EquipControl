@@ -38,8 +38,8 @@ function DomainList({navigation}) {
       />
       <FlatList
         data={filteredDomain}
-       renderItem={DomainComponent}
-        numColumns={2}
+        renderItem={DomainComponent}
+        numColumns={1}
         contentContainerStyle={styles.domainList}
         keyExtractor={item => item.name ?? ''}
       />

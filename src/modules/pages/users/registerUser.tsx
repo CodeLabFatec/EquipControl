@@ -233,7 +233,7 @@ function RegisterUser({navigation}) {
       <InputComponent
         label="CPF"
         value={usuario.cpf}
-        keyboardType="numeric"
+        keyboardType="number-pad"
         inputStyle={[
           isCpfValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
@@ -257,13 +257,18 @@ function RegisterUser({navigation}) {
         label="Matrícula"
         value={usuario.registration}
         inputStyle={[
-          isNameValid ? styles.isValid : styles.isRequired,
+          isMatriculaValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
         ]}
         labelStyle={styles.labelMargin}
         onChangeText={text => {
           setIsMatriculaValid(true);
           setUsuario({...usuario, registration: text});
+        }}
+        onBlur={() => {
+          if (!userValidator.validateEmptyString(usuario.registration)) {
+            setIsMatriculaValid(false);
+          }
         }}
       />
       <InputComponent
@@ -369,12 +374,12 @@ function RegisterUser({navigation}) {
       </View>
 
       <View style={styles.pressableContainer}>
-        <PressableButton
-          pressableStyle={styles.enterButton}
+      <PressableButton
+          children="Confirmar"
+          textStyle={styles.enterButton}
           onPress={handleRegister}
-          disabled={isLoading}>
-          Confirmar
-        </PressableButton>
+          disabled={isLoading}
+        />
       </View>
     </ScrollView>
   );

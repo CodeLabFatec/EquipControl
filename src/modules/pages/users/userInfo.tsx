@@ -20,35 +20,29 @@ import {
 } from '../../../helpers/utils';
 import {userController} from '../../../services';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {User} from '../../../helpers/models';
 
-function UserInfo({navigation}) {
+function UserInfo({navigation, route}) {
   const {user} = useContext(AuthContext);
+  const usuarioInfo: User = route.params;
 
   if (!user) {
     navigation.navigate('Home');
 
-    return <></>;
+    return;
   }
 
-  const [usuario, setUsuario] = React.useState(defaultUser);
   const {isLoading, setLoading} = useContext(LoadContext);
 
+  const [usuario, setUsuario] = React.useState(usuarioInfo);
   const [isNameValid, setIsNameValid] = React.useState(true);
   const [isSobrenomeValid, setIsSobrenomeValid] = React.useState(true);
   const [isEmailValid, setIsEmailValid] = React.useState(true);
   const [isTelefoneValid, setIsTelefoneValid] = React.useState(true);
   const [isMatriculaValid, setIsMatriculaValid] = React.useState(true);
-  const [isPasswordValid, setIsPasswordValid] = React.useState(true);
   const [isUserNameValid, setIsUserNameValid] = React.useState(true);
   const [isCpfValid, setIsCpfValid] = React.useState(true);
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const [isLengthValid, setIsLengthValid] = useState(false);
-  const [isUpperCaseValid, setIsUpperCaseValid] = useState(false);
-  const [isLowerCaseValid, setIsLowerCaseValid] = useState(false);
-  const [isDigitValid, setIsDigitValid] = useState(false);
-  const [isSymbolValid, setIsSymbolValid] = useState(false);
   // const updatePhoto = async () => {
   //   if (isLoading) return;
 
@@ -63,18 +57,12 @@ function UserInfo({navigation}) {
   //   }
   // };
 
-  const togglePasswordVisibility = () => {
-    console.log('entrou');
-    
-    setShowPassword(!showPassword);
-  };
-
   const handleRegister = () => {
     const validaSubmit = userValidator.validateUser(usuario);
+    console.log(validaSubmit);
 
     if (validaSubmit) {
       if (validaSubmit.includes('name')) {
-        console.log(validaSubmit);
         setIsNameValid(false);
       }
       if (validaSubmit.includes('lastName')) {
@@ -89,44 +77,65 @@ function UserInfo({navigation}) {
       if (validaSubmit.includes('registration')) {
         setIsMatriculaValid(false);
       }
-      if (validaSubmit.includes('password')) {
-        setIsPasswordValid(false);
-      }
       if (validaSubmit.includes('username')) {
         setIsUserNameValid(false);
       }
       if (validaSubmit.includes('cpf')) {
         setIsCpfValid(false);
       }
-      return;
     }
 
     if (
       !isCpfValid ||
       !isEmailValid ||
       !isMatriculaValid ||
-      !isPasswordValid ||
       !isNameValid ||
       !isSobrenomeValid ||
       !isTelefoneValid ||
       !isUserNameValid
-    )
+    ) {
+      console.log('retornou');
+
       return;
+    }
 
     alertRequest(
       'Cadastrar',
-      'Deseja realmente cadastrar este usuário?',
+      'Deseja realmente atualizar este usuário?',
       async () => {
         setLoading(true);
 
-        user.createdAt = new Date();
+        user.updatedAt = new Date();
 
-        const result: any = await userController.post(usuario);
+        const result: any = await userController.update(usuario._id, usuario);
         setLoading(false);
 
         alertResult(
           result.errorMessage == null,
-          'Sucesso ao cadastrar este usuário!',
+          'Sucesso ao atualizar este usuário!',
+          result.errorMessage,
+          'ListUsers',
+        );
+      },
+    );
+  };
+
+  const handleDelete = () => {
+    if(isLoading) return
+
+    alertRequest(
+      'Deletar',
+      'Deseja realmente deletar este usuário?',
+      async () => {
+        setLoading(true);
+        const result: any = await userController.delete(
+          usuario._id ?? '',
+        );
+        setLoading(false);
+
+        alertResult(
+          result.errorMessage == null,
+          'Usuário deletado com sucesso!',
           result.errorMessage,
           'ListUsers',
         );
@@ -194,7 +203,7 @@ function UserInfo({navigation}) {
         labelStyle={styles.labelMargin}
         inputMode="tel"
         value={usuario.phone}
-        maxLength={9}
+        maxLength={11}
         onChangeText={text => {
           setIsTelefoneValid(true);
           setUsuario({...usuario, phone: text});
@@ -257,13 +266,18 @@ function UserInfo({navigation}) {
         label="Matrícula"
         value={usuario.registration}
         inputStyle={[
-          isNameValid ? styles.isValid : styles.isRequired,
+          isMatriculaValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
         ]}
         labelStyle={styles.labelMargin}
         onChangeText={text => {
           setIsMatriculaValid(true);
           setUsuario({...usuario, registration: text});
+        }}
+        onBlur={() => {
+          if (!userValidator.validateEmptyString(usuario.registration)) {
+            setIsMatriculaValid(false);
+          }
         }}
       />
       <InputComponent
@@ -284,97 +298,21 @@ function UserInfo({navigation}) {
           }
         }}
       />
-      <InputComponent
-        label="Senha"
-        value={usuario.password}
-        secureTextEntry={!showPassword}
-        inputStyle={[
-          isPasswordValid ? styles.isValid : styles.isRequired,
-          styles.inputWidth,
-        ]}
-        labelStyle={styles.labelMargin}
-        onChangeText={text => {
-          setUsuario({...usuario, password: text});
-          setIsPasswordValid(true);
-
-          const isLengthValid = text.length >= 10 && text.length <= 20;
-          const isUpperCaseValid = /[A-Z]/.test(text);
-          const isLowerCaseValid = /[a-z]/.test(text);
-          const isDigitValid = /[0-9]/.test(text);
-          const isSymbolValid = /[!@#$_]/.test(text);
-
-          setIsLengthValid(isLengthValid);
-          setIsUpperCaseValid(isUpperCaseValid);
-          setIsLowerCaseValid(isLowerCaseValid);
-          setIsDigitValid(isDigitValid);
-          setIsSymbolValid(isSymbolValid);
-        }}
-        rightIcon={
-          <Pressable
-            onPress={togglePasswordVisibility}
-            style={styles.passwordVisibilityButton}>
-            {showPassword ? (
-              <Icon style={styles.eyeIcon} name="eye-slash" />
-            ) : (
-              <Icon style={styles.eyeIcon} name="eye" />
-            )}
-          </Pressable>
-        }
-        onBlur={() => {
-          if (
-            !userValidator.validateEmptyString(usuario.password) ||
-            !userValidator.validatePassword(usuario.password)
-          ) {
-            setIsPasswordValid(false);
-          }
-        }}
-      />
-
-      <View style={styles.validationsLabel}>
-        <Text
-          style={[
-            styles.validationLabel,
-            isLengthValid ? styles.validationLabelValid : null,
-          ]}>
-          - A senha deve ter entre 10 e 20 caracteres.
-        </Text>
-        <Text
-          style={[
-            styles.validationLabel,
-            isUpperCaseValid ? styles.validationLabelValid : null,
-          ]}>
-          - A senha deve conter pelo menos uma letra maiúscula (A-Z).
-        </Text>
-        <Text
-          style={[
-            styles.validationLabel,
-            isLowerCaseValid ? styles.validationLabelValid : null,
-          ]}>
-          - A senha deve conter pelo menos uma letra minúscula (a-z).
-        </Text>
-        <Text
-          style={[
-            styles.validationLabel,
-            isDigitValid ? styles.validationLabelValid : null,
-          ]}>
-          - A senha deve conter pelo menos um número (0-9).
-        </Text>
-        <Text
-          style={[
-            styles.validationLabel,
-            isSymbolValid ? styles.validationLabelValid : null,
-          ]}>
-          - A senha deve conter pelo menos um dos símbolos: !, @, #, $ ou _.
-        </Text>
-      </View>
-
       <View style={styles.pressableContainer}>
-        <PressableButton
-          pressableStyle={styles.enterButton}
+      <PressableButton
+          children="Confirmar"
+          textStyle={styles.confirmButton}
           onPress={handleRegister}
-          disabled={isLoading}>
-          Confirmar
-        </PressableButton>
+          disabled={isLoading}
+        />
+        {usuario._id === user._id ? <></> : (
+        <PressableButton
+          children="Deletar"
+          textStyle={styles.deleteButton}
+          onPress={handleDelete}
+          disabled={isLoading}
+        />
+        )}
       </View>
     </ScrollView>
   );
@@ -414,29 +352,19 @@ const styles = StyleSheet.create({
   },
   pressableContainer: {
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    justifyContent: 'center',
+    gap: 20
   },
-  enterButton: {
+  confirmButton: {
     backgroundColor: '#77A490',
-    width: 200,
     fontSize: 20,
+    width: 150,
   },
-  logoutButton: {
-    backgroundColor: '#858585',
-    width: 200,
-    fontSize: 20,
-  },
-  passwordVisibilityButton: {
-    padding: 10,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
-  eyeIcon: {
-    fontSize: 16,
-    color: '#EEEEEE',
-    zIndex: 2
+  deleteButton: {
+    backgroundColor: '#e03232',
+    width: 150,
   },
   isRequired: {
     borderColor: 'red',
@@ -448,18 +376,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 5,
   },
-  validationLabel: {
-    color: '#EEE',
-    fontSize: 14,
-    marginTop: 2,
-  },
-  validationLabelValid: {
-    color: '#77A490',
-  },
-  validationsLabel: {
-    width: '93%',
-    alignSelf: 'center'
-  }
 });
 
 export default UserInfo;

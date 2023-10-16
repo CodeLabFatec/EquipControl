@@ -13,6 +13,7 @@ import Footer from '../modules/components/footer';
 import ProfilePage from '../modules/pages/profile/profile';
 import ListUsers from '../modules/pages/users/listUsers';
 import RegisterUser from '../modules/pages/users/registerUser';
+import UserInfo from '../modules/pages/users/userInfo';
 
 const AppStack = createNativeStackNavigator();
 
@@ -65,6 +66,12 @@ const AppRoutes: React.FC = () => (
         name="RegisterUser"
         navigationKey="RegisterUser"
         component={RegisterUser}
+        options={{header: Header}}
+      />
+        <AppStack.Screen
+        name="UsuarioInfo"
+        navigationKey="UsuarioInfo"
+        component={UserInfo}
         options={{header: Header}}
       />
         <AppStack.Screen

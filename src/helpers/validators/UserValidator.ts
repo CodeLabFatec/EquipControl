@@ -43,7 +43,7 @@ class UserValidator {
     
   }
   public validatePassword(password: string): boolean {
-    if (password.length < 10 || password.length > 20) {
+    if (!password || password.length < 10 || password.length > 20 ) {
       return false;
     }
 
@@ -65,7 +65,7 @@ class UserValidator {
   }
 
   public validatePhoneNumber(phone: string): boolean {
-    if (phone.length < 8 || phone.length > 9  ) {
+    if (phone.length < 10 || phone.length > 11  ) {
       return false;
     };
     return true
