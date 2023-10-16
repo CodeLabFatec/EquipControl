@@ -1,4 +1,6 @@
 import {Equipment} from './equipment';
 import {Files} from './files';
+import {User} from './user';
+import {Domain} from './domain';
 
-export {Equipment, Files};
+export type {Equipment, Files, User, Domain};

@@ -1,5 +1,5 @@
 import {PermissionsAndroid} from 'react-native';
-import {Equipment} from '../models';
+import {Equipment, User} from '../models';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Files} from '../models';
 
@@ -10,7 +10,7 @@ async function requestReadImages(): Promise<boolean> {
       {
         title: 'Permissão para abrir seus arquivos?',
         message:
-          'Para selecionar uma foto para o equipamento precisamos da sua permissão para abrir os arquivos do dispositivo.',
+          'Para selecionar uma foto precisamos da sua permissão para abrir os arquivos do dispositivo.',
         buttonNeutral: 'Me pergunte depois',
         buttonNegative: 'Negar',
         buttonPositive: 'Aceitar',
@@ -48,4 +48,27 @@ async function updateEquipamentoImages(
   setEquipment({...equipment, files: images});
 }
 
-export {requestReadImages, updateEquipamentoImages};
+async function updateUserImage(
+  user: User,
+  setUser: React.Dispatch<React.SetStateAction<User>>,
+) {
+  const selectedImages = await ImagePicker.openPicker({
+    width: 150,
+    height: 150,
+    cropping: true,
+    multiple: false,
+    includeBase64: true,
+    mediaType: 'photo',
+  });
+
+  if (!selectedImages) return;
+
+  const image: Files = {
+    base64: selectedImages.data ?? '',
+    type: selectedImages.mime,
+  };
+
+  setUser({...user, image});
+}
+
+export {requestReadImages, updateEquipamentoImages, updateUserImage};

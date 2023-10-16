@@ -1,28 +1,45 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
+import {AuthContext} from '../../contexts';
+import Dropdown from './base/dropdown';
+import navigate from '../../RootNavigation';
 
 function Header() {
+  const {user, logout} = useContext(AuthContext);
+
+  const dropdownItems: any[] = [
+    {
+      value: null,
+      label: (user && user.name) ?? 'Usuário',
+      onPress: null,
+      textStyle: {textAlign: 'center'},
+    },
+    {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Sair', onPress: () => logout()},
+  ];
+
   return (
     <View style={styles.headerContainer}>
-      {/* <Image
-        source={{
-          uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
-        }}
-        style={styles.headerLogo}
-      /> */}
-      <View>
-        <Text style={styles.headerTextsBigger}>EquipControl</Text>
-        <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
-      </View>
-      {/* <View style={styles.userBox}>
+      <View style={styles.headerLogo}>
         <Image
-          source={{
-            uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
-          }}
-          style={styles.headerUser}
+          source={require('../../../assets/logo-equip-control.png')}
+          style={styles.image}
+          resizeMode="contain"
         />
-        <Text style={styles.textUser}>Usuário</Text>
-      </View> */}
+      </View>
+      <View style={styles.userBox}>
+        <Dropdown items={dropdownItems}>
+          <Image
+            source={{
+              uri:
+                user && user.image
+                  ? `data:${user.image.type};base64,${user.image.base64}`
+                  : '',
+            }}
+            style={styles.headerUser}
+          />
+        </Dropdown>
+      </View>
     </View>
   );
 }
@@ -37,30 +54,34 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
   },
-  headerTextsBigger: {
-    fontSize: 30,
-    color: '#EEEEEE'
-  },
-  headerTextsMedium: {
-    fontSize: 20,
-    color: '#A7A6A6'
-  },
   headerLogo: {
     width: 60,
     height: 60,
+    position: 'relative',
+    right: -153,
+  },
+  image: {
+    marginTop: 10,
+    width: 50,
+    height: 50,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   headerUser: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     alignSelf: 'flex-end',
+    borderRadius: 50,
   },
   textUser: {
-    alignSelf: 'flex-end',
-    color:'white'
+    color: 'white',
   },
   userBox: {
-    position: 'absolute', 
-    right: 0,
+    position: 'absolute',
+    textAlign: 'center',
+    right: 5,
+    marginRight: 10,
+    paddingTop: 12,
   },
 });
 
