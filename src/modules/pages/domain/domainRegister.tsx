@@ -65,7 +65,7 @@ function DomainRegister({navigation}) {
       />
 
       <PressableButton
-        children="Cadastrar Domínio"
+        children="Confirmar"
         pressableStyle={styles.pressableContainer}
         textStyle={styles.confirmButton}
         onPress={handleRegister}
@@ -77,7 +77,7 @@ function DomainRegister({navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '5%',
+    flex: 1,
     justifyContent: 'center',
   },
   inputWidth: {

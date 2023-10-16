@@ -31,7 +31,7 @@ const ListUsersItem: ListRenderItem<User> = ({item}) => {
       </View>
       <Pressable
         style={styles.titleContainer}
-        onPress={() => navigate('EditUser', item)}>
+        onPress={() => navigate('UsuarioInfo', item)}>
         <Text style={styles.title}>
           {item.name} {item.lastName}
         </Text>

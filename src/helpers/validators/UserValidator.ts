@@ -2,8 +2,6 @@ import {User} from '../models';
 
 class UserValidator {
   public validateUser(user: User): string | null {
-    console.log(user);
-
     let validation = null;
     if (!this.validateEmptyString(user.name)) validation = 'name';
     if (!this.validateEmptyString(user.lastName))
@@ -36,12 +34,14 @@ class UserValidator {
   public validateEmptyString(field: string): boolean {
     return field != null && field.trim() !== '';
   }
+
   public validateEmail(email: string): boolean {
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
     return emailRegex.test(email);
   }
+
   public validatePassword(password: string): boolean {
-    if (password.length < 10 || password.length > 20) {
+    if (!password || password.length < 10 || password.length > 20) {
       return false;
     }
 
@@ -63,7 +63,7 @@ class UserValidator {
   }
 
   public validatePhoneNumber(phone: string): boolean {
-    if (phone.length < 8 || phone.length > 11) {
+    if (phone.length < 10 || phone.length > 11) {
       return false;
     }
     return true;

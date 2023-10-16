@@ -77,13 +77,6 @@ function DomainInfo({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <PressableButton
-        children="Deletar Domínio"
-        pressableStyle={styles.pressableContainer}
-        textStyle={styles.deleteButton}
-        onPress={handleDeleteDomain}
-        disabled={isLoading}
-      />
       <InputComponent
         label="Nome"
         inputStyle={styles.inputWidth}
@@ -101,21 +94,28 @@ function DomainInfo({navigation, route}) {
         }}
       />
 
-      <PressableButton
-        children="Atualizar Domínio"
-        pressableStyle={styles.pressableContainer}
-        textStyle={styles.confirmButton}
-        onPress={handleUpdateDomain}
-        disabled={isLoading}
-      />
+      <View style={styles.pressableContainer}>
+        <PressableButton
+          children="Confirmar"
+          textStyle={styles.confirmButton}
+          onPress={handleUpdateDomain}
+          disabled={isLoading}
+        />
+        <PressableButton
+          children="Deletar"
+          textStyle={styles.deleteButton}
+          onPress={handleDeleteDomain}
+          disabled={isLoading}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: '60%',
-    marginBottom: 50,
+    flex: 1,
+    justifyContent: 'center',
   },
   inputWidth: {
     width: '93%',
@@ -125,20 +125,19 @@ const styles = StyleSheet.create({
   },
   pressableContainer: {
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 20,
   },
   confirmButton: {
     backgroundColor: '#77A490',
-    width: '93%',
-    marginTop: '2%',
     fontSize: 20,
+    width: 150,
   },
-
   deleteButton: {
     backgroundColor: '#e03232',
-    width: '93%',
-    marginTop: '3%',
-    fontSize: 20,
+    width: 150,
   },
 });
 

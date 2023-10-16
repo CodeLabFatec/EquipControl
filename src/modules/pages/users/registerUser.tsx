@@ -12,6 +12,7 @@ import InputComponent from '../../components/base/inputComponent';
 import PressableButton from '../../components/base/pressableButton';
 import {defaultUser, userValidator} from '../../../helpers/validators';
 import {
+  alertError,
   alertRequest,
   alertResult,
   requestReadImages,
@@ -40,7 +41,6 @@ function RegisterUser({navigation}) {
   const [isLowerCaseValid, setIsLowerCaseValid] = useState(false);
   const [isDigitValid, setIsDigitValid] = useState(false);
   const [isSymbolValid, setIsSymbolValid] = useState(false);
-
   const updatePhoto = async () => {
     if (isLoading) return;
 
@@ -56,8 +56,6 @@ function RegisterUser({navigation}) {
   };
 
   const togglePasswordVisibility = () => {
-    console.log('entrou');
-
     setShowPassword(!showPassword);
   };
 
@@ -66,7 +64,6 @@ function RegisterUser({navigation}) {
 
     if (validaSubmit) {
       if (validaSubmit.includes('name')) {
-        console.log(validaSubmit);
         setIsNameValid(false);
       }
       if (validaSubmit.includes('lastName')) {
@@ -184,7 +181,6 @@ function RegisterUser({navigation}) {
           styles.inputWidth,
         ]}
         labelStyle={styles.labelMargin}
-        keyboardType="number-pad"
         inputMode="tel"
         value={usuario.phone}
         maxLength={11}
@@ -250,13 +246,18 @@ function RegisterUser({navigation}) {
         label="Matrícula"
         value={usuario.registration}
         inputStyle={[
-          isNameValid ? styles.isValid : styles.isRequired,
+          isMatriculaValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
         ]}
         labelStyle={styles.labelMargin}
         onChangeText={text => {
           setIsMatriculaValid(true);
           setUsuario({...usuario, registration: text});
+        }}
+        onBlur={() => {
+          if (!userValidator.validateEmptyString(usuario.registration)) {
+            setIsMatriculaValid(false);
+          }
         }}
       />
       <InputComponent
@@ -363,11 +364,11 @@ function RegisterUser({navigation}) {
 
       <View style={styles.pressableContainer}>
         <PressableButton
-          pressableStyle={styles.enterButton}
+          children="Confirmar"
+          textStyle={styles.enterButton}
           onPress={handleRegister}
-          disabled={isLoading}>
-          Confirmar
-        </PressableButton>
+          disabled={isLoading}
+        />
       </View>
     </ScrollView>
   );
