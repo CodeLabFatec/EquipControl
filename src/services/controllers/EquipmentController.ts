@@ -33,8 +33,14 @@ class EquipmentController extends BaseController<Equipment> {
 
   public post = async (data: Equipment) => {
     try {
-      const {_id, createdAt, updatedAt, ...eq} = data;
-      const result = (await api.post(endpoints.POST_EQUIPMENT, eq)).data;
+      const {_id, createdAt, updatedAt, domain, ...eq} = data;
+
+      const equipment = {
+        ...eq,
+        domain: domain._id,
+      };
+
+      const result = (await api.post(endpoints.POST_EQUIPMENT, equipment)).data;
 
       return result;
     } catch (e) {

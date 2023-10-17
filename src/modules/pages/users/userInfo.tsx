@@ -22,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {User} from '../../../helpers/models';
 
 function UserInfo({navigation, route}) {
-  const {user} = useContext(AuthContext);
+  const {user, updateUser} = useContext(AuthContext);
   const usuarioInfo: User = route.params;
 
   if (!user) {
@@ -106,6 +106,10 @@ function UserInfo({navigation, route}) {
 
         const result: any = await userController.update(usuario._id, usuario);
         setLoading(false);
+
+        if (result.errorMessage !== null && user._id === usuario._id) {
+          updateUser(usuario);
+        }
 
         alertResult(
           result.errorMessage == null,
