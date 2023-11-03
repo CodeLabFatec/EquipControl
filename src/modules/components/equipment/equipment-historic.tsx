@@ -5,7 +5,7 @@ import navigate from '../../../RootNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Carousel from '../carousel/carousel';
 
-const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
+const EquipmentHstc: ListRenderItem<Equipment> = ({item}) => {
   return (
     <View style={styles.equipment}>
       <View style={styles.carrouselContainer}>
@@ -19,24 +19,21 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
       </View>
       <Pressable
         style={styles.titleContainer}
-        onPress={() => navigate('InfoEquipment', item)}>
+        onPress={() => navigate('HistoricEquipment', item)}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.serial}>
           <Text style={{fontWeight: 'bold'}}>Nº Série: </Text>
           {item.serial}
         </Text>
         <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Domínio: </Text> {item.domain.name}
+          <Text style={{fontWeight: 'bold'}}>Hora: </Text> 
         </Text>
         <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Latitude: </Text> {item.latitude}
+          <Text style={{fontWeight: 'bold'}}>Data: </Text> 
         </Text>
         <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Longitude: </Text> {item.longitude}
-        </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Criado por: </Text>{' '}
-          {item.created_by?.name}
+          <Text style={{fontWeight: 'bold'}}>Editado por: </Text>{' '}
+          {/* {item.created_by?.name} */}
         </Text>
       </Pressable>
       <Text
@@ -115,5 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EquipmentComponent;
- 
+export default EquipmentHstc;

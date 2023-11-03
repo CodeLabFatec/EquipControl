@@ -6,6 +6,7 @@ import Header from '../modules/components/header';
 import EquipmentRegister from '../modules/pages/equipment/equipmentRegister';
 import DomainRegister from '../modules/pages/domain/domainRegister';
 import EquipmentInfo from '../modules/pages/equipment/equipmentInfo';
+import EquipmentHistoric from '../modules/pages/equipment/equipmentHistoric';
 import DomainInfo from '../modules/pages/domain/domainInfo';
 import DomainList from '../modules/pages/domain/domainList';
 import {StyleSheet, View} from 'react-native';
@@ -86,6 +87,13 @@ const AppRoutes: React.FC = () => {
               component={ListUsers}
               options={{header: Header}}
             />
+
+          <AppStack.Screen
+          name="HistoricEquipment"
+          navigationKey="HistoricEquipment"
+          component={EquipmentHistoric}
+          options={{header: Header}}
+        />
           </>
         )}
       </AppStack.Navigator>
