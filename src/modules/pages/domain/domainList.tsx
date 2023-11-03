@@ -4,9 +4,9 @@ import {StyleSheet, FlatList, View} from 'react-native';
 import {LoadContext} from '../../../contexts';
 import DomainComponent from '../../components/domain/domain-item';
 import {Domain} from '../../../helpers/models/domain';
-import { domainController } from '../../../services';
-import SearchDomain from '../../components/domain/search-domain';
+import {domainController} from '../../../services';
 import {useFocusEffect} from '@react-navigation/native';
+import SearchBar from '../../components/base/search-bar';
 
 function DomainList({navigation}) {
   const {setLoading} = useContext(LoadContext);
@@ -26,13 +26,12 @@ function DomainList({navigation}) {
     }, []),
   );
 
-  const filteredDomain = domain?.filter(domain =>
-    domain.name?.includes(filter),
-  );
+  const filteredDomain = domain.filter(domain => domain.name.includes(filter));
 
   return (
     <View>
-      <SearchDomain
+      <SearchBar
+        newItemPage="RegisterDomain"
         value={filter}
         onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
       />
