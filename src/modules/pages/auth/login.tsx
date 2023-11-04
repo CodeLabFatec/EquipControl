@@ -79,7 +79,7 @@ function Login({navigation}) {
     if (username.trim() === '') return;
 
     const jsonBiometricOptions = await getBiometryOptions();
-    console.log(JSON.stringify(jsonBiometricOptions));
+
     if (!jsonBiometricOptions) {
       if (isOnlyBiometric) signIn();
       return;
