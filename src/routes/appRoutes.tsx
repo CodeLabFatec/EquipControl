@@ -44,6 +44,12 @@ const AppRoutes: React.FC = () => {
           options={{header: Header}}
         />
         <AppStack.Screen
+          name="HistoricEquipment"
+          navigationKey="HistoricEquipment"
+          component={EquipmentHistoric}
+          options={{header: Header}}
+        />
+        <AppStack.Screen
           name="Profile"
           navigationKey="Profile"
           component={ProfilePage}
@@ -87,13 +93,6 @@ const AppRoutes: React.FC = () => {
               component={ListUsers}
               options={{header: Header}}
             />
-
-          <AppStack.Screen
-          name="HistoricEquipment"
-          navigationKey="HistoricEquipment"
-          component={EquipmentHistoric}
-          options={{header: Header}}
-        />
           </>
         )}
       </AppStack.Navigator>

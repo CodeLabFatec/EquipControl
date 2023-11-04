@@ -1,41 +1,23 @@
 import React from 'react';
-import {StyleSheet, Text, View, ListRenderItem, Pressable} from 'react-native';
-import {Equipment} from '../../../helpers/models';
-import navigate from '../../../RootNavigation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Carousel from '../carousel/carousel';
+import {StyleSheet, Text, View, ListRenderItem} from 'react-native';
+import {EquipmentHistory} from '../../../helpers/models';
 
-const EquipmentHstc: ListRenderItem<Equipment> = ({item}) => {
+const EquipmentHistoryComponent: ListRenderItem<EquipmentHistory> = ({
+  item,
+}) => {
   return (
     <View style={styles.equipment}>
-      <View style={styles.carrouselContainer}>
-        {item.files && item.files.length > 0 ? (
-          <Carousel width={150} files={item.files ?? []} />
-        ) : (
-          <View style={styles.fileIconContainer}>
-            <Icon style={styles.fileIcon} name="file-image" />
-          </View>
-        )}
+      <View>
+        <Text style={styles.serial}>
+          <Text style={{fontWeight: 'bold'}}>Data e Hora: {item.date}</Text>
+        </Text>
+        <Text style={styles.serial}>
+          <Text style={{fontWeight: 'bold'}}>Estado: {item.status}</Text>
+        </Text>
+        <Text style={styles.serial}>
+          <Text style={{fontWeight: 'bold'}}>Editado por: {item.userName}</Text>
+        </Text>
       </View>
-      <Pressable
-        style={styles.titleContainer}
-        onPress={() => navigate('HistoricEquipment', item)}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Nº Série: </Text>
-          {item.serial}
-        </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Hora: </Text> 
-        </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Data: </Text> 
-        </Text>
-        <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Editado por: </Text>{' '}
-          {/* {item.created_by?.name} */}
-        </Text>
-      </Pressable>
       <Text
         style={[
           styles.status,
@@ -57,36 +39,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: '#363636',
   },
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '56%',
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  name: {
-    fontSize: 18,
-    color: '#77A490',
-    fontWeight: 'bold',
-    marginLeft: 6,
-    marginTop: 4,
-    marginBottom: 4,
-  },
   serial: {
     marginLeft: 6,
     fontSize: 16,
     color: '#EEE',
     marginTop: 5,
-  },
-  emptyFile: {},
-  fileIcon: {
-    textAlign: 'center',
-    fontSize: 25,
-    color: '#cccccc',
-  },
-  fileIconContainer: {
-    marginHorizontal: 'auto',
-    paddingVertical: 65,
   },
   status: {
     position: 'absolute',
@@ -102,14 +59,6 @@ const styles = StyleSheet.create({
   inactiveStatus: {
     backgroundColor: '#D2691E', // Estilo para quando item.isActive for false
   },
-  carrouselContainer: {
-    width: '42%',
-    height: 170,
-    zIndex: 1,
-    marginLeft: 6,
-    marginTop: 4,
-    marginBottom: 4,
-  },
 });
 
-export default EquipmentHstc;
+export default EquipmentHistoryComponent;

@@ -1,60 +1,41 @@
-import React, {useContext, useState} from 'react';
-import {StyleSheet, FlatList, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, FlatList, View, Text} from 'react-native';
+import {Equipment} from '../../../helpers/models';
+import EquipmentHistoryComponent from '../../components/equipment/equipment-historic';
 
-import {LoadContext} from '../../../contexts';
-import { Equipment } from '../../../helpers/models';
-import { equipmentController } from '../../../services';
-import EquipmentComponent from '../../components/equipment/equipment-historic';
-
-import SearchEquipment from '../../components/equipment/search-equipment';
-import {useFocusEffect} from '@react-navigation/native';
-
-function EquipmentHistoric({navigation}) {
-  const {setLoading} = useContext(LoadContext);
-  const [equipment, setEquipment] = useState<Equipment[]>([]);
-  const [filter, setFilter] = useState('');
-
-
-
-  async function load() {
-    const data = await equipmentController.list();
-    setEquipment(data);
-    setLoading(false);
+function EquipmentHistoric({navigation, route}) {
+  const equipment: Equipment = route.params;
+  if (!equipment) {
+    navigation.navigate('Home');
+    return;
   }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      setLoading(true);
-      load();
-    }, []),
-  );
-
-  const filteredEquipment = equipment?.filter(equipment =>
-    equipment.name?.includes(filter),
-  );
 
   return (
     <View>
-      <SearchEquipment
-        value={filter}
-        onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
-      />
+      {!equipment.history ||
+        (equipment.history.length === 0 && (
+          <Text style={styles.none}>Nenhuma manobra realizada</Text>
+        ))}
       <FlatList
-        data={filteredEquipment}
-        renderItem={EquipmentComponent}
-        numColumns={4}
-        contentContainerStyle={styles.domainList}
-        keyExtractor={item => item.name ?? ''}
+        data={equipment.history ? equipment.history : []}
+        renderItem={EquipmentHistoryComponent}
+        numColumns={1}
+        contentContainerStyle={styles.historyList}
+        keyExtractor={item => item.date ?? ''}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  domainList: {
+  historyList: {
     paddingHorizontal: 10,
     paddingTop: 15,
     paddingBottom: 175,
+  },
+  none: {
+    padding: 20,
+    textAlign: 'center',
   },
 });
 

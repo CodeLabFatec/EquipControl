@@ -247,6 +247,12 @@ function EquipmentInfo({navigation, route}) {
           </Pressable>
         </View>
       </View>
+      <View>
+        <Pressable
+          onPress={() => navigation.navigate('HistoricEquipment', equipment)}>
+          <Text>Histórico de manobras</Text>
+        </Pressable>
+      </View>
       <View style={styles.formContainer}>
         <Text style={styles.inputLabel}>Nome:</Text>
         <View style={styles.textContainer}>
