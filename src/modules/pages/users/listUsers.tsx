@@ -6,16 +6,16 @@ import {User} from '../../../helpers/models';
 import {userController} from '../../../services';
 import {useFocusEffect} from '@react-navigation/native';
 import ListUsersItem from '../../components/users/listUsersItem';
-import SearchUser from '../../components/users/search-user';
+import SearchBar from '../../components/base/search-bar';
 
 function ListUsers({navigation}) {
   const {setLoading} = useContext(LoadContext);
-  const [user, setUser] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [filter, setFilter] = useState('');
 
   async function load() {
     const data = await userController.list();
-    setUser(data);
+    setUsers(data);
     setLoading(false);
   }
 
@@ -26,13 +26,14 @@ function ListUsers({navigation}) {
     }, []),
   );
 
-  const filteredUser = user?.filter(user =>
-    user.name?.toLowerCase().includes(filter.toLowerCase()),
+  const filteredUser = users.filter(user =>
+    user.name.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
     <View>
-      <SearchUser
+      <SearchBar
+        newItemPage="RegisterUser"
         value={filter}
         onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
       />
