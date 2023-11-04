@@ -13,8 +13,9 @@ function Header() {
       label: (user && user.name) ?? 'Usuário',
       onPress: null,
       textStyle: {textAlign: 'center'},
-    },
+    },    
     {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Conta', onPress: () => navigate('EditPassword')},
     {value: null, label: 'Sair', onPress: () => logout()},
   ];
 

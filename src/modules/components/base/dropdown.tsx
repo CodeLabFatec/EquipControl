@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   list: {
     width: 150,
-    height: 100,
+    height: 135,
     marginTop: 18,
     paddingVertical: 4,
     backgroundColor: '#444',
