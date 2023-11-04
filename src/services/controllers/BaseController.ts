@@ -21,6 +21,9 @@ export abstract class BaseController<T> {
     if (message.includes('422')) error = 'Dados inválidos.';
     if (message.includes('413'))
       error = 'Arquivo(s) enviado(s) excederam o tamanho máximo permitido.';
+    if (message.includes('invalid recover code'))
+      error = 'Código de recuperação inválido.';
+    if (message.includes('unauthorized')) error = 'Senha inválida.';
 
     return {errorMessage: error};
   }

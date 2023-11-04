@@ -26,6 +26,9 @@ const endpoints = {
   POST_USER: '/user/register',
   LOGIN_USER: '/user/login',
   GENERTE_BIOMETRIC_TOKEN: '/user/generateBiometricToken',
+  POST_SEND_RECOVER_CODE: '/user/sendRecoverPasswordCode/',
+  POST_RECOVER_PASSWORD: '/user/recoverPassword/',
+  POST_UPDATE_PASSWORD: '/user/changePassword/',
 
   //PATCH
   PATCH_EQUIPMENT_STATUS: '/equipment/updateStatus/',
@@ -37,6 +40,6 @@ const endpoints = {
   DELETE_USER: '/user/delete/',
   DELETE_EQUIPMENT: '/equipment/delete/',
   DELETE_DOMAIN: '/domain/delete/',
-}; 
+};
 
 export {api, endpoints};
