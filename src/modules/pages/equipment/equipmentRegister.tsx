@@ -187,7 +187,13 @@ function EquipmentRegister({navigation}) {
           <PickerComponent
             onChange={value => {
               setIsDominioValid(true);
-              setEquipamento({...equipamento, domain: value});
+              setEquipamento({
+                ...equipamento,
+                domain: {
+                  _id: value,
+                  name: '',
+                },
+              });
             }}
             items={domainOptions.map(
               i => ({value: i._id, label: i.name} as PickerItemProps),
@@ -201,7 +207,9 @@ function EquipmentRegister({navigation}) {
             ]}
             itemStyle={{color: '#E2D7C1'}}
             onBlur={() => {
-              if (!equipmentValidator.validateEmptyString(equipamento.domain._id)) {
+              if (
+                !equipmentValidator.validateEmptyString(equipamento.domain._id)
+              ) {
                 setIsDominioValid(false);
               }
             }}

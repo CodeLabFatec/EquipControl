@@ -140,6 +140,7 @@ function RegisterUser({navigation}) {
       </View>
       <InputComponent
         label="Nome"
+        placeholder="Nome do usuário"
         inputStyle={[
           isNameValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
@@ -158,6 +159,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="Sobrenome"
+        placeholder="Sobrenome do usuário"
         inputStyle={[
           isSobrenomeValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
@@ -176,6 +178,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="Telefone"
+        placeholder="Telefone do usuário"
         inputStyle={[
           isTelefoneValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
@@ -199,6 +202,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="Email"
+        placeholder="Email do usuário"
         inputStyle={[
           isEmailValid ? styles.isValid : styles.isRequired,
           styles.inputWidth,
@@ -221,6 +225,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="CPF"
+        placeholder="CPF do usuário"
         value={usuario.cpf}
         keyboardType="number-pad"
         inputStyle={[
@@ -244,6 +249,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="Matrícula"
+        placeholder="Matrícula do usuário"
         value={usuario.registration}
         inputStyle={[
           isMatriculaValid ? styles.isValid : styles.isRequired,
@@ -262,6 +268,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="UserName"
+        placeholder="Username do usuário"
         value={usuario.username}
         inputStyle={[
           isUserNameValid ? styles.isValid : styles.isRequired,
@@ -280,6 +287,7 @@ function RegisterUser({navigation}) {
       />
       <InputComponent
         label="Senha"
+        placeholder="Senha do usuário"
         value={usuario.password}
         secureTextEntry={!showPassword}
         inputStyle={[

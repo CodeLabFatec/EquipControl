@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface Props {
   value: string;
+  newItemPage: string;
   onChangeText: (text: React.SetStateAction<string>) => void;
 }
 
-const SearchEquipment = ({value, onChangeText}: Props) => {
+const SearchBar = ({value, newItemPage, onChangeText}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -24,7 +25,7 @@ const SearchEquipment = ({value, onChangeText}: Props) => {
 
       <Pressable
         style={styles.addIconContainer}
-        onPress={() => navigate('RegisterEquipment')}>
+        onPress={() => navigate(newItemPage)}>
         <Icon style={styles.addIcon} name="plus-circle" />
       </Pressable>
     </View>
@@ -77,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchEquipment;
+export default SearchBar;

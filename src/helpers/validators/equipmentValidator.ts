@@ -46,7 +46,10 @@ class EquipmentValidator {
 }
 
 const defaultEquipment: Equipment = {
-  domain: '',
+  domain: {
+    _id: '',
+    name: '',
+  },
   files: undefined,
   latitude: '',
   longitude: '',
