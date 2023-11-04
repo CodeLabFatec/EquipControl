@@ -48,11 +48,16 @@ class EquipmentController extends BaseController<Equipment> {
     }
   };
 
-  public updateStatus = async (equipmentId: string, status: boolean) => {
+  public updateStatus = async (
+    equipmentId: string,
+    status: boolean,
+    updated_by: {userId: string; userName: string},
+  ) => {
     try {
       const result = (
         await api.patch(endpoints.PATCH_EQUIPMENT_STATUS + equipmentId, {
           isActive: status,
+          updated_by,
         })
       ).data;
 

@@ -5,10 +5,10 @@ import {LoadContext} from '../../../contexts';
 import EquipmentComponent from '../../components/equipment/equipment-item';
 import {Equipment} from '../../../helpers/models';
 import {equipmentController} from '../../../services';
-import SearchEquipment from '../../components/equipment/search-equipment';
 import {useFocusEffect} from '@react-navigation/native';
+import SearchBar from '../../components/base/search-bar';
 
-function Home({navigation}) {
+function Home() {
   const {setLoading} = useContext(LoadContext);
   const [equipments, setEquipments] = useState<Equipment[]>([]);
   const [filter, setFilter] = useState('');
@@ -26,14 +26,21 @@ function Home({navigation}) {
     }, []),
   );
 
-  const filteredEquipments = equipments?.filter(equipment =>
-    equipment.name?.toLowerCase().includes(filter.toLowerCase()),
+  const filteredEquipments = equipments.filter(
+    equipment =>
+      equipment.name.toLowerCase().includes(filter.toLowerCase()) ||
+      (equipment.created_by &&
+        equipment.created_by.name
+          .toLowerCase()
+          .includes(filter.toLowerCase())) ||
+      equipment.domain.name.toLowerCase().includes(filter.toLowerCase()),
   );
 
   return (
     <View>
-      <SearchEquipment
+      <SearchBar
         value={filter}
+        newItemPage="RegisterEquipment"
         onChangeText={(text: React.SetStateAction<string>) => setFilter(text)}
       />
       <FlatList

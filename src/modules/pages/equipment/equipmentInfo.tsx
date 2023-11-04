@@ -18,7 +18,7 @@ import {
   requestReadImages,
   updateEquipamentoImages,
 } from '../../../helpers/utils';
-import {LoadContext} from '../../../contexts';
+import {AuthContext, LoadContext} from '../../../contexts';
 import {PickerComponent} from '../../components/base/picker';
 import {PickerItemProps} from '@react-native-picker/picker';
 
@@ -31,6 +31,7 @@ function EquipmentInfo({navigation, route}) {
 
   const {isLoading, setLoading} = useContext(LoadContext);
 
+  const {user} = useContext(AuthContext);
   const [domainOptions, setDomainOptions] = useState<Domain[]>([]);
   const [equipamento, setEquipamento] = useState(equipment);
   const [indexImage, setIndexImage] = useState(0);
@@ -55,11 +56,19 @@ function EquipmentInfo({navigation, route}) {
     if (equipamento.isActive) return;
 
     alertRequest('Ativar', 'Deseja ativar este equipamento?', async () => {
+      const updated_by = {
+        userId: (user && user._id) ?? '',
+        userName: (user && user.name) ?? '',
+      };
+
       setLoading(true);
+
       const result: any = await equipmentController.updateStatus(
         equipamento._id,
         true,
+        updated_by,
       );
+
       setLoading(false);
 
       if (!result.errorMessage) {
@@ -81,11 +90,19 @@ function EquipmentInfo({navigation, route}) {
       'Desativar',
       'Deseja desativar este equipamento?',
       async () => {
+        const updated_by = {
+          userId: (user && user._id) ?? '',
+          userName: (user && user.name) ?? '',
+        };
+
         setLoading(true);
+
         const result: any = await equipmentController.updateStatus(
           equipamento._id,
           false,
+          updated_by,
         );
+
         setLoading(false);
 
         if (!result.errorMessage) {
