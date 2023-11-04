@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SwitchComponent from '../../components/base/switch';
 import * as LocalAuthentication from 'expo-local-authentication';
 import LogoLoginComponent from '../../components/base/login-logo';
+import navigate from '../../../RootNavigation';
 
 function Login({navigation}) {
   const {login, validateBiometricToken} = useContext(AuthContext);
@@ -179,7 +180,7 @@ function Login({navigation}) {
             )}
           </Pressable>
         }
-        onPressIn={() => authenticate(true)}
+        // onPressIn={() => authenticate(true)}
       />
       <SwitchComponent
         label="Lembrar usuário?"
@@ -203,12 +204,13 @@ function Login({navigation}) {
         onPress={authenticate}
         disabled={isLoading}
       />
-      {/* <PressableButton
+      <PressableButton
         children="Esqueci minha senha"
         pressableStyle={styles.pressableContainer}
         textStyle={styles.forgotPassword}
         disabled={isLoading}
-      /> */}
+        onPress={() => navigate('RecoverPassword')}
+      />
     </View>
   );
 }
