@@ -1,25 +1,22 @@
 import React, {useContext, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import InputComponent from '../base/inputComponent';
-import PressableButton from '../base/pressableButton';
+import InputComponent from '../../components/base/inputComponent';
+import PressableButton from '../../components/base/pressableButton';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {AuthContext, LoadContext} from '../../../contexts';
-import {User} from '../../../helpers/models';
 import {userValidator} from '../../../helpers/validators';
-import {alertRequest} from '../../../helpers/utils';
+import {userController} from '../../../services';
+import {alertResult} from '../../../helpers/utils';
 
-const EditPassword = ({navigation, route}) => {
-  const {user, updateUser} = useContext(AuthContext);
+const EditPassword = ({navigation}) => {
+  const {user} = useContext(AuthContext);
   const {isLoading, setLoading} = useContext(LoadContext);
-  const usuarioInfo: User = route.params;
 
   if (!user) {
-    navigation.navigate('Home');
+    navigation.navigate('Login');
 
-    return;
+    return <></>;
   }
-
-  const [usuario, setUsuario] = React.useState(usuarioInfo);
   const [Mypassword, setMyPassword] = useState('');
   const [Newpassword, setNewPassword] = useState('');
   const [Confirmpassword, setConfirmPassword] = useState('');
@@ -50,17 +47,25 @@ const EditPassword = ({navigation, route}) => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const changePasswordUser = () => {
+  const changePasswordUser = async () => {
     if (Mypassword.length == 0) {
       setIsMyPasswordValid(false);
+      return;
     }
 
     if (Newpassword.length == 0) {
       setIsNewPasswordValid(false);
+      return;
     }
 
     if (Confirmpassword.length == 0) {
       setIsConfirmPasswordValid(false);
+      return;
+    }
+
+    if (Newpassword !== Confirmpassword) {
+      setIsConfirmPasswordValid(false);
+      return;
     }
 
     const validaSenha = userValidator.validatePassword(Newpassword);
@@ -68,6 +73,22 @@ const EditPassword = ({navigation, route}) => {
     if (!validaSenha) {
       setIsNewPasswordValid(false);
     }
+
+    setLoading(true);
+    const result = await userController.updatePassword(
+      user._id,
+      Mypassword,
+      Newpassword,
+    );
+    const resultSuccess = result.errorMessage ? false : true;
+
+    setLoading(false);
+    alertResult(
+      resultSuccess,
+      'Senha alterada com sucesso.',
+      result.errorMessage,
+      'Home',
+    );
   };
 
   return (
@@ -84,7 +105,7 @@ const EditPassword = ({navigation, route}) => {
         value={Mypassword}
         onChangeText={text => {
           setIsMyPasswordValid(true);
-        //   setMyPassword({...usuario, password:text});
+          setMyPassword(text);
         }}
         rightIcon={
           <Pressable
@@ -101,9 +122,6 @@ const EditPassword = ({navigation, route}) => {
           if (Mypassword.length == 0) {
             setIsMyPasswordValid(false);
           }
-        //   if (Mypassword != usuario.password) {
-        //     setIsMyPasswordValid(false);
-        //   }
         }}
       />
 
@@ -242,7 +260,8 @@ const EditPassword = ({navigation, route}) => {
       <View style={styles.pressableContainer}>
         <PressableButton
           pressableStyle={styles.enterButton}
-          onPress={changePasswordUser}>
+          onPress={changePasswordUser}
+          disabled={isLoading}>
           Salvar
         </PressableButton>
       </View>
@@ -264,11 +283,15 @@ const styles = StyleSheet.create({
   pressableContainer: {
     display: 'flex',
     alignItems: 'center',
+    width: '100%',
   },
   enterButton: {
     backgroundColor: '#77A490',
-    width: '93%',
-    fontSize: 20,
+    width: '96%',
+    height: 50,
+    marginTop: 5,
+    borderRadius: 10,
+    justifyContent: 'center',
   },
   passwordVisibilityButton: {
     padding: 10,

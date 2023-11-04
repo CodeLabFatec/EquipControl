@@ -15,7 +15,7 @@ import ListUsers from '../modules/pages/users/listUsers';
 import RegisterUser from '../modules/pages/users/registerUser';
 import UserInfo from '../modules/pages/users/userInfo';
 import {AuthContext} from '../contexts';
-import EditPassword from '../modules/components/users/editPassword';
+import EditPassword from '../modules/pages/users/editPassword';
 
 const AppStack = createNativeStackNavigator();
 
