@@ -92,7 +92,7 @@ const EditPassword = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <InputComponent
         label="Senha atual"
         inputStyle={[
@@ -259,18 +259,20 @@ const EditPassword = ({navigation}) => {
 
       <View style={styles.pressableContainer}>
         <PressableButton
-          pressableStyle={styles.enterButton}
+          pressableStyle={styles.saveButton}
           onPress={changePasswordUser}
           disabled={isLoading}>
           Salvar
         </PressableButton>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'center',
     marginTop: 20,
     marginBottom: 50,
   },
@@ -281,17 +283,14 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   pressableContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    marginTop: 20,
     width: '100%',
   },
-  enterButton: {
+  saveButton: {
+    alignSelf: 'center',
     backgroundColor: '#77A490',
     width: '96%',
-    height: 50,
-    marginTop: 5,
     borderRadius: 10,
-    justifyContent: 'center',
   },
   passwordVisibilityButton: {
     padding: 10,
