@@ -97,6 +97,7 @@ https://github.com/CodeLabFatec/EquipControl/assets/26208169/ec11063c-7fbf-4d4d-
 
 <p align="center">
 
+https://github.com/CodeLabFatec/EquipControl/assets/26208169/df37f11a-10df-4dcb-b96b-c2353b29f0ed
 
 </p>
 
