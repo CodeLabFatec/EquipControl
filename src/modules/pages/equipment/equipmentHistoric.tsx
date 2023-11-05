@@ -13,7 +13,8 @@ function EquipmentHistoric({navigation, route}) {
 
   return (
     <View>
-      <Pressable >
+      <Pressable
+        onPress={() => navigation.navigate('InfoEquipment', equipment)}>
         <Icon style={styles.back} name="arrow-left" />
       </Pressable>
       {!equipment.history ||
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   back: {
     fontSize: 26,
     marginTop: 10,
-    marginLeft: 10
+    marginLeft: 10,
   },
 });
 
