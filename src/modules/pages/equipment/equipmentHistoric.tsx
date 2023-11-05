@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, FlatList, View, Text} from 'react-native';
+import {StyleSheet, FlatList, View, Text, Pressable} from 'react-native';
 import {Equipment} from '../../../helpers/models';
 import EquipmentHistoryComponent from '../../components/equipment/equipment-historic';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function EquipmentHistoric({navigation, route}) {
   const equipment: Equipment = route.params;
@@ -12,6 +13,9 @@ function EquipmentHistoric({navigation, route}) {
 
   return (
     <View>
+      <Pressable >
+        <Icon style={styles.back} name="arrow-left" />
+      </Pressable>
       {!equipment.history ||
         (equipment.history.length === 0 && (
           <Text style={styles.none}>Nenhuma manobra realizada</Text>
@@ -36,6 +40,11 @@ const styles = StyleSheet.create({
   none: {
     padding: 20,
     textAlign: 'center',
+  },
+  back: {
+    fontSize: 26,
+    marginTop: 10,
+    marginLeft: 10
   },
 });
 

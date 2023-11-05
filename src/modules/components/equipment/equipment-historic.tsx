@@ -34,10 +34,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     maxWidth: '96%',
-    borderRadius: 2,
+    borderRadius: 5,
     marginLeft: 6,
     marginTop: 4,
     backgroundColor: '#363636',
+    paddingBottom: 5
   },
   serial: {
     marginLeft: 6,
