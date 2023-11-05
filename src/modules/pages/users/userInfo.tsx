@@ -60,7 +60,6 @@ function UserInfo({navigation, route}) {
 
   const handleRegister = () => {
     const validaSubmit = userValidator.validateUser(usuario);
-    console.log(validaSubmit);
 
     if (validaSubmit) {
       if (validaSubmit.includes('name')) {
