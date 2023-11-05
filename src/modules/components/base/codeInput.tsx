@@ -1,50 +1,46 @@
-import React, {useRef, useState} from 'react';
-import {View, TextInput, StyleSheet, KeyboardTypeOptions} from 'react-native';
+import React from 'react';
+import {View, TextInput, StyleSheet} from 'react-native';
 
 interface props {
   label?: string;
   placeholder?: string;
-  keyboardType?: KeyboardTypeOptions;
-  maxLength?: number;
-  onChangeText?: (text: string) => void;
-  value?: any;
+  onChangeText: (codes: any[]) => void;
+  value: any;
   inputStyle?: any;
   labelStyle?: any;
   onBlur?: () => void;
 }
 
-function CodeInput({onChangeText, inputStyle}: props) {
-  const [code, setCode] = useState(['', '', '', '', '', '']);
+function CodeInput({value, onChangeText, inputStyle}: props) {
+  const handleCodeChange = (text, index) => {
+    if (/^\d*$/.test(text) && text.length <= 1) {
+      const newCode = [...value];
+      newCode[index] = text;
+      onChangeText(newCode);
 
-    const handleCodeChange = (text, index) => {
-      if (/^\d*$/.test(text) && text.length <= 1) {
-        const newCode = [...code];
-        newCode[index] = text;
-        setCode(newCode);
-
-        if (text !== '') {
-            focusNextInput(index + 1);
-        } else{
-            focusPreviousInput(index - 1);
-        }
+      if (text !== '') {
+        focusNextInput(index + 1);
+      } else {
+        focusPreviousInput(index - 1);
       }
-    };
+    }
+  };
 
-    const focusNextInput = nextIndex => {
-      if (nextIndex < 6) {
-        this[`inputRef${nextIndex}`].focus();
-      }
-    };
+  const focusNextInput = nextIndex => {
+    if (nextIndex < 6) {
+      this[`inputRef${nextIndex}`].focus();
+    }
+  };
 
-    const focusPreviousInput = prevIndex => {
-      if (prevIndex >= 0) {
-        this[`inputRef${prevIndex}`].focus();
-      }
-    };
-  
+  const focusPreviousInput = prevIndex => {
+    if (prevIndex >= 0) {
+      this[`inputRef${prevIndex}`].focus();
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {code.map((value, index) => (
+      {value.map((value, index) => (
         <TextInput
           key={index}
           style={styles.input}

@@ -4,7 +4,7 @@ class EquipmentValidator {
   public validateEquipment(equipment: Equipment): string | null {
     let validation = null;
     if (!this.validateEmptyString(equipment.name)) validation = 'name';
-    if (!this.validateEmptyString(equipment.domain))
+    if (!this.validateEmptyString(equipment.domain._id))
       validation = validation ? validation + 'domain' : 'domain';
     if (!this.validateEmptyString(equipment.serial))
       validation = validation ? validation + 'serial' : 'serial';
@@ -46,7 +46,10 @@ class EquipmentValidator {
 }
 
 const defaultEquipment: Equipment = {
-  domain: '',
+  domain: {
+    _id: '',
+    name: '',
+  },
   files: undefined,
   latitude: '',
   longitude: '',

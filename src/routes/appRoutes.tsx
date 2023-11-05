@@ -6,6 +6,7 @@ import Header from '../modules/components/header';
 import EquipmentRegister from '../modules/pages/equipment/equipmentRegister';
 import DomainRegister from '../modules/pages/domain/domainRegister';
 import EquipmentInfo from '../modules/pages/equipment/equipmentInfo';
+import EquipmentHistoric from '../modules/pages/equipment/equipmentHistoric';
 import DomainInfo from '../modules/pages/domain/domainInfo';
 import DomainList from '../modules/pages/domain/domainList';
 import {StyleSheet, View} from 'react-native';
@@ -15,6 +16,7 @@ import ListUsers from '../modules/pages/users/listUsers';
 import RegisterUser from '../modules/pages/users/registerUser';
 import UserInfo from '../modules/pages/users/userInfo';
 import {AuthContext} from '../contexts';
+import EditPassword from '../modules/pages/users/editPassword';
 
 const AppStack = createNativeStackNavigator();
 
@@ -40,6 +42,12 @@ const AppRoutes: React.FC = () => {
           name="InfoEquipment"
           navigationKey="InfoEquipment"
           component={EquipmentInfo}
+          options={{header: Header}}
+        />
+        <AppStack.Screen
+          name="HistoricEquipment"
+          navigationKey="HistoricEquipment"
+          component={EquipmentHistoric}
           options={{header: Header}}
         />
         <AppStack.Screen
@@ -84,6 +92,12 @@ const AppRoutes: React.FC = () => {
               name="ListUsers"
               navigationKey="ListUsers"
               component={ListUsers}
+              options={{header: Header}}
+            />
+            <AppStack.Screen
+              name="EditPassword"
+              navigationKey="EditPassword"
+              component={EditPassword}
               options={{header: Header}}
             />
           </>

@@ -33,8 +33,14 @@ class EquipmentController extends BaseController<Equipment> {
 
   public post = async (data: Equipment) => {
     try {
-      const {_id, createdAt, updatedAt, ...eq} = data;
-      const result = (await api.post(endpoints.POST_EQUIPMENT, eq)).data;
+      const {_id, createdAt, updatedAt, domain, ...eq} = data;
+
+      const equipment = {
+        ...eq,
+        domain: domain._id,
+      };
+
+      const result = (await api.post(endpoints.POST_EQUIPMENT, equipment)).data;
 
       return result;
     } catch (e) {
@@ -42,11 +48,16 @@ class EquipmentController extends BaseController<Equipment> {
     }
   };
 
-  public updateStatus = async (equipmentId: string, status: boolean) => {
+  public updateStatus = async (
+    equipmentId: string,
+    status: boolean,
+    updated_by: {userId: string; userName: string},
+  ) => {
     try {
       const result = (
         await api.patch(endpoints.PATCH_EQUIPMENT_STATUS + equipmentId, {
           isActive: status,
+          updated_by,
         })
       ).data;
 
@@ -57,10 +68,14 @@ class EquipmentController extends BaseController<Equipment> {
   };
 
   public update = async (equipmentId: string, equipment: Equipment) => {
-    const {_id, createdAt, updatedAt, created_by, ...eq} = equipment;
+    const {_id, createdAt, updatedAt, created_by, domain, ...eq} = equipment;
     try {
+      const data = {
+        domain: domain._id,
+        ...eq,
+      };
       const result = (
-        await api.patch(endpoints.PATCH_EQUIPMENT_UPDATE + equipmentId, eq)
+        await api.patch(endpoints.PATCH_EQUIPMENT_UPDATE + equipmentId, data)
       ).data;
 
       return result;

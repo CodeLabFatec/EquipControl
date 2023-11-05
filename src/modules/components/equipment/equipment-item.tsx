@@ -25,9 +25,9 @@ const EquipmentComponent: ListRenderItem<Equipment> = ({item}) => {
           <Text style={{fontWeight: 'bold'}}>Nº Série: </Text>
           {item.serial}
         </Text>
-        {/* <Text style={styles.serial}>
-          <Text style={{fontWeight: 'bold'}}>Tipo: </Text> {item.domain}
-        </Text> */}
+        <Text style={styles.serial}>
+          <Text style={{fontWeight: 'bold'}}>Domínio: </Text> {item.domain.name}
+        </Text>
         <Text style={styles.serial}>
           <Text style={{fontWeight: 'bold'}}>Latitude: </Text> {item.latitude}
         </Text>
@@ -116,3 +116,4 @@ const styles = StyleSheet.create({
 });
 
 export default EquipmentComponent;
+ 

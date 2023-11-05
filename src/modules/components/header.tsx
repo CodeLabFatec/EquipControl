@@ -13,8 +13,9 @@ function Header() {
       label: (user && user.name) ?? 'Usuário',
       onPress: null,
       textStyle: {textAlign: 'center'},
-    },
+    },    
     {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
+    {value: null, label: 'Conta', onPress: () => navigate('EditPassword')},
     {value: null, label: 'Sair', onPress: () => logout()},
   ];
 
@@ -29,15 +30,19 @@ function Header() {
       </View>
       <View style={styles.userBox}>
         <Dropdown items={dropdownItems}>
-          <Image
-            source={{
-              uri:
-                user && user.image
-                  ? `data:${user.image.type};base64,${user.image.base64}`
-                  : '',
-            }}
-            style={styles.headerUser}
-          />
+          {user && user.image ? (
+            <Image
+              source={{
+                uri: `data:${user.image.type};base64,${user.image.base64}`,
+              }}
+              style={styles.headerUser}
+            />
+          ) : (
+            <Image
+              source={require('../../../assets/usuario.png')}
+              style={styles.headerUser}
+            />
+          )}
         </Dropdown>
       </View>
     </View>
@@ -57,8 +62,7 @@ const styles = StyleSheet.create({
   headerLogo: {
     width: 60,
     height: 60,
-    position: 'relative',
-    right: -153,
+    marginLeft: 20
   },
   image: {
     marginTop: 10,

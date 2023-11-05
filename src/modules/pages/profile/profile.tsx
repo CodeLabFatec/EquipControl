@@ -42,7 +42,12 @@ function ProfilePage({navigation}) {
         'biometricOptionSaved',
       );
       if (biometricOption !== null) {
-        setBiometricAuth(true);
+        const option = JSON.parse(biometricOption);
+        if (option.username == usuario.username) {
+          setBiometricAuth(true);
+        } else {
+          disableBiometricAuth();
+        }
       }
     } catch (error) {
       // Error retrieving data

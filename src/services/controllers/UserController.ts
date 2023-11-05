@@ -60,11 +60,8 @@ class UserController extends BaseController<User> {
       const {_id, createdAt, updatedAt, ...user} = data;
       const result = (await api.post(endpoints.POST_USER, user)).data;
 
-      console.log(result);
       return result;
     } catch (e) {
-      console.log(e.response.data);
-      console.log(e.response.data.message);
       return this.handleErrors(e.response.data.message);
     }
   };
@@ -78,7 +75,6 @@ class UserController extends BaseController<User> {
 
       return result;
     } catch (e) {
-      console.log(e.response.data);
       return this.handleErrors(e.message);
     }
   };
@@ -123,6 +119,56 @@ class UserController extends BaseController<User> {
         };
 
       return this.handleErrors(e.message);
+    }
+  };
+
+  public sendRecoverCode = async (username: string) => {
+    try {
+      const result = (
+        await api.post(endpoints.POST_SEND_RECOVER_CODE + username)
+      ).data;
+
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.response.data.message);
+    }
+  };
+
+  public recoverPassword = async (
+    username: string,
+    password: string,
+    code: string,
+  ) => {
+    try {
+      const result = (
+        await api.post(endpoints.POST_RECOVER_PASSWORD + username, {
+          password,
+          code,
+        })
+      ).data;
+
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.response.data.message);
+    }
+  };
+
+  public updatePassword = async (
+    _id: string,
+    password: string,
+    newPassword: string,
+  ) => {
+    try {
+      const result = (
+        await api.post(endpoints.POST_UPDATE_PASSWORD + _id, {
+          password,
+          newPassword,
+        })
+      ).data;
+
+      return result;
+    } catch (e) {
+      return this.handleErrors(e.response.data.message);
     }
   };
 }
