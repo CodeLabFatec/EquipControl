@@ -245,6 +245,10 @@ function EquipmentInfo({navigation, route}) {
           <Pressable onPress={removeImage}>
             <Icon style={styles.removeIcon} name="minus-circle" />
           </Pressable>
+          <Pressable
+          onPress={() => navigation.navigate('HistoricEquipment', equipment)}>
+          <Icon style={styles.historicIcon} name="clock" />
+        </Pressable>
         </View>
       </View>
       <View style={styles.formContainer}>
@@ -440,6 +444,11 @@ const styles = StyleSheet.create({
     fontSize: 38,
     color: 'gray',
     marginTop: 5,
+  },
+  historicIcon: {
+    fontSize: 38,
+    color: '#77A490',
+    marginTop: 90,
   },
   formContainer: {
     width: '100%',

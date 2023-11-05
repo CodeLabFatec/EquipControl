@@ -13,6 +13,15 @@ export interface Equipment {
   createdAt?: Date;
   updatedAt?: Date;
   created_by?: CreatedBy;
+  history?: EquipmentHistory[];
+}
+
+export interface EquipmentHistory {
+  userId: string;
+  userName: string;
+  isActive: boolean;
+  status: string;
+  date: string;
 }
 
 interface CreatedBy {

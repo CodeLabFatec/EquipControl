@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
   headerLogo: {
     width: 60,
     height: 60,
-    position: 'relative',
-    right: -153,
+    marginLeft: 20
   },
   image: {
     marginTop: 10,
