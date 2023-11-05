@@ -41,9 +41,10 @@ Na tabela abaixo é possível visualizar a divisão de tarefas do Backlog por Sp
 | 02 | Construção das interfaces para CADASTRO, ATUALIZAÇÃO, CONSULTA E EXCLUSÃO de Domínio de Dados | :heavy_check_mark: | (70) Média |
 | 02 | Construção da interface de CONSULTA do Perfil do usuário conectado  | :heavy_check_mark: | (65) Média |
 |        |
-| 03 | Construção da interface e métodos de RECUPERAÇÃO de SENHA do Usuário | :hourglass:  | (55) Média |
-| 03 | Desenvolvimento de métodos para salvar LOG das manobras realizadas   | :hourglass:  | (50) Média |
-| 03 | Apromirar filtro da listagem de equipamentos | :hourglass:  | (40) Média |
+| 03 | Construção da interface e métodos de RECUPERAÇÃO de SENHA do Usuário | :heavy_check_mark:  | (60) Média |
+| 03 | Construção de componente para a troca de SENHA do Usuário | :heavy_check_mark: | (55) Média |
+| 03 | Construção da interface e métodos para visualizar LOG/HISTÓRICO das manobras realizadas   | :heavy_check_mark:  | (50) Média |
+| 03 | Apromirar filtro da listagem de equipamentos | :heavy_check_mark:  | (40) Média |
 |        |
 | 04 | Construção da interface para visualizar a LISTAGEM de Equipamentos próximos a localização do usuário conectado |:hourglass: | (45) Média |
 | 04 | Construção da interface de MAPA para a LISTAGEM dos Equipamentos cadastrados  | :hourglass: | (35) Baixa |
@@ -62,7 +63,7 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 | :----: | :--------: | :----------------: | :-----------------------------------------: |
 |   01   | 24/09/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint1.md) |
 |   02   | 15/10/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint2.md) |
-|   03   | 05/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint3.md) |
+|   03   | 05/11/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint3.md) |
 |   04   | 26/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint4.md) |
 
 <br />
@@ -87,6 +88,16 @@ https://github.com/CodeLabFatec/EquipControl/assets/26208169/03a3142b-8254-4542-
 <p align="center">
 
 https://github.com/CodeLabFatec/EquipControl/assets/26208169/ec11063c-7fbf-4d4d-98cf-91a5941339e2
+
+</p>
+
+<br />
+
+<h4> Entrega da Sprint 3 </h4>
+
+<p align="center">
+
+https://github.com/CodeLabFatec/EquipControl/assets/26208169/df37f11a-10df-4dcb-b96b-c2353b29f0ed
 
 </p>
 
