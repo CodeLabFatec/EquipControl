@@ -246,9 +246,11 @@ function EquipmentInfo({navigation, route}) {
             <Icon style={styles.removeIcon} name="minus-circle" />
           </Pressable>
           <Pressable
-          onPress={() => navigation.navigate('HistoricEquipment', equipment)}>
-          <Icon style={styles.historicIcon} name="clock" />
-        </Pressable>
+            onPress={() =>
+              navigation.navigate('HistoricEquipment', {id: equipment._id})
+            }>
+            <Icon style={styles.historicIcon} name="clock" />
+          </Pressable>
         </View>
       </View>
       <View style={styles.formContainer}>

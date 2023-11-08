@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, FlatList, View, Text, Pressable} from 'react-native';
 import {Equipment} from '../../../helpers/models';
 import EquipmentHistoryComponent from '../../components/equipment/equipment-historic';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useFocusEffect} from '@react-navigation/native';
+import {equipmentController} from '../../../services';
+import {LoadContext} from '../../../contexts';
 
 function EquipmentHistoric({navigation, route}) {
-  const equipment: Equipment = route.params;
-  if (!equipment) {
-    navigation.navigate('Home');
-    return;
-  }
+  const {id} = route.params;
+  const {setLoading} = useContext(LoadContext);
+  const [equipment, setEquipment] = useState<Equipment | null>(null);
+
+  const loadEquipment = async () => {
+    setLoading(true);
+    const result = await equipmentController.get(id);
+    setLoading(false);
+    if (result) {
+      setEquipment(result);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true);
+      if (equipment && equipment._id === id) return;
+      if (!id || id === '') {
+        navigation.navigate('Home');
+        return;
+      }
+      loadEquipment();
+    }, []),
+  );
 
   return (
     <View>
@@ -17,12 +39,13 @@ function EquipmentHistoric({navigation, route}) {
         onPress={() => navigation.navigate('InfoEquipment', equipment)}>
         <Icon style={styles.back} name="arrow-left" />
       </Pressable>
-      {!equipment.history ||
+      {!equipment ||
+        !equipment.history ||
         (equipment.history.length === 0 && (
           <Text style={styles.none}>Nenhuma manobra realizada</Text>
         ))}
       <FlatList
-        data={equipment.history ? equipment.history : []}
+        data={equipment && equipment.history ? equipment.history : []}
         renderItem={EquipmentHistoryComponent}
         numColumns={1}
         contentContainerStyle={styles.historyList}
