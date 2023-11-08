@@ -9,7 +9,7 @@ class EquipmentController extends BaseController<Equipment> {
 
   async get(id: string): Promise<Equipment | null> {
     try {
-      return (await api.get(endpoints.GET_EQUIPMENT + id)).data.equipment;
+      return (await api.get(endpoints.GET_EQUIPMENT + '/' + id)).data.equipment;
     } catch (e) {
       return null;
     }

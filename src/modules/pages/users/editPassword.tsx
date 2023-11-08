@@ -92,7 +92,7 @@ const EditPassword = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <InputComponent
         label="Senha atual"
         inputStyle={[
@@ -265,15 +265,13 @@ const EditPassword = ({navigation}) => {
           Salvar
         </PressableButton>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 50,
   },
   inputWidth: {
