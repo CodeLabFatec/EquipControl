@@ -47,7 +47,7 @@ Na tabela abaixo é possível visualizar a divisão de tarefas do Backlog por Sp
 | 03 | Apromirar filtro da listagem de equipamentos | :heavy_check_mark:  | (40) Média |
 |        |
 | 04 | Construção da interface de MAPA para a LISTAGEM dos Equipamentos cadastrados  | :hourglass: | (45) Média |
-| 04 | Construção da componente para visualizar a LISTAGEM de Equipamentos próximos a localização do usuário conectado |:hourglass: | (35) Baixa |
+| 04 | Construção da componente para visualizar os Equipamentos PRÓXIMOS a localização do usuário conectado |:hourglass: | (35) Baixa |
 | 04 | Escrita da documentação da API com os métodos que realizam manobras | :hourglass: | (20) Baixa |
 
 <br>
