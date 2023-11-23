@@ -33,7 +33,7 @@ class EquipmentController extends BaseController<Equipment> {
 
   public post = async (data: Equipment) => {
     try {
-      const {_id, createdAt, updatedAt, domain, ...eq} = data;
+      const {_id, createdAt, updatedAt, domain, history, ...eq} = data;
 
       const equipment = {
         ...eq,
@@ -68,7 +68,8 @@ class EquipmentController extends BaseController<Equipment> {
   };
 
   public update = async (equipmentId: string, equipment: Equipment) => {
-    const {_id, createdAt, updatedAt, created_by, domain, ...eq} = equipment;
+    const {_id, createdAt, updatedAt, created_by, domain, history, ...eq} =
+      equipment;
     try {
       const data = {
         domain: domain._id,

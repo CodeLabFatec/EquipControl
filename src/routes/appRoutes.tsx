@@ -17,6 +17,7 @@ import RegisterUser from '../modules/pages/users/registerUser';
 import UserInfo from '../modules/pages/users/userInfo';
 import {AuthContext} from '../contexts';
 import EditPassword from '../modules/pages/users/editPassword';
+import EquipmentMapList from '../modules/pages/equipment/equipmentMapList';
 
 const AppStack = createNativeStackNavigator();
 
@@ -54,6 +55,12 @@ const AppRoutes: React.FC = () => {
           name="Profile"
           navigationKey="Profile"
           component={ProfilePage}
+          options={{header: Header}}
+        />
+        <AppStack.Screen
+          name="Map"
+          navigationKey="Map"
+          component={EquipmentMapList}
           options={{header: Header}}
         />
         {user && user.isAdmin && (

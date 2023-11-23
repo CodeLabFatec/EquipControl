@@ -1,8 +1,9 @@
 import React, {createContext, useContext, useState} from 'react';
 import {User} from '../helpers/models';
-import {userController} from '../services';
+import {api, userController} from '../services';
 import {alertError} from '../helpers/utils';
 import LoadContext from './loadContext';
+import {setAuthorization} from '../services/api';
 
 interface AuthContextData {
   signed: boolean;
@@ -87,6 +88,8 @@ export const AuthProvider = ({children}: Props) => {
 
     const {user, token} = result;
 
+    setAuthorization(token);
+
     setUser(user);
     setToken(token);
   }
@@ -94,6 +97,7 @@ export const AuthProvider = ({children}: Props) => {
   function logout() {
     setUser(null);
     setToken(null);
+    setAuthorization(null);
   }
 
   return (

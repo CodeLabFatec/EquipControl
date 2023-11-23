@@ -53,5 +53,11 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Precisamos de permissão para selecionar imagens.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to use your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to use your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to use your location</string>
 </dict>
 </plist>

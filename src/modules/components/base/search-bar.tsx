@@ -1,18 +1,30 @@
 import React from 'react';
-import {View, TextInput, StyleSheet, Pressable} from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  DimensionValue,
+} from 'react-native';
 import navigate from '../../../RootNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface Props {
   value: string;
-  newItemPage: string;
+  newItemPage?: string;
+  maxWidth?: string;
   onChangeText: (text: React.SetStateAction<string>) => void;
 }
 
-const SearchBar = ({value, newItemPage, onChangeText}: Props) => {
+const SearchBar = ({value, newItemPage, maxWidth, onChangeText}: Props) => {
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
+      <View
+        style={
+          maxWidth
+            ? {...styles.searchContainer, width: maxWidth as DimensionValue}
+            : styles.searchContainer
+        }>
         <Icon style={styles.icon} name="search" />
         <TextInput
           style={styles.input}
@@ -23,11 +35,13 @@ const SearchBar = ({value, newItemPage, onChangeText}: Props) => {
         />
       </View>
 
-      <Pressable
-        style={styles.addIconContainer}
-        onPress={() => navigate(newItemPage)}>
-        <Icon style={styles.addIcon} name="plus-circle" />
-      </Pressable>
+      {newItemPage && (
+        <Pressable
+          style={styles.addIconContainer}
+          onPress={() => navigate(newItemPage)}>
+          <Icon style={styles.addIcon} name="plus-circle" />
+        </Pressable>
+      )}
     </View>
   );
 };
