@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  PermissionsAndroid,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {PermissionsAndroid, StyleSheet, Text, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {equipmentController} from '../../../services';
@@ -19,6 +13,7 @@ interface MapItem {
   name?: string;
   latitude: number;
   longitude: number;
+  status?: boolean;
 }
 
 const availableDistances = {
@@ -61,12 +56,6 @@ export default function EquipmentMapList({navigation}) {
   );
 
   const dropdownItems: any[] = [
-    // {
-    //   value: filterDistance,
-    //   label: convertDistance(filterDistance),
-    //   onPress: null,
-    //   textStyle: {textAlign: 'center'},
-    // },
     {
       value: null,
       label: '1 KM',
@@ -95,13 +84,14 @@ export default function EquipmentMapList({navigation}) {
   ];
 
   const fetchData = async () => {
-    const data = await equipmentController.list();
+    const data = await equipmentController.listOnlyLocation();
     const entidades = data.map(i => {
       return {
         id: i._id,
         latitude: parseFloat(i.latitude),
         longitude: parseFloat(i.longitude),
         name: i.name,
+        status: i.isActive,
       };
     });
     setEntities(entidades);
@@ -232,7 +222,7 @@ export default function EquipmentMapList({navigation}) {
                     longitude: entity.longitude,
                   }}
                   title={entity.name ?? 'Equipamento'}
-                  description={`Equipamento`}
+                  description={`${entity.status ? 'Ativo' : 'Inativo'}`}
                 />
               ))}
           </MapView>

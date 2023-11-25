@@ -16,6 +16,14 @@ export interface Equipment {
   history?: EquipmentHistory[];
 }
 
+export interface EquipmentLocation {
+  _id: string;
+  name: string;
+  latitude: string;
+  longitude: string;
+  isActive: boolean;
+}
+
 export interface EquipmentHistory {
   userId: string;
   userName: string;

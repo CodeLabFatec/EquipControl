@@ -56,17 +56,11 @@ function EquipmentInfo({navigation, route}) {
     if (equipamento.isActive) return;
 
     alertRequest('Ativar', 'Deseja ativar este equipamento?', async () => {
-      const updated_by = {
-        userId: (user && user._id) ?? '',
-        userName: (user && user.name) ?? '',
-      };
-
       setLoading(true);
 
       const result: any = await equipmentController.updateStatus(
         equipamento._id,
         true,
-        updated_by,
       );
 
       setLoading(false);
@@ -90,17 +84,11 @@ function EquipmentInfo({navigation, route}) {
       'Desativar',
       'Deseja desativar este equipamento?',
       async () => {
-        const updated_by = {
-          userId: (user && user._id) ?? '',
-          userName: (user && user.name) ?? '',
-        };
-
         setLoading(true);
 
         const result: any = await equipmentController.updateStatus(
           equipamento._id,
           false,
-          updated_by,
         );
 
         setLoading(false);

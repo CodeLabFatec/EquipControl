@@ -25,6 +25,8 @@ function setAuthorization(token: string | null) {
 const endpoints = {
   //GET
   GET_EQUIPMENT: '/equipment/get',
+  GET_EQUIPMENT_HISTORY: '/equipment/getEquipmentHistory/',
+  GET_EQUIPMENTS_LOCATION: '/equipment/getAllLocations',
   GET_USER: '/user/get/',
   GET_ALL_USERS: '/user/getAllUsers',
   GET_DOMAIN: '/domain/get/',
