@@ -35,6 +35,7 @@
 
 ## 📉 Burndown
 
+![image](https://github.com/CodeLabFatec/EquipControl-Server/assets/26208169/323672ba-8763-4c1d-a20a-b2e5f3151b69)
 
 <br>
 
