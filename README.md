@@ -16,7 +16,7 @@
 
 ## 🚀 Informações & Objetivo
 
-> **Projeto em Desenvolvimento** <br> **Para acessar o repositório do backend clique [aqui](https://github.com/CodeLabFatec/EquipControl-Server)**
+> **Projeto finalizado** <br> **Para acessar o repositório do backend clique [aqui](https://github.com/CodeLabFatec/EquipControl-Server)**
 
 <p align="justify">O objeto desse projeto é de possibilitar manobras de ativação/desativação de equipamentos de diversas áreas diferentes, como empresas de Saneamento, Elétrica, Telecomunicações e outras. A aplicação deve ser desenvolvida para mobile e também deve possibilitar consultas, listagens, atualizações, manobras e cadastros de equipamentos, além de disponibilizar uma api para a realização dessas manobras. </p>
 
