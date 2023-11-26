@@ -1,28 +1,48 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, FlatList, View, Text, Pressable} from 'react-native';
-import {Equipment} from '../../../helpers/models';
+import {EquipmentHistory} from '../../../helpers/models';
 import EquipmentHistoryComponent from '../../components/equipment/equipment-historic';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useFocusEffect} from '@react-navigation/native';
+import {equipmentController} from '../../../services';
+import {LoadContext} from '../../../contexts';
 
 function EquipmentHistoric({navigation, route}) {
-  const equipment: Equipment = route.params;
-  if (!equipment) {
-    navigation.navigate('Home');
-    return;
-  }
+  const {id} = route.params;
+  const {setLoading} = useContext(LoadContext);
+  const [history, setHistory] = useState<EquipmentHistory[]>([]);
+
+  const loadHistory = async () => {
+    setLoading(true);
+    const result = await equipmentController.getHistory(id);
+    setLoading(false);
+    if (result) {
+      setHistory(result);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true);
+      if (!id || id === '') {
+        navigation.navigate('Home');
+        return;
+      }
+      loadHistory();
+    }, []),
+  );
 
   return (
     <View>
-      <Pressable
-        onPress={() => navigation.navigate('InfoEquipment', equipment)}>
+      <Pressable onPress={() => navigation.goBack()}>
         <Icon style={styles.back} name="arrow-left" />
       </Pressable>
-      {!equipment.history ||
-        (equipment.history.length === 0 && (
+      {!history ||
+        (history.length === 0 && (
           <Text style={styles.none}>Nenhuma manobra realizada</Text>
         ))}
       <FlatList
-        data={equipment.history ? equipment.history : []}
+        data={history}
         renderItem={EquipmentHistoryComponent}
         numColumns={1}
         contentContainerStyle={styles.historyList}

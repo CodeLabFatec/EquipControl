@@ -46,10 +46,9 @@ Na tabela abaixo é possível visualizar a divisão de tarefas do Backlog por Sp
 | 03 | Construção da interface e métodos para visualizar LOG/HISTÓRICO das manobras realizadas   | :heavy_check_mark:  | (50) Média |
 | 03 | Apromirar filtro da listagem de equipamentos | :heavy_check_mark:  | (40) Média |
 |        |
-| 04 | Construção da interface para visualizar a LISTAGEM de Equipamentos próximos a localização do usuário conectado |:hourglass: | (45) Média |
-| 04 | Construção da interface de MAPA para a LISTAGEM dos Equipamentos cadastrados  | :hourglass: | (35) Baixa |
-| 04 | Construção de método para enviar dados ao conectar com a rede | :hourglass: | (30) Baixa |
-| 04 | Escrita da documentação da API com os métodos que realizam manobras | :hourglass: | (20) Baixa |
+| 04 | Construção da interface de MAPA para a LISTAGEM dos Equipamentos cadastrados  | :heavy_check_mark: | (45) Média |
+| 04 | Construção da componente para visualizar os Equipamentos PRÓXIMOS a localização do usuário conectado |:heavy_check_mark: | (35) Baixa |
+| 04 | Escrita da documentação da API com os métodos que realizam manobras | :heavy_check_mark: | (20) Baixa |
 
 <br>
 
@@ -64,7 +63,7 @@ Na tabela abaixo é possível visualizar os resultados de cada Sprint clicando e
 |   01   | 24/09/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint1.md) |
 |   02   | 15/10/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint2.md) |
 |   03   | 05/11/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint3.md) |
-|   04   | 26/11/2023 |    :hourglass:     | [ver relatório](/docs/relatorio-sprint4.md) |
+|   04   | 26/11/2023 | :heavy_check_mark: | [ver relatório](/docs/relatorio-sprint4.md) |
 
 <br />
 
@@ -99,6 +98,16 @@ https://github.com/CodeLabFatec/EquipControl/assets/26208169/ec11063c-7fbf-4d4d-
 
 https://github.com/CodeLabFatec/EquipControl/assets/26208169/df37f11a-10df-4dcb-b96b-c2353b29f0ed
 
+</p>
+
+<br />
+
+<h4> Entrega da Sprint 4 </h4>
+
+<p align="center">
+
+https://github.com/CodeLabFatec/EquipControl/assets/26208169/cbe3c4e4-7adb-4f5f-8961-4a767df9f2ba
+    
 </p>
 
 <span id="tecnologias">

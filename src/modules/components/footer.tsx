@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import navigate from '../../RootNavigation';
 import {AuthContext} from '../../contexts';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function Footer() {
   const {user} = useContext(AuthContext);
@@ -11,19 +12,24 @@ function Footer() {
       <Pressable
         style={user?.isAdmin ? styles.equipmentButton : styles.Button}
         onPress={() => navigate('Home')}>
-        <Text style={styles.ButtonText}>Equipamentos</Text>
+        <Icon style={styles.ButtonIcon} name="home" />
+      </Pressable>
+      <Pressable
+        style={user?.isAdmin ? styles.equipmentButton : styles.Button}
+        onPress={() => navigate('Map')}>
+        <Icon style={styles.ButtonIcon} name="map" />
       </Pressable>
       {user?.isAdmin && (
         <>
           <Pressable
             style={styles.domainButton}
             onPress={() => navigate('ListDomain')}>
-            <Text style={styles.ButtonText}>Domínios</Text>
+            <Icon style={styles.ButtonIcon} name="sign" />
           </Pressable>
           <Pressable
             style={styles.userButton}
             onPress={() => navigate('ListUsers')}>
-            <Text style={styles.ButtonText}>Usuários</Text>
+            <Icon style={styles.ButtonIcon} name="users" />
           </Pressable>
         </>
       )}
@@ -61,10 +67,11 @@ const styles = StyleSheet.create({
     width: 90,
     marginVertical: 5,
   },
-  ButtonText: {
+  ButtonIcon: {
     textAlign: 'center',
     paddingTop: 12,
     color: '#EEEEEE',
+    fontSize: 20,
   },
   Button: {
     borderLeftWidth: 1,

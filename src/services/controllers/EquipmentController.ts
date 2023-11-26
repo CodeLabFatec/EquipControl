@@ -1,6 +1,7 @@
 import {Equipment} from '@/helpers/models';
 import {api, endpoints} from '../api';
 import {BaseController} from './BaseController';
+import {EquipmentHistory, EquipmentLocation} from '@/helpers/models/equipment';
 
 class EquipmentController extends BaseController<Equipment> {
   constructor() {
@@ -9,7 +10,7 @@ class EquipmentController extends BaseController<Equipment> {
 
   async get(id: string): Promise<Equipment | null> {
     try {
-      return (await api.get(endpoints.GET_EQUIPMENT + id)).data.equipment;
+      return (await api.get(endpoints.GET_EQUIPMENT + '/' + id)).data.equipment;
     } catch (e) {
       return null;
     }
@@ -31,9 +32,17 @@ class EquipmentController extends BaseController<Equipment> {
     }
   };
 
+  public listOnlyLocation = async (): Promise<EquipmentLocation[]> => {
+    try {
+      return (await api.get(endpoints.GET_EQUIPMENTS_LOCATION)).data.equipments;
+    } catch (e) {
+      return [];
+    }
+  };
+
   public post = async (data: Equipment) => {
     try {
-      const {_id, createdAt, updatedAt, domain, ...eq} = data;
+      const {_id, createdAt, updatedAt, domain, history, ...eq} = data;
 
       const equipment = {
         ...eq,
@@ -48,16 +57,11 @@ class EquipmentController extends BaseController<Equipment> {
     }
   };
 
-  public updateStatus = async (
-    equipmentId: string,
-    status: boolean,
-    updated_by: {userId: string; userName: string},
-  ) => {
+  public updateStatus = async (equipmentId: string, status: boolean) => {
     try {
       const result = (
         await api.patch(endpoints.PATCH_EQUIPMENT_STATUS + equipmentId, {
           isActive: status,
-          updated_by,
         })
       ).data;
 
@@ -68,7 +72,8 @@ class EquipmentController extends BaseController<Equipment> {
   };
 
   public update = async (equipmentId: string, equipment: Equipment) => {
-    const {_id, createdAt, updatedAt, created_by, domain, ...eq} = equipment;
+    const {_id, createdAt, updatedAt, created_by, domain, history, ...eq} =
+      equipment;
     try {
       const data = {
         domain: domain._id,
@@ -83,6 +88,14 @@ class EquipmentController extends BaseController<Equipment> {
       return this.handleErrors(e.message);
     }
   };
+
+  async getHistory(id: string): Promise<EquipmentHistory | null> {
+    try {
+      return (await api.get(endpoints.GET_EQUIPMENT_HISTORY + id)).data.history;
+    } catch (e) {
+      return null;
+    }
+  }
 }
 
 const equipmentController = new EquipmentController();

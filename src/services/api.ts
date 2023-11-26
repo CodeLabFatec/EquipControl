@@ -7,27 +7,41 @@ const api: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true,
-  timeout: 2000,
+  timeout: 10000,
 });
+
+function setAuthorization(token: string | null) {
+  if (token) {
+    api.defaults.withCredentials = true;
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.common = {Authorization: `Bearer ${token}`};
+  } else {
+    api.defaults.withCredentials = false;
+    api.defaults.headers.Authorization = null;
+    api.defaults.headers.common = {Authorization: ``};
+  }
+}
 
 const endpoints = {
   //GET
   GET_EQUIPMENT: '/equipment/get',
+  GET_EQUIPMENT_HISTORY: '/equipment/getEquipmentHistory/',
+  GET_EQUIPMENTS_LOCATION: '/equipment/getAllLocations',
   GET_USER: '/user/get/',
   GET_ALL_USERS: '/user/getAllUsers',
   GET_DOMAIN: '/domain/get/',
   GET_ALL_DOMAINS: '/domain/getAllDomains',
-  VALIDATE_TOKEN: '/user/validate',
-  VALIDATE_BIOMETRIC_TOKEN: '/user/validateBiometric/',
+  VALIDATE_TOKEN: '/auth/validate',
+  VALIDATE_BIOMETRIC_TOKEN: '/auth/validateBiometric/',
 
   //POST
   POST_EQUIPMENT: '/equipment/create',
   POST_DOMAIN: '/domain/registerDomain',
   POST_USER: '/user/register',
-  LOGIN_USER: '/user/login',
+  LOGIN_USER: '/auth/login',
   GENERTE_BIOMETRIC_TOKEN: '/user/generateBiometricToken',
-  POST_SEND_RECOVER_CODE: '/user/sendRecoverPasswordCode/',
-  POST_RECOVER_PASSWORD: '/user/recoverPassword/',
+  POST_SEND_RECOVER_CODE: '/auth/sendRecoverPasswordCode/',
+  POST_RECOVER_PASSWORD: '/auth/recoverPassword/',
   POST_UPDATE_PASSWORD: '/user/changePassword/',
 
   //PATCH
@@ -42,4 +56,4 @@ const endpoints = {
   DELETE_DOMAIN: '/domain/delete/',
 };
 
-export {api, endpoints};
+export {api, endpoints, setAuthorization};
