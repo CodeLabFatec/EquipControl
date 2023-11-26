@@ -113,7 +113,7 @@ export default function EquipmentMapList({navigation}) {
             });
           },
           error => console.log(error),
-          {enableHighAccuracy: true, timeout: 2000},
+          {enableHighAccuracy: true, timeout: 5000},
         );
       } else {
         navigation.navigate('Home');

@@ -13,7 +13,7 @@ function Header() {
       label: (user && user.name) ?? 'Usuário',
       onPress: null,
       textStyle: {textAlign: 'center'},
-    },    
+    },
     {value: null, label: 'Perfil', onPress: () => navigate('Profile')},
     {value: null, label: 'Conta', onPress: () => navigate('EditPassword')},
     {value: null, label: 'Sair', onPress: () => logout()},
@@ -27,6 +27,9 @@ function Header() {
           style={styles.image}
           resizeMode="contain"
         />
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.headerTextsMedium}>Gestão de equipamentos</Text>
       </View>
       <View style={styles.userBox}>
         <Dropdown items={dropdownItems}>
@@ -62,7 +65,16 @@ const styles = StyleSheet.create({
   headerLogo: {
     width: 60,
     height: 60,
-    marginLeft: 20
+    marginLeft: 20,
+  },
+  headerTextsMedium: {
+    fontSize: 20,
+    color: '#A7A6A6',
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 10,
   },
   image: {
     marginTop: 10,
