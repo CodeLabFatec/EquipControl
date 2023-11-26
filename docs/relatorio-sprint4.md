@@ -28,6 +28,7 @@
 ## 👩‍💻 Entrega
 <p align="center">
 
+https://github.com/CodeLabFatec/EquipControl/assets/26208169/cbe3c4e4-7adb-4f5f-8961-4a767df9f2ba
 
 </p>
 
